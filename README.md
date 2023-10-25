@@ -1,1 +1,21 @@
-# auto-installer-hmis100-tracker-integrator
+#### How To
+> Run command below
+```sh
+DHIS2_VERSION="{dhis2_version}" && \
+rm -rf updates && \
+url="{repo}" && \
+git clone -b "$DHIS2_VERSION" "$url" updates && \
+cd updates && \
+./update.sh "$DHIS2_VERSION"
+
+```
+> e.g.
+```sh
+DHIS2_VERSION="2.40" && \
+rm -rf updates && \
+url="https://github.com/HISP-Uganda/auto-installer-hmis100-tracker-integrator" && \
+git clone -b "$DHIS2_VERSION" "$url" updates && \
+cd updates && \
+./update.sh "$DHIS2_VERSION"
+
+```
