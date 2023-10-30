@@ -6,6 +6,7 @@ rm -rf updates && \
 url="{repo}" && \
 git clone -b "$DHIS2_VERSION" "$url" updates && \
 cd updates && \
+chmod u+x update.sh && \
 ./update.sh "$DHIS2_VERSION"
 
 ```
@@ -16,6 +17,7 @@ rm -rf updates && \
 url="https://github.com/HISP-Uganda/auto-installer-hmis100-tracker-integrator" && \
 git clone -b "$DHIS2_VERSION" "$url" updates && \
 cd updates && \
+chmod u+x update.sh && \
 ./update.sh "$DHIS2_VERSION"
 
 ```
