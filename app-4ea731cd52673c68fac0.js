@@ -9,7 +9,7 @@ window.closeIframe = function () {
 };
 
 var ifrm;
-var useIframe = false;
+var useIframe = true;
 // Function to open the popup window
 function openIcdPopup(olsdata) {
     if (useIframe) {
@@ -18151,7 +18151,7 @@ function addNinListener() {
                         console.log("OU:", ou);
 
                         // Define the URL
-                        const url = `/ima2/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
+                        const url = `/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
 
                         // Fetch the JSON data
                         fetch(url)
