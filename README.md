@@ -12,9 +12,9 @@ chmod u+x update.sh && \
 ```
 > e.g.
 ```sh
-DHIS2_VERSION="2.40" && \
+DHIS2_VERSION="2.38" && \
 rm -rf updates && \
-url="https://github.com/HISP-Uganda/auto-installer-hmis100-tracker-integrator" && \
+url="https://github.com/HISP-Uganda/auto-installer-hmis100-tracker-integrator.git" && \
 git clone -b "$DHIS2_VERSION" "$url" updates && \
 cd updates && \
 chmod u+x update.sh && \
