@@ -29,7 +29,7 @@ function openIcdPopup(olsdata) {
         ifrm.style.width = "calc(100% - 40px)";
         ifrm.style.minHeight = "640px";
         ifrm.style.position = "absolute";
-        ifrm.style.top = "10px";
+        ifrm.style.top = "100px";
         ifrm.style.left = "20px";
         ifrm.style.border = "1px solid black";
         ifrm.style.boxShadow = "2px 4px 12px 9px rgba(0,0,0,0.4)";
