@@ -9,7 +9,7 @@ window.closeIframe = function () {
 };
 
 var ifrm;
-var useIframe = true;
+var useIframe = false;
 // Function to open the popup window
 function openIcdPopup(olsdata) {
     if (useIframe) {
@@ -47,7 +47,7 @@ function openIcdPopup(olsdata) {
     }else {
         //generate url query params
         const urlQueryParams = objectToQueryString(olsdata);
-        const targetBaseUrl = "https://ug.sk-engine.cloud/hmis"
+        const targetBaseUrl = "https://hmis-tests.health.go.ug"
         const appUrl = `${targetBaseUrl}/api/apps/Medical-Certificate-of-Cause-of-Death/index.html`
         const targetSystemUrl = `${appUrl}?${urlQueryParams}`
         const popupName = 'Medical-Certificate-of-Cause-of-Death'; // Optional - specify a name for the popup window
