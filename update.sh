@@ -52,7 +52,24 @@ else
 fi
 else
     # Ask for the file path
-    read -r -p "Enter the file path (e.g., /path/to/your/file.js): " file_path
+    if [ -n "$DHIS2_UPDATE_FILE" ]; then
+        read -r -p "Use environment variable DHIS2_UPDATE_FILE ($DHIS2_UPDATE_FILE) as the file path? (Y/n): " use_env_var
+        if [ "$use_env_var" == "n" ]; then
+            read -r -p "Do you want to use the path from the second argument ($2) as the file path? (Y/n): " use_arg_path
+            if [ "$use_arg_path" == "n" ]; then
+                read -r -p "Enter the file path (e.g., /path/to/your/file.js): " file_path
+            else
+                file_path="$2"
+            fi
+        else
+            file_path="$DHIS2_UPDATE_FILE"
+        fi
+    else
+        read -r -p "Enter the file path (e.g., /path/to/your/file.js): " file_path
+    fi
+
+    echo "Selected file path: $file_path"
+
     # Verify that the file_path exists and is a .js file
     if [ -f "$file_path" ] && [[ "$file_path" == *.js ]]; then
         # Clone the repository with the specified DHIS2 version as the branch
