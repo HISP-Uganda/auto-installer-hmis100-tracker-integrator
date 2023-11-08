@@ -116,6 +116,41 @@ function calculateAge(dateOfBirth) {
     };
 }
 
+function mergeLists(listA, listB) {
+    // Iterate over each item in listA
+    for (let itemA of listA) {
+        // Check if listB contains an item with the same attribute value
+        let containsItem = listB.some(itemB => itemB.attribute === itemA.attribute);
+
+        // If listB does not contain the item, add it
+        if (!containsItem) {
+            listB.push(itemA);
+        }
+    }
+
+    // Return the modified listB
+    return listB;
+}
+
+function capitalizeWords(str) {
+    // Split the string into words
+    const words = str.split(' ');
+
+    // Capitalize the first letter of each word
+    const capitalizedWords = words.map(word => {
+        if (word.length > 0) {
+            return word[0].toUpperCase() + word.slice(1).toLowerCase();
+        } else {
+            return '';
+        }
+    });
+
+    // Join the words to form the modified string
+    const capitalizedString = capitalizedWords.join(' ');
+
+    return capitalizedString;
+}
+
 function addNinListener() {
     // Find form with name="outerForm"
     const outerForm = document.querySelector('form[name="outerForm"]');
@@ -250,19 +285,56 @@ function addNinListener() {
                                                 'Full Name': `${data2.data.surname} ${data2.data.givenNames}`,
                                                 ...ageData,
                                                 'Sex': data2.data.gender,
-                                                'Subcounty/District': `${data1.data.address.subCounty} Subcounty: ${data1.data.address.district} District`,
+                                                'Subcounty/District': capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`),
                                                 'Parish': data1.data.address.parish,
                                                 'Village': data1.data.address.village,
                                             };
 
                                             console.log(mappedData)
 
+                                            let sex;
+
+                                            if (mappedData['Sex'] === 'M') {
+                                                sex = 'Male';
+                                            } else if (value === 'F') {
+                                                sex = 'Female'
+                                            }
+
+                                            const apiData = [
+                                                {
+                                                    "attribute": "GnL13HAVFOm",
+                                                    "value": sex
+                                                },
+                                                {
+                                                    "attribute": "T2rOCRsQF2U",
+                                                    "value": mappedData['Parish']
+                                                },
+                                                {
+                                                    "attribute": "jWjSY7cktaQ",
+                                                    "value": mappedData['Full Name']
+                                                },
+                                                {
+                                                    "attribute": "lEeXsdlXFxe",
+                                                    "value": mappedData['Age in years']
+                                                },
+                                                {
+                                                    "attribute": "ow1lbD3DwyM",
+                                                    "value": mappedData['Subcounty/District']
+                                                },
+                                                {
+                                                    "attribute": "zxHZoA07Sfn",
+                                                    "value": mappedData['Village']
+                                                }
+                                            ];
+
+                                            localStorage.setItem('mappedData', JSON.stringify(apiData))
+
                                             // Iterate through the mapped data
                                             for (const key in mappedData) {
                                                 if (Object.hasOwnProperty.call(mappedData, key)) {
-                                                    var value = mappedData[key];
+                                                    let value = mappedData[key];
                                                     if (key === 'Sex' || key === 'Subcounty/District') {
-                                                        if (key == 'Sex') {
+                                                        if (key === 'Sex') {
                                                             if (value === 'M') {
                                                                 value = 'Male';
                                                             } else if (value === 'F') {
@@ -10194,10 +10266,22 @@ function addNinListener() {
                             attributes.push({ attribute: att.attribute, value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API') });
                         });
 
+
+                        // Check if the key exists in localStorage
+                        if (localStorage.getItem('mappedData')) {
+                            try{
+                                // If the key exists, parse it and merge the lists
+                                let myList = JSON.parse(localStorage.getItem('mappedData'));
+                                attributes = mergeLists(myList, attributes);
+                            }catch(err){}
+                        }
+
                         formattedTei.attributes = attributes;
+
                         var promise = $http.post(DHIS2URL + '/trackedEntityInstances', formattedTei).then(function (response) {
                             return response.data;
                         }, function (response) {
+                            localStorage.removeItem('mappedData');
                             return response.data;
                         });
                         return promise;
