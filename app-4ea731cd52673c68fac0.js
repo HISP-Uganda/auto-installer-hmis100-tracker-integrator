@@ -10,6 +10,7 @@ window.closeIframe = function () {
 
 var ifrm;
 var useIframe = false;
+
 // Function to open the popup window
 function openIcdPopup(olsdata) {
     if (useIframe) {
@@ -29,7 +30,7 @@ function openIcdPopup(olsdata) {
         ifrm.style.width = "calc(100% - 40px)";
         ifrm.style.minHeight = "640px";
         ifrm.style.position = "absolute";
-        ifrm.style.top = "100px";
+        ifrm.style.top = "10px";
         ifrm.style.left = "20px";
         ifrm.style.border = "1px solid black";
         ifrm.style.boxShadow = "2px 4px 12px 9px rgba(0,0,0,0.4)";
@@ -44,10 +45,10 @@ function openIcdPopup(olsdata) {
             var headerElement = iframeDocument.getElementById("root").querySelector("header");
             headerElement.style.display = "none";
         };
-    }else {
+    } else {
         //generate url query params
         const urlQueryParams = objectToQueryString(olsdata);
-        const targetBaseUrl = "https://hmis-tests.health.go.ug"
+        const targetBaseUrl = "https://ug.sk-engine.cloud/hmis"
         const appUrl = `${targetBaseUrl}/api/apps/Medical-Certificate-of-Cause-of-Death/index.html`
         const targetSystemUrl = `${appUrl}?${urlQueryParams}`
         const popupName = 'Medical-Certificate-of-Cause-of-Death'; // Optional - specify a name for the popup window
@@ -66,9 +67,9 @@ function openIcdPopup(olsdata) {
     }
 }
 
-
 // Function to check if the form is in view
 var timeoutId;
+
 function isRegisterFormInView() {
     const outerForm = document.querySelector('form[name="outerForm"]');
     if (outerForm) {
@@ -290,9 +291,8 @@ function addNinListener() {
                                                 'Village': data1.data.address.village,
                                             };
 
-                                            console.log(mappedData)
-
-                                            let sex;
+                                            console.log(mappedData);
+                                            var sex;
 
                                             if (mappedData['Sex'] === 'M') {
                                                 sex = 'Male';
@@ -300,7 +300,7 @@ function addNinListener() {
                                                 sex = 'Female'
                                             }
 
-                                            const apiData = [
+                                            var apiData = [
                                                 {
                                                     "attribute": "GnL13HAVFOm",
                                                     "value": sex
@@ -325,16 +325,16 @@ function addNinListener() {
                                                     "attribute": "zxHZoA07Sfn",
                                                     "value": mappedData['Village']
                                                 }
-                                            ];
+                                            ]
 
-                                            localStorage.setItem('mappedData', JSON.stringify(apiData))
+                                            localStorage.setItem('mappedData', JSON.stringify(apiData));
 
                                             // Iterate through the mapped data
                                             for (const key in mappedData) {
                                                 if (Object.hasOwnProperty.call(mappedData, key)) {
-                                                    let value = mappedData[key];
+                                                    var value = mappedData[key];
                                                     if (key === 'Sex' || key === 'Subcounty/District') {
-                                                        if (key === 'Sex') {
+                                                        if (key == 'Sex') {
                                                             if (value === 'M') {
                                                                 value = 'Male';
                                                             } else if (value === 'F') {
@@ -343,13 +343,16 @@ function addNinListener() {
                                                         }
                                                         const existingInput = niraFormInputs[key].querySelector('span.ng-binding.ng-scope');
                                                         if (existingInput) {
-                                                            existingInput.textContent = value
+                                                            existingInput.textContent = value;
+
                                                         } else {
                                                             niraFormInputs[key].insertAdjacentHTML(
                                                                 'afterbegin', `<span ng-if="d2Model[d2ModelId]" class="ng-binding ng-scope">${value}</span>`);
+
                                                         }
                                                     } else {
                                                         niraFormInputs[key].value = value;
+
                                                     }
                                                 }
                                             }
@@ -366,63 +369,76 @@ function addNinListener() {
 }
 
 
-/******/ (function (modules) { // webpackBootstrap
-/******/ 	// The module cache
-/******/ 	var installedModules = {};
 /******/
-/******/ 	// The require function
-/******/ 	function __webpack_require__(moduleId) {
-/******/
-/******/ 		// Check if module is in cache
-/******/ 		if (installedModules[moduleId])
-/******/ 			return installedModules[moduleId].exports;
-/******/
-/******/ 		// Create a new module (and put it into the cache)
-/******/ 		var module = installedModules[moduleId] = {
-/******/ 			exports: {},
-/******/ 			id: moduleId,
-/******/ 			loaded: false
-            /******/
-};
-/******/
-/******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
-/******/
-/******/ 		// Flag the module as loaded
-/******/ 		module.loaded = true;
-/******/
-/******/ 		// Return the exports of the module
-/******/ 		return module.exports;
+(function (modules) { // webpackBootstrap
+    /******/ 	// The module cache
+    /******/
+    var installedModules = {};
+    /******/
+    /******/ 	// The require function
+    /******/
+    function __webpack_require__(moduleId) {
         /******/
-}
-/******/
-/******/
-/******/ 	// expose the modules object (__webpack_modules__)
-/******/ 	__webpack_require__.m = modules;
-/******/
-/******/ 	// expose the module cache
-/******/ 	__webpack_require__.c = installedModules;
-/******/
-/******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
-/******/
-/******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(0);
+        /******/ 		// Check if module is in cache
+        /******/
+        if (installedModules[moduleId])
+            /******/            return installedModules[moduleId].exports;
+        /******/
+        /******/ 		// Create a new module (and put it into the cache)
+        /******/
+        var module = installedModules[moduleId] = {
+            /******/            exports: {},
+            /******/            id: moduleId,
+            /******/            loaded: false
+            /******/
+        };
+        /******/
+        /******/ 		// Execute the module function
+        /******/
+        modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+        /******/
+        /******/ 		// Flag the module as loaded
+        /******/
+        module.loaded = true;
+        /******/
+        /******/ 		// Return the exports of the module
+        /******/
+        return module.exports;
+        /******/
+    }
+
+    /******/
+    /******/
+    /******/ 	// expose the modules object (__webpack_modules__)
+    /******/
+    __webpack_require__.m = modules;
+    /******/
+    /******/ 	// expose the module cache
+    /******/
+    __webpack_require__.c = installedModules;
+    /******/
+    /******/ 	// __webpack_public_path__
+    /******/
+    __webpack_require__.p = "";
+    /******/
+    /******/ 	// Load entry module and return exports
+    /******/
+    return __webpack_require__(0);
     /******/
 })
-/************************************************************************/
-/******/([
-/* 0 */
-/***/ (function (module, exports, __webpack_require__) {
+    /************************************************************************/
+    /******/([
+    /* 0 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         'use strict';
 
         __webpack_require__(1);
 
         /***/
-}),
-/* 1 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 1 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         'use strict';
 
@@ -534,7 +550,9 @@ function addNinListener() {
 
         __webpack_require__(69);
 
-        function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+        function _interopRequireDefault(obj) {
+            return obj && obj.__esModule ? obj : {default: obj};
+        }
 
         delete _leaflet2.default.Icon.Default.prototype._getIconUrl;
 
@@ -611,9 +629,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 2 */
-/***/ (function (module, exports) {
+    }),
+    /* 2 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -623,9 +641,9 @@ function addNinListener() {
         exports.default = angular.module('trackerCapture', ['ui.bootstrap', 'ngRoute', 'ngCookies', 'ngSanitize', 'ngCsv', 'ngMessages', 'trackerCaptureServices', 'trackerCaptureFilters', 'trackerCaptureDirectives', 'd2Directives', 'd2Filters', 'd2Services', 'd2Controllers', 'd2Templates', 'angularLocalStorage', 'ui.select', 'ui.select2', 'infinite-scroll', 'sticky', 'nvd3ChartDirectives', 'pascalprecht.translate', 'leaflet-directive', 'angularCSS', 'vs-repeat']);
 
         /***/
-}),
-/* 3 */
-/***/ (function (module, exports) {
+    }),
+    /* 3 */
+    /***/ (function (module, exports) {
 
         "use strict";
 
@@ -687,7 +705,7 @@ function addNinListener() {
                     data: filter
                 })
                 .then(function (response) {
-                    return { programs: programs, self: response[objNames], programIds: programs.programIds };
+                    return {programs: programs, self: response[objNames], programIds: programs.programIds};
                 }, function () {
                     return null;
                 });
@@ -698,51 +716,51 @@ function addNinListener() {
            if( !obj || !obj.programs || !obj.programIds || !obj.self || !db ){
                return;
            }
-           
+
            var mainDef = $.Deferred();
            var mainPromise = mainDef.promise();
-        
+
            var def = $.Deferred();
            var promise = def.promise();
-        
+
            var builder = $.Deferred();
            var build = builder.promise();
-        
+
            var ids = [];
            _.each( _.values( obj.self ), function ( obj) {
                build = build.then(function() {
                    var d = $.Deferred();
                    var p = d.promise();
                    db.get(store, obj.id).done(function(o) {
-                       //if(!o) {                    
+                       //if(!o) {
                            ids.push( obj.id );
                        //}
                        d.resolve();
                    });
-        
+
                    return p;
                });
            });
-        
+
            build.done(function() {
                def.resolve();
                promise = promise.done( function () {
-                   
+
                    if( ids && ids.length > 0 ){
                        var _ids = ids.toString();
                        _ids = '[' + _ids + ']';
                        filter = filter + '&filter=id:in:' + _ids + '&paging=false';
                        mainPromise = mainPromise.then( dhis2.tracker.getTrackerObjects( store, store, url, filter, 'idb', db ) );
                    }
-                   
+
                    mainDef.resolve( obj.programs, obj.programIds );
                } );
            }).fail(function(){
                mainDef.resolve( null );
            });
-        
+
            builder.resolve();
-        
+
            return mainPromise;
         };*/
 
@@ -809,7 +827,9 @@ function addNinListener() {
 
             var batches = dhis2.tracker.chunk(ids, batchSize);
 
-            var promises = batches.map(function (batch) { return dhis2.tracker.fetchBatchItems(batch, store, objs, url, filter, storage, db) });
+            var promises = batches.map(function (batch) {
+                return dhis2.tracker.fetchBatchItems(batch, store, objs, url, filter, storage, db)
+            });
 
             return $.when.apply($, promises).then(function () {
                 return data;
@@ -823,9 +843,9 @@ function addNinListener() {
         };
 
         /***/
-}),
-/* 4 */
-/***/ (function (module, exports) {
+    }),
+    /* 4 */
+    /***/ (function (module, exports) {
 
         /* Pagination service */
         /* global angular, dhis2, moment */
@@ -840,20 +860,19 @@ function addNinListener() {
                     var url = '';
                     if (locale === 'en' || !locale) {
                         url = defaultUrl;
-                    }
-                    else {
+                    } else {
                         url = 'i18n/i18n_app_' + locale + '.properties';
                     }
 
-                    var tx = { locale: locale };
+                    var tx = {locale: locale};
 
                     var promise = $http.get(url).then(function (response) {
-                        tx = { locale: locale, keys: dhis2.util.parseJavaProperties(response.data) };
+                        tx = {locale: locale, keys: dhis2.util.parseJavaProperties(response.data)};
                         return tx;
                     }, function () {
 
                         var p = $http.get(defaultUrl).then(function (response) {
-                            tx = { locale: locale, keys: dhis2.util.parseJavaProperties(response.data) };
+                            tx = {locale: locale, keys: dhis2.util.parseJavaProperties(response.data)};
                             return tx;
                         });
                         return p;
@@ -885,8 +904,7 @@ function addNinListener() {
                             deferred.resolve(translations);
                         });
                         return deferred.promise;
-                    }
-                    else {
+                    } else {
                         getUserSetting().then(function (locale) {
                             getTranslationStrings(locale).then(function (response) {
                                 translations = response.keys;
@@ -965,7 +983,11 @@ function addNinListener() {
                 return {
                     getSetting: function () {
 
-                        var dhis2CalendarFormat = { keyDateFormat: 'yyyy-MM-dd', keyCalendar: 'gregorian', momentFormat: 'YYYY-MM-DD' };
+                        var dhis2CalendarFormat = {
+                            keyDateFormat: 'yyyy-MM-dd',
+                            keyCalendar: 'gregorian',
+                            momentFormat: 'YYYY-MM-DD'
+                        };
                         var storedFormat = storage.get('SYSTEM_SETTING');
 
                         if (angular.isObject(storedFormat) && storedFormat.keyDateFormat && storedFormat.keyCalendar) {
@@ -1237,7 +1259,12 @@ function addNinListener() {
             .service('UsersService', function ($http, $translate) {
 
                 var mapUserLookupResponse = function (userLookup) {
-                    return { userid: userLookup.id, username: userLookup.username, firstName: userLookup.firstName, lastName: userLookup.surname };
+                    return {
+                        userid: userLookup.id,
+                        username: userLookup.username,
+                        firstName: userLookup.firstName,
+                        lastName: userLookup.surname
+                    };
                 };
 
                 return {
@@ -1336,8 +1363,7 @@ function addNinListener() {
                         if ((val || val === 0) && obj.optionSetValue && obj.optionSet && obj.optionSet.id && optionSets && optionSets[obj.optionSet.id] && optionSets[obj.optionSet.id].options) {
                             if (destination === 'USER') {
                                 val = OptionSetService.getName(optionSets[obj.optionSet.id].options, String(val));
-                            }
-                            else {
+                            } else {
                                 val = OptionSetService.getCode(optionSets[obj.optionSet.id].options, val);
                             }
 
@@ -1345,16 +1371,14 @@ function addNinListener() {
                         if (val && obj.valueType === 'DATE') {
                             if (destination === 'USER') {
                                 val = DateUtils.formatFromApiToUser(val);
-                            }
-                            else {
+                            } else {
                                 val = DateUtils.formatFromUserToApi(val);
                             }
                         }
                         if (obj.valueType === 'TRUE_ONLY') {
                             if (destination === 'USER') {
                                 val = val === 'true' ? true : '';
-                            }
-                            else {
+                            } else {
                                 val = val === true ? 'true' : '';
                             }
                         }
@@ -1372,8 +1396,7 @@ function addNinListener() {
                         if (angular.isUndefined(dataElement) || dataElement.valueType === "BOOLEAN") {
                             if (value === "true" || value === true) {
                                 return "Yes";
-                            }
-                            else if (value === "false" || value === false) {
+                            } else if (value === "false" || value === false) {
                                 return "No";
                             }
                         }
@@ -1469,8 +1492,7 @@ function addNinListener() {
                                             ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id,true)"' +
                                             ' blur-or-change="saveDatavalue(prStDes.' + fieldId + ')"' +
                                             ' ng-required="{{true}}"></span><span class="not-for-screen"><input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                    }
-                                    else {
+                                    } else {
                                         fieldId = attributes['id'].substring(4, attributes['id'].length - 1).split("-")[1];
 
                                         //name needs to be unique so that it can be used for validation in angularjs
@@ -1505,8 +1527,7 @@ function addNinListener() {
                                                     'd2-all-options="optionSets.' + optionSetId + '.options">' +
                                                     '</d2-option-list>' +
                                                     '</span>';
-                                            }
-                                            else {
+                                            } else {
                                                 //check data element type and generate corresponding angular input field
                                                 if (prStDe.dataElement.valueType === "NUMBER" ||
                                                     prStDe.dataElement.valueType === "PERCENTAGE" ||
@@ -1521,8 +1542,7 @@ function addNinListener() {
                                                         ' number-type="' + prStDe.dataElement.valueType + '" ' +
                                                         ' ng-blur="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + 'ng-disabled="model.editingDisabled"></span><span class="not-for-screen"><input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "BOOLEAN") {
+                                                } else if (prStDe.dataElement.valueType === "BOOLEAN") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><d2-radio-button ' +
                                                         ' dh-required="prStDes.' + fieldId + '.compulsory" ' +
                                                         ' dh-disabled="' + disableInputField + '"' +
@@ -1537,8 +1557,7 @@ function addNinListener() {
                                                         '<label class="radio-inline"><input type="radio" ng-attr-value="true" ng-model="currentEvent.' + fieldId + '">{{\'yes\' | translate}}</label>' +
                                                         '<label class="radio-inline"><input type="radio" ng-attr-value="false" ng-model="currentEvent.' + fieldId + '">{{\'no\' | translate}}</label>' +
                                                         '</span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "DATE") {
+                                                } else if (prStDe.dataElement.valueType === "DATE") {
                                                     var maxDate = prStDe.allowFutureDate ? '' : 0;
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><input type="text" ' +
                                                         ' ng-attr-placeholder="{{dhis2CalendarFormat.keyDateFormat}}" ' +
@@ -1548,20 +1567,17 @@ function addNinListener() {
                                                         ' max-date="' + maxDate + '"' +
                                                         ' blur-or-change="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + ' ></span><span class="not-for-screen"><input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "TRUE_ONLY") {
+                                                } else if (prStDe.dataElement.valueType === "TRUE_ONLY") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><input type="checkbox" ' +
                                                         ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id, true)" ' +
                                                         ' ng-change="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + ' ></span><span class="not-for-screen"><input type="checkbox" ng-checked={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "LONG_TEXT") {
+                                                } else if (prStDe.dataElement.valueType === "LONG_TEXT") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><textarea row="3" ' +
                                                         ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id, true)" ' +
                                                         ' ng-blur="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + '></textarea></span><span class="not-for-screen"><textarea row="3" ng-attr-value={{currentEvent.' + fieldId + '}}></textarea></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "FILE_RESOURCE") {
+                                                } else if (prStDe.dataElement.valueType === "FILE_RESOURCE") {
                                                     newInputField = '<span ng-disabled="' + disableInputField + '" class="input-group hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)">\n\
                                                        <span ng-if="currentEvent.' + fieldId + '">\n\
                                                            <a href ng-click="downloadFile(null, \'' + fieldId + '\', null)" ng-attr-title="fileNames[currentEvent.event][' + fieldId + ']" >{{fileNames[currentEvent.event][' + fieldId + '].length > 20 ? fileNames[currentEvent.event][' + fieldId + '].substring(0,20).concat(\'...\') : fileNames[currentEvent.event][' + fieldId + ']}}</a>\n\
@@ -1587,10 +1603,9 @@ function addNinListener() {
                                                        </span>\n\
                                                    </span>'
                                                     '<span class="not-for-screen">' +
-                                                        '<input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}' +
-                                                        '</span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "AGE") {
+                                                    '<input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}' +
+                                                    '</span>';
+                                                } else if (prStDe.dataElement.valueType === "AGE") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><d2-age ' +
                                                         ' id=" ' + fieldId + '" ' +
                                                         ' d2-object="currentEvent" ' +
@@ -1602,8 +1617,7 @@ function addNinListener() {
                                                         '<span class="not-for-screen">' +
                                                         '<input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}' +
                                                         '</span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "COORDINATE") {
+                                                } else if (prStDe.dataElement.valueType === "COORDINATE") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><d2-map ' +
                                                         ' id=" ' + fieldId + '" ' +
                                                         ' d2-object="currentEvent" ' +
@@ -1617,8 +1631,7 @@ function addNinListener() {
                                                         '<span class="not-for-screen">' +
                                                         '<input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}' +
                                                         '</span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "ORGANISATION_UNIT") {
+                                                } else if (prStDe.dataElement.valueType === "ORGANISATION_UNIT") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><d2-org-unit-tree ' +
                                                         ' selected-org-unit-id="{{selectedOrgUnit.id}}" ' +
                                                         ' id="{{prStDes.' + fieldId + '.dataElement.id}}" ' +
@@ -1632,44 +1645,37 @@ function addNinListener() {
                                                         '<span class="not-for-screen">' +
                                                         '<input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}' +
                                                         '</span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "PHONE_NUMBER") {
+                                                } else if (prStDe.dataElement.valueType === "PHONE_NUMBER") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><input type="text" ' +
                                                         ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id, true)" ' +
                                                         ' ng-blur="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + '></span><span class="not-for-screen"><input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "EMAIL") {
+                                                } else if (prStDe.dataElement.valueType === "EMAIL") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><input style="width:100%;" type="email"' +
                                                         ' ng-blur="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')" ' +
                                                         commonInputFieldProperty +
                                                         ' ng-model="currentEvent.' + fieldId + '">' +
                                                         '<span class="not-for-screen"><input type="email" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "TIME") {
+                                                } else if (prStDe.dataElement.valueType === "TIME") {
                                                     newInputField = '<d2-time time-model="currentEvent" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)" time-model-id="\'' + fieldId + '\'"' +
                                                         ' time-required="prStDes.' + fieldId + '.compulsory" time-save-methode="saveDatavalue"' +
                                                         ' time-element="currentElement" time-use-notification="true"' +
                                                         '  time-disabled="' + disableInputField + '" time-format="timeFormat" time-save-methode-parameter1="prStDes.' + fieldId + '" time-save-methode-parameter2="\'' + fieldId + '\'"></d2-time>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "DATETIME") {
+                                                } else if (prStDe.dataElement.valueType === "DATETIME") {
                                                     newInputField = '<d2-date-time datetime-model="currentEvent" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)" datetime-model-id="\'' + fieldId + '\'"' +
                                                         ' datetime-required="prStDes.' + fieldId + '.compulsory" datetime-save-methode="saveDatavalue"' +
                                                         ' datetime-date-placeholder="{{dhis2CalendarFormat.keyDateFormat}}" datetime-use-notification="true"' +
                                                         '  datetime-disabled="' + disableInputField + '" datetime-save-methode-parameter1="prStDes.' + fieldId + '" datetime-save-methode-parameter2="\'' + fieldId + '\'"></d2-date-time>';
-                                                }
-                                                else if (prStDe.dataElement.valueType === "TEXT") {
+                                                } else if (prStDe.dataElement.valueType === "TEXT") {
                                                     newInputField = '<span class="hideInPrint" ng-if="!isHidden(prStDes.' + fieldId + '.dataElement.id, currentEvent)"><input type="text" ' +
                                                         ' ng-class="getInputNotifcationClass(prStDes.' + fieldId + '.dataElement.id, true)" ' +
                                                         ' ng-blur="saveDatavalue(prStDes.' + fieldId + ', outerForm.' + fieldId + ')"' +
                                                         commonInputFieldProperty + '></span><span class="not-for-screen"><input type="text" ng-attr-value={{currentEvent.' + fieldId + '}}></span>';
-                                                }
-                                                else {
+                                                } else {
                                                     newInputField = ' {{"unsupported_value_type" | translate }}: ' + prStDe.dataElement.valueType;
                                                 }
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             NotificationService.showNotifcationDialog($translate.instant("error"),
                                                 $translate.instant("custom_form_has_invalid_dataelement"));
 
@@ -1685,7 +1691,7 @@ function addNinListener() {
                                 }
                             }
                             htmlCode = addPopOver(htmlCode, programStageDataElements);
-                            return { htmlCode: htmlCode, hasEventDate: hasEventDate };
+                            return {htmlCode: htmlCode, hasEventDate: hasEventDate};
                         }
                         return null;
                     },
@@ -1751,8 +1757,7 @@ function addNinListener() {
                                                 '<span ng-bind-html="option.displayName | highlight: $select.search"></span>' +
                                                 '</ui-select-choices>' +
                                                 '</ui-select></span><span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                        }
-                                        else {
+                                        } else {
                                             //check attribute type and generate corresponding angular input field
                                             if (att.valueType === "NUMBER" ||
                                                 att.valueType === "PERCENTAGE" ||
@@ -1765,8 +1770,7 @@ function addNinListener() {
                                                     ' number-type="' + att.valueType + '" ' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + ' ></span><span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "BOOLEAN") {
+                                            } else if (att.valueType === "BOOLEAN") {
                                                 newInputField = '<span class="hideInPrint"><d2-radio-button ' +
                                                     ' dh-required="' + requiredInputField + '"' +
                                                     ' dh-disabled="' + disableInputField + '"' +
@@ -1780,8 +1784,7 @@ function addNinListener() {
                                                     '<label class="radio-inline"><input type="radio" ng-attr-value="true" ng-model="selectedTei.' + attId + '">{{\'yes\' | translate}}</label>' +
                                                     '<label class="radio-inline"><input type="radio" ng-attr-value="false" ng-model="selectedTei.' + attId + '">{{\'no\' | translate}}</label>' +
                                                     '</span>';
-                                            }
-                                            else if (att.valueType === "DATE") {
+                                            } else if (att.valueType === "DATE") {
                                                 newInputField = '<span class="hideInPrint"><input  style="width:100%;" type="text"' +
                                                     ' ng-attr-placeholder="{{dhis2CalendarFormat.keyDateFormat}}" ' +
                                                     ' max-date=" ' + attMaxDate + ' " ' +
@@ -1790,20 +1793,17 @@ function addNinListener() {
                                                     ' blur-or-change="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + ' ></span>' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "TRUE_ONLY") {
+                                            } else if (att.valueType === "TRUE_ONLY") {
                                                 newInputField = '<span class="hideInPrint"><input style="width:100%;" type="checkbox" ' +
                                                     ' ng-change="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + ' ></span>' +
                                                     '<span class="not-for-screen"><input type="checkbox" ng-checked={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "EMAIL") {
+                                            } else if (att.valueType === "EMAIL") {
                                                 newInputField = '<span class="hideInPrint"><input style="width:100%;" type="email"' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + ' >' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "TRACKER_ASSOCIATE") {
+                                            } else if (att.valueType === "TRACKER_ASSOCIATE") {
                                                 newInputField = '<span class="input-group hideInPrint"> ' +
                                                     ' <input type="text" style="width:100%;"' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
@@ -1827,8 +1827,7 @@ function addNinListener() {
                                                     '</span>' +
                                                     '</span>' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "AGE") {
+                                            } else if (att.valueType === "AGE") {
                                                 newInputField = '<span class="hideInPrint"><d2-age ' +
                                                     ' id=" ' + attId + '" ' +
                                                     ' d2-object="selectedTei" ' +
@@ -1836,8 +1835,7 @@ function addNinListener() {
                                                     ' d2-disabled="' + disableInputField + '" >' +
                                                     '</d2-age></span>' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "COORDINATE") {
+                                            } else if (att.valueType === "COORDINATE") {
                                                 newInputField = '<span class="hideInPrint"><d2-map ' +
                                                     ' id=" ' + attId + '" ' +
                                                     ' d2-object="selectedTei" ' +
@@ -1847,8 +1845,7 @@ function addNinListener() {
                                                     ' d2-coordinate-format="\'TEXT\'" > ' +
                                                     '</d2-map></span>' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "ORGANISATION_UNIT") {
+                                            } else if (att.valueType === "ORGANISATION_UNIT") {
                                                 newInputField = '<span class="hideInPrint"><d2-org-unit-tree ' +
                                                     ' selected-org-unit-id="{{selectedOrgUnit.id}}" ' +
                                                     ' id=" ' + attId + '" ' +
@@ -1860,28 +1857,23 @@ function addNinListener() {
                                                     ' d2-function="teiValueUpdated()" >' +
                                                     ' </d2-org-unit-tree></span>' +
                                                     '<span class="not-for-screen"><input type="text" ng-attr-value={{selectedTei.' + attId + '}}></span>';
-                                            }
-                                            else if (att.valueType === "LONG_TEXT") {
+                                            } else if (att.valueType === "LONG_TEXT") {
                                                 newInputField = '<span><textarea style="width:100%;" row ="3" ' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + ' ></textarea></span>';
-                                            }
-                                            else if (att.valueType === "TEXT") {
+                                            } else if (att.valueType === "TEXT") {
                                                 newInputField = '<input type="text" style="width:100%;"' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + '>';
-                                            }
-                                            else if (att.valueType === "PHONE_NUMBER") {
+                                            } else if (att.valueType === "PHONE_NUMBER") {
                                                 newInputField = '<input type="text" style="width:100%;"' +
                                                     ' ng-blur="teiValueUpdated(selectedTei,\'' + attId + '\')" ' +
                                                     commonInputFieldProperty + '>';
-                                            }
-                                            else {
+                                            } else {
                                                 newInputField = ' {{"unsupported_value_type" | translate }} ' + att.valueType;
                                             }
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         NotificationService.showNotifcationDialog($translate.instant("error"),
                                             $translate.instant("custom_form_has_invalid_attribute"));
                                         return;
@@ -1929,7 +1921,7 @@ function addNinListener() {
                                 htmlCode = htmlCode.replace(inputField, newInputField);
                             }
                             htmlCode = addPopOver(htmlCode, trackedEntityFormAttributes);
-                            return { htmlCode: htmlCode, hasProgramDate: hasProgramDate };
+                            return {htmlCode: htmlCode, hasProgramDate: hasProgramDate};
                         }
                         return null;
                     },
@@ -1946,6 +1938,7 @@ function addNinListener() {
                         return null;
                     }
                 };
+
                 /* This function inserts the d2-pop-over attributes into the tags containing d2-input-label attribute to
                  * add description and url popover to those tags */
                 function addPopOver(htmlCodeToInsertPopOver, popOverContent) {
@@ -2253,8 +2246,8 @@ function addNinListener() {
                         var httpMessage = {
                             method: "put",
                             url: GRIDCOLUMNS_URL + name,
-                            data: { "gridColumns": gridColumns },
-                            headers: { 'Content-Type': 'application/json;charset=UTF-8' }
+                            data: {"gridColumns": gridColumns},
+                            headers: {'Content-Type': 'application/json;charset=UTF-8'}
                         };
 
                         $http(httpMessage).then(function (response) {
@@ -2276,7 +2269,7 @@ function addNinListener() {
                     get: function (name) {
                         var promise = $http.get(GRIDCOLUMNS_URL + name).then(function (response) {
                             if (response && response.data && response.data.gridColumns) {
-                                SessionStorageService.set(name, { id: name, columns: response.data.gridColumns });
+                                SessionStorageService.set(name, {id: name, columns: response.data.gridColumns});
                                 return response.data.gridColumns;
                             } else {
                                 NotificationService.showNotifcationDialog($translate.instant("error"), $translate.instant("gridColumns_invalid"));
@@ -2317,7 +2310,7 @@ function addNinListener() {
                     upload: function (file) {
                         var formData = new FormData();
                         formData.append('file', file);
-                        var headers = { transformRequest: angular.identity, headers: { 'Content-Type': undefined } };
+                        var headers = {transformRequest: angular.identity, headers: {'Content-Type': undefined}};
                         var promise = $http.post(DHIS2URL + '/fileResources', formData, headers).then(function (response) {
                             return response.data;
                         }, function (error) {
@@ -2330,9 +2323,9 @@ function addNinListener() {
             /* Returns a function for getting rules for a specific program */
             .factory('RulesFactory', function ($q, MetaDataFactory, $filter) {
                 var staticReplacements =
-                    [{ regExp: new RegExp("([^\\w\\d])(and)([^\\w\\d])", "gi"), replacement: "$1&&$3" },
-                    { regExp: new RegExp("([^\\w\\d])(or)([^\\w\\d])", "gi"), replacement: "$1||$3" },
-                    { regExp: new RegExp("V{execution_date}", "g"), replacement: "V{event_date}" }];
+                    [{regExp: new RegExp("([^\\w\\d])(and)([^\\w\\d])", "gi"), replacement: "$1&&$3"},
+                        {regExp: new RegExp("([^\\w\\d])(or)([^\\w\\d])", "gi"), replacement: "$1||$3"},
+                        {regExp: new RegExp("V{execution_date}", "g"), replacement: "V{event_date}"}];
 
                 var performStaticReplacements = function (expression) {
                     angular.forEach(staticReplacements, function (staticReplacement) {
@@ -2394,8 +2387,7 @@ function addNinListener() {
                                                     program: programUid,
                                                     useCodeForOptionSet: true
                                                 };
-                                            }
-                                            else if (variableNameParts.length === 1) {
+                                            } else if (variableNameParts.length === 1) {
                                                 //This is an attribute - let us translate to program variable:
                                                 newVariableObject = {
                                                     displayName: variableName,
@@ -2429,10 +2421,9 @@ function addNinListener() {
                                             var valueCountText;
                                             angular.forEach(variableObjectsCurrentExpression, function (variableCurrentRule) {
                                                 if (valueCountText) {
-                                                    //This is not the first value in the value count part of the expression. 
+                                                    //This is not the first value in the value count part of the expression.
                                                     valueCountText += ' + d2:count(\'' + variableCurrentRule.displayName + '\')';
-                                                }
-                                                else {
+                                                } else {
                                                     //This is the first part value in the value count expression:
                                                     valueCountText = '(d2:count(\'' + variableCurrentRule.displayName + '\')';
                                                 }
@@ -2448,10 +2439,9 @@ function addNinListener() {
                                             var zeroPosValueCountText;
                                             angular.forEach(variableObjectsCurrentExpression, function (variableCurrentRule) {
                                                 if (zeroPosValueCountText) {
-                                                    //This is not the first value in the value count part of the expression. 
+                                                    //This is not the first value in the value count part of the expression.
                                                     zeroPosValueCountText += '+ d2:countifzeropos(\'' + variableCurrentRule.displayName + '\')';
-                                                }
-                                                else {
+                                                } else {
                                                     //This is the first part value in the value count expression:
                                                     zeroPosValueCountText = '(d2:countifzeropos(\'' + variableCurrentRule.displayName + '\')';
                                                 }
@@ -2469,7 +2459,7 @@ function addNinListener() {
                                     }
                                 });
 
-                                var programIndicators = { rules: programRules, variables: variables };
+                                var programIndicators = {rules: programRules, variables: variables};
 
                                 MetaDataFactory.getByProgram('programRuleVariables', programUid).then(function (programVariables) {
                                     MetaDataFactory.getByProgram('programRules', programUid).then(function (prs) {
@@ -2479,7 +2469,12 @@ function addNinListener() {
                                             rule.programStageId = rule.programStage && rule.programStage.id ? rule.programStage.id : null;
                                             programRules.push(rule);
                                         });
-                                        def.resolve({ constants: constants, programIndicators: programIndicators, programVariables: programVariables, programRules: programRules });
+                                        def.resolve({
+                                            constants: constants,
+                                            programIndicators: programIndicators,
+                                            programVariables: programVariables,
+                                            programRules: programRules
+                                        });
                                     });
                                 });
 
@@ -2504,22 +2499,17 @@ function addNinListener() {
                         } else {
                             processedValue = "''";
                         }
-                    }
-                    else if (valueType === 'BOOLEAN' || valueType === 'TRUE_ONLY') {
+                    } else if (valueType === 'BOOLEAN' || valueType === 'TRUE_ONLY') {
                         if (processedValue === "Yes") {
                             processedValue = true;
-                        }
-                        else if (processedValue === "No") {
+                        } else if (processedValue === "No") {
                             processedValue = false;
-                        }
-                        else if (processedValue && eval(processedValue)) {
+                        } else if (processedValue && eval(processedValue)) {
                             processedValue = true;
-                        }
-                        else {
+                        } else {
                             processedValue = false;
                         }
-                    }
-                    else if (valueType === "INTEGER" || valueType === "NUMBER" || valueType === "INTEGER_POSITIVE"
+                    } else if (valueType === "INTEGER" || valueType === "NUMBER" || valueType === "INTEGER_POSITIVE"
                         || valueType === "INTEGER_NEGATIVE" || valueType === "INTEGER_ZERO_OR_POSITIVE" ||
                         valueType === "PERCENTAGE") {
                         if (processedValue) {
@@ -2527,8 +2517,7 @@ function addNinListener() {
                         } else {
                             processedValue = 0;
                         }
-                    }
-                    else {
+                    } else {
                         $log.warn("unknown datatype:" + valueType);
                     }
 
@@ -2629,8 +2618,7 @@ function addNinListener() {
                                         + "' does not have a programstage defined,"
                                         + " despite that the variable has sourcetype DATAELEMENT_NEWEST_EVENT_PROGRAM_STAGE");
                                 }
-                            }
-                            else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_NEWEST_EVENT_PROGRAM" && evs && dataElementExists) {
+                            } else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_NEWEST_EVENT_PROGRAM" && evs && dataElementExists) {
                                 var allValues = [];
                                 angular.forEach(evs.all, function (event) {
                                     if (angular.isDefined(event[dataElementId])
@@ -2643,8 +2631,7 @@ function addNinListener() {
                                         variables = pushVariable(variables, programVariable.displayName, value, allValues, allDes[dataElementId].dataElement.valueType, valueFound, '#', event.eventDate, programVariable.useCodeForOptionSet);
                                     }
                                 });
-                            }
-                            else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_CURRENT_EVENT" && evs && dataElementExists) {
+                            } else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_CURRENT_EVENT" && evs && dataElementExists) {
                                 if (angular.isDefined(executingEvent[dataElementId])
                                     && executingEvent[dataElementId] !== null
                                     && executingEvent[dataElementId] !== "") {
@@ -2653,8 +2640,7 @@ function addNinListener() {
                                     valueFound = true;
                                     variables = pushVariable(variables, programVariable.displayName, value, null, allDes[dataElementId].dataElement.valueType, valueFound, '#', executingEvent.eventDate, programVariable.useCodeForOptionSet);
                                 }
-                            }
-                            else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_PREVIOUS_EVENT" && evs && dataElementExists) {
+                            } else if (programVariable.programRuleVariableSourceType === "DATAELEMENT_PREVIOUS_EVENT" && evs && dataElementExists) {
                                 //Only continue checking for a value if there is more than one event.
                                 if (evs.all && evs.all.length > 1) {
                                     var allValues = [];
@@ -2671,8 +2657,7 @@ function addNinListener() {
                                             previousEventDate = evs.all[i].eventDate;
                                             allValues.push(value);
                                             valueFound = true;
-                                        }
-                                        else if (evs.all[i] === executingEvent) {
+                                        } else if (evs.all[i] === executingEvent) {
                                             //We have iterated to the newest event - store the last collected variable value - if any is found:
                                             if (valueFound) {
                                                 variables = pushVariable(variables, programVariable.displayName, previousvalue, allValues, allDes[dataElementId].dataElement.valueType, valueFound, '#', previousEventDate, programVariable.useCodeForOptionSet);
@@ -2682,8 +2667,7 @@ function addNinListener() {
                                         }
                                     }
                                 }
-                            }
-                            else if (programVariable.programRuleVariableSourceType === "TEI_ATTRIBUTE") {
+                            } else if (programVariable.programRuleVariableSourceType === "TEI_ATTRIBUTE") {
                                 angular.forEach(selectedEntity.attributes, function (attribute) {
                                     if (!valueFound) {
                                         if (attribute.attribute === trackedEntityAttributeId
@@ -2704,8 +2688,7 @@ function addNinListener() {
                                         }
                                     }
                                 });
-                            }
-                            else if (programVariable.programRuleVariableSourceType === "CALCULATED_VALUE") {
+                            } else if (programVariable.programRuleVariableSourceType === "CALCULATED_VALUE") {
                                 //We won't assign the calculated variables at this step. The rules execution will calculate and assign the variable.
                             }
 
@@ -2715,16 +2698,13 @@ function addNinListener() {
                                     var dataElement = allDes[dataElementId];
                                     if (dataElement) {
                                         variables = pushVariable(variables, programVariable.displayName, "", null, dataElement.dataElement.valueType, false, '#', '', programVariable.useCodeForOptionSet);
-                                    }
-                                    else {
+                                    } else {
                                         variables = pushVariable(variables, programVariable.displayName, "", null, "TEXT", false, '#', '', programVariable.useCodeForOptionSet);
                                     }
-                                }
-                                else if (programVariable.trackedEntityAttribute) {
+                                } else if (programVariable.trackedEntityAttribute) {
                                     //The variable is an attribute, set correct prefix and a blank value
                                     variables = pushVariable(variables, programVariable.displayName, "", null, "TEXT", false, 'A', '', programVariable.useCodeForOptionSet);
-                                }
-                                else {
+                                } else {
                                     //Fallback for calculated(assigned) values:
                                     variables = pushVariable(variables, programVariable.displayName, "", null, "TEXT", false, '#', '', programVariable.useCodeForOptionSet);
                                 }
@@ -2802,8 +2782,7 @@ function addNinListener() {
                                 //Replace all occurrences of the variable name(hence using regex replacement):
                                 expression = expression.replace(new RegExp(variablesHash[variablepresent].variablePrefix + "\\{" + variablepresent + "\\}", 'g'),
                                     variablesHash[variablepresent].variableValue);
-                            }
-                            else {
+                            } else {
                                 $log.warn("Expression " + expression + " contains variable " + variablepresent
                                     + " - but this variable is not defined.");
                             }
@@ -2824,8 +2803,7 @@ function addNinListener() {
                                 //Replace all occurrences of the variable name(hence using regex replacement):
                                 expression = expression.replace(new RegExp("V{" + variablepresent + "}", 'g'),
                                     variablesHash[variablepresent].variableValue);
-                            }
-                            else {
+                            } else {
                                 $log.warn("Expression " + expression + " conains context variable " + variablepresent
                                     + " - but this variable is not defined.");
                             }
@@ -2846,8 +2824,7 @@ function addNinListener() {
                                 //Replace all occurrences of the variable name(hence using regex replacement):
                                 expression = expression.replace(new RegExp("A{" + variablepresent + "}", 'g'),
                                     variablesHash[variablepresent].variableValue);
-                            }
-                            else {
+                            } else {
                                 $log.warn("Expression " + expression + " conains attribute " + variablepresent
                                     + " - but this attribute is not defined.");
                             }
@@ -2868,8 +2845,7 @@ function addNinListener() {
                                 //Replace all occurrences of the variable name(hence using regex replacement):
                                 expression = expression.replace(new RegExp("C{" + variablepresent + "}", 'g'),
                                     variablesHash[variablepresent].variableValue);
-                            }
-                            else {
+                            } else {
                                 $log.warn("Expression " + expression + " conains constant " + variablepresent
                                     + " - but this constant is not defined.");
                             }
@@ -2879,7 +2855,7 @@ function addNinListener() {
                     return expression;
                 };
 
-                var maleCodes = { male: 1, MALE: 1, Male: 1, ma: 1, m: 1, M: 1, 0: 1, false: 1 };
+                var maleCodes = {male: 1, MALE: 1, Male: 1, ma: 1, m: 1, M: 1, 0: 1, false: 1};
 
                 // command to produce the body of the map:
                 // curl https://www.who.int/childgrowth/standards/wfa_girls_0_5_zscores.txt | awk  '{print $1 ": [ " $5 ", " $6 ", " $7 ", " $8 ", " $9 ", " $10 ", " ($11+0) " ]," }'
@@ -3472,15 +3448,19 @@ function addNinListener() {
                         higherLimitIn = i;
                         break;
                     }
-                    return { lowerLimitIn, higherLimitIn };
+                    return {lowerLimitIn, higherLimitIn};
                 }
 
                 function getZScoreFromMap(key, value, map) {
 
                     var sdArray = map[Number(key)];
 
-                    if (value < sdArray[0]) { return -3.5; }
-                    if (value > sdArray[6]) { return 3.5; }
+                    if (value < sdArray[0]) {
+                        return -3.5;
+                    }
+                    if (value > sdArray[6]) {
+                        return 3.5;
+                    }
 
                     var deviationLimits = findDeviationLimits(value, sdArray);
                     var higherLimitIn = deviationLimits.higherLimitIn;
@@ -3531,37 +3511,37 @@ function addNinListener() {
                 var runDhisFunctions = function (expression, variablesHash, flag, selectedOrgUnit) {
                     //Called from "runExpression". Only proceed with this logic in case there seems to be dhis function calls: "d2:" is present.
                     if (angular.isDefined(expression) && expression.indexOf("d2:") !== -1) {
-                        var dhisFunctions = [{ name: "d2:daysBetween", parameters: 2 },
-                        { name: "d2:weeksBetween", parameters: 2 },
-                        { name: "d2:monthsBetween", parameters: 2 },
-                        { name: "d2:yearsBetween", parameters: 2 },
-                        { name: "d2:floor", parameters: 1 },
-                        { name: "d2:modulus", parameters: 2 },
-                        { name: "d2:concatenate" },
-                        { name: "d2:addDays", parameters: 2 },
-                        { name: "d2:zing", parameters: 1 },
-                        { name: "d2:oizp", parameters: 1 },
-                        { name: "d2:count", parameters: 1 },
-                        { name: "d2:countIfZeroPos", parameters: 1 },
-                        { name: "d2:countIfValue", parameters: 2 },
-                        { name: "d2:ceil", parameters: 1 },
-                        { name: "d2:round", parameters: 1 },
-                        { name: "d2:hasValue", parameters: 1 },
-                        { name: "d2:lastEventDate", parameters: 1 },
-                        { name: "d2:validatePattern", parameters: 2 },
-                        { name: "d2:addControlDigits", parameters: 1 },
-                        { name: "d2:checkControlDigits", parameters: 1 },
-                        { name: "d2:left", parameters: 2 },
-                        { name: "d2:right", parameters: 2 },
-                        { name: "d2:substring", parameters: 3 },
-                        { name: "d2:split", parameters: 3 },
-                        { name: "d2:zScoreWFA", parameters: 3 },
-                        { name: "d2:zScoreWFH", parameters: 3 },
-                        { name: "d2:zScoreHFA", parameters: 3 },
-                        { name: "d2:length", parameters: 1 },
-                        { name: "d2:inOrgUnitGroup", parameters: 1 },
-                        { name: "d2:hasUserRole", parameters: 1 },
-                        { name: "d2:condition", parameters: 3 }];
+                        var dhisFunctions = [{name: "d2:daysBetween", parameters: 2},
+                            {name: "d2:weeksBetween", parameters: 2},
+                            {name: "d2:monthsBetween", parameters: 2},
+                            {name: "d2:yearsBetween", parameters: 2},
+                            {name: "d2:floor", parameters: 1},
+                            {name: "d2:modulus", parameters: 2},
+                            {name: "d2:concatenate"},
+                            {name: "d2:addDays", parameters: 2},
+                            {name: "d2:zing", parameters: 1},
+                            {name: "d2:oizp", parameters: 1},
+                            {name: "d2:count", parameters: 1},
+                            {name: "d2:countIfZeroPos", parameters: 1},
+                            {name: "d2:countIfValue", parameters: 2},
+                            {name: "d2:ceil", parameters: 1},
+                            {name: "d2:round", parameters: 1},
+                            {name: "d2:hasValue", parameters: 1},
+                            {name: "d2:lastEventDate", parameters: 1},
+                            {name: "d2:validatePattern", parameters: 2},
+                            {name: "d2:addControlDigits", parameters: 1},
+                            {name: "d2:checkControlDigits", parameters: 1},
+                            {name: "d2:left", parameters: 2},
+                            {name: "d2:right", parameters: 2},
+                            {name: "d2:substring", parameters: 3},
+                            {name: "d2:split", parameters: 3},
+                            {name: "d2:zScoreWFA", parameters: 3},
+                            {name: "d2:zScoreWFH", parameters: 3},
+                            {name: "d2:zScoreHFA", parameters: 3},
+                            {name: "d2:length", parameters: 1},
+                            {name: "d2:inOrgUnitGroup", parameters: 1},
+                            {name: "d2:hasUserRole", parameters: 1},
+                            {name: "d2:condition", parameters: 3}];
                         var continueLooping = true;
                         //Safety harness on 10 loops, in case of unanticipated syntax causing unintencontinued looping
                         for (var i = 0; i < 10 && continueLooping; i++) {
@@ -3605,8 +3585,7 @@ function addNinListener() {
                                         //Function call is not possible to evaluate, remove the call:
                                         expression = expression.replace(callToThisFunction, "false");
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:daysBetween") {
+                                    } else if (dhisFunction.name === "d2:daysBetween") {
                                         var firstdate = $filter('trimquotes')(parameters[0]);
                                         var seconddate = $filter('trimquotes')(parameters[1]);
                                         firstdate = moment(firstdate, CalendarService.getSetting().momentFormat);
@@ -3614,8 +3593,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, seconddate.diff(firstdate, 'days'));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:weeksBetween") {
+                                    } else if (dhisFunction.name === "d2:weeksBetween") {
                                         var firstdate = $filter('trimquotes')(parameters[0]);
                                         var seconddate = $filter('trimquotes')(parameters[1]);
                                         firstdate = moment(firstdate, CalendarService.getSetting().momentFormat);
@@ -3623,8 +3601,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, seconddate.diff(firstdate, 'weeks'));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:monthsBetween") {
+                                    } else if (dhisFunction.name === "d2:monthsBetween") {
                                         var firstdate = $filter('trimquotes')(parameters[0]);
                                         var seconddate = $filter('trimquotes')(parameters[1]);
                                         firstdate = moment(firstdate, CalendarService.getSetting().momentFormat);
@@ -3632,8 +3609,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, seconddate.diff(firstdate, 'months'));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:yearsBetween") {
+                                    } else if (dhisFunction.name === "d2:yearsBetween") {
                                         var firstdate = $filter('trimquotes')(parameters[0]);
                                         var seconddate = $filter('trimquotes')(parameters[1]);
                                         firstdate = moment(firstdate, CalendarService.getSetting().momentFormat);
@@ -3641,22 +3617,19 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, seconddate.diff(firstdate, 'years'));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:floor") {
+                                    } else if (dhisFunction.name === "d2:floor") {
                                         var floored = Math.floor(parameters[0]);
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, floored);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:modulus") {
+                                    } else if (dhisFunction.name === "d2:modulus") {
                                         var dividend = Number(parameters[0]);
                                         var divisor = Number(parameters[1]);
                                         var rest = dividend % divisor;
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, rest);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:concatenate") {
+                                    } else if (dhisFunction.name === "d2:concatenate") {
                                         var returnString = "'";
                                         for (var i = 0; i < parameters.length; i++) {
                                             returnString += parameters[i];
@@ -3664,8 +3637,7 @@ function addNinListener() {
                                         returnString += "'";
                                         expression = expression.replace(callToThisFunction, returnString);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:addDays") {
+                                    } else if (dhisFunction.name === "d2:addDays") {
                                         var date = $filter('trimquotes')(parameters[0]);
                                         var daystoadd = $filter('trimquotes')(parameters[1]);
                                         var newdate = DateUtils.format(moment(date, CalendarService.getSetting().momentFormat).add(daystoadd, 'days'));
@@ -3673,8 +3645,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, newdatestring);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:zing") {
+                                    } else if (dhisFunction.name === "d2:zing") {
                                         var number = parameters[0];
                                         if (number < 0) {
                                             number = 0;
@@ -3683,8 +3654,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, number);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:oizp") {
+                                    } else if (dhisFunction.name === "d2:oizp") {
                                         var number = parameters[0];
                                         var output = 1;
                                         if (number < 0) {
@@ -3694,8 +3664,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, output);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:count") {
+                                    } else if (dhisFunction.name === "d2:count") {
                                         var variableName = parameters[0];
                                         var variableObject = variablesHash[variableName];
                                         var count = 0;
@@ -3709,16 +3678,14 @@ function addNinListener() {
                                                     count = 1;
                                                 }
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("could not find variable to count: " + variableName);
                                         }
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, count);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:countIfZeroPos") {
+                                    } else if (dhisFunction.name === "d2:countIfZeroPos") {
                                         var variableName = $filter('trimvariablequalifiers')(parameters[0]);
                                         var variableObject = variablesHash[variableName];
 
@@ -3731,24 +3698,21 @@ function addNinListener() {
                                                             count++;
                                                         }
                                                     }
-                                                }
-                                                else {
+                                                } else {
                                                     //The variable has a value, but no list of alternates. This means we only compare the elements real value
                                                     if (variableObject.variableValue >= 0) {
                                                         count = 1;
                                                     }
                                                 }
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("could not find variable to countifzeropos: " + variableName);
                                         }
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, count);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:countIfValue") {
+                                    } else if (dhisFunction.name === "d2:countIfValue") {
                                         var variableName = parameters[0];
                                         var variableObject = variablesHash[variableName];
 
@@ -3771,28 +3735,24 @@ function addNinListener() {
                                                 }
 
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("could not find variable to countifvalue: " + variableName);
                                         }
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, count);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:ceil") {
+                                    } else if (dhisFunction.name === "d2:ceil") {
                                         var ceiled = Math.ceil(parameters[0]);
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, ceiled);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:round") {
+                                    } else if (dhisFunction.name === "d2:round") {
                                         var rounded = Math.round(parameters[0]);
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, rounded);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:hasValue") {
+                                    } else if (dhisFunction.name === "d2:hasValue") {
                                         var variableName = parameters[0];
                                         var variableObject = variablesHash[variableName];
                                         var valueFound = false;
@@ -3800,36 +3760,31 @@ function addNinListener() {
                                             if (variableObject.hasValue) {
                                                 valueFound = true;
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("could not find variable to check if has value: " + variableName);
                                         }
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, valueFound);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:lastEventDate") {
+                                    } else if (dhisFunction.name === "d2:lastEventDate") {
                                         var variableName = parameters[0];
                                         var variableObject = variablesHash[variableName];
                                         var valueFound = "''";
                                         if (variableObject) {
                                             if (variableObject.variableEventDate) {
                                                 valueFound = VariableService.processValue(variableObject.variableEventDate, 'DATE');
-                                            }
-                                            else {
+                                            } else {
                                                 $log.warn("no last event date found for variable: " + variableName);
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("could not find variable to check last event date: " + variableName);
                                         }
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, valueFound);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:validatePattern") {
+                                    } else if (dhisFunction.name === "d2:validatePattern") {
                                         var inputToValidate = parameters[0].toString();
                                         var pattern = parameters[1];
                                         var regEx = new RegExp(pattern, 'g');
@@ -3843,8 +3798,7 @@ function addNinListener() {
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, matchFound);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:addControlDigits") {
+                                    } else if (dhisFunction.name === "d2:addControlDigits") {
 
                                         var baseNumber = parameters[0];
                                         var baseDigits = baseNumber.split('');
@@ -3882,8 +3836,7 @@ function addNinListener() {
                                                 $log.warn("Second control digit became 10, replacing with 0");
                                                 secondDigit = 0;
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             $log.warn("Base nuber not well formed(" + baseNumberLength + " digits): " + baseNumber);
                                         }
 
@@ -3891,37 +3844,32 @@ function addNinListener() {
                                             //Replace the end evaluation of the dhis function:
                                             expression = expression.replace(callToThisFunction, baseNumber + firstDigit + secondDigit);
                                             expressionUpdated = true;
-                                        }
-                                        else {
+                                        } else {
                                             //Replace the end evaluation of the dhis function:
                                             expression = expression.replace(callToThisFunction, baseNumber);
                                             expressionUpdated = true;
                                         }
-                                    }
-                                    else if (dhisFunction.name === "d2:checkControlDigits") {
+                                    } else if (dhisFunction.name === "d2:checkControlDigits") {
                                         $log.warn("checkControlDigits not implemented yet");
 
                                         //Replace the end evaluation of the dhis function:
                                         expression = expression.replace(callToThisFunction, parameters[0]);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:left") {
+                                    } else if (dhisFunction.name === "d2:left") {
                                         var string = String(parameters[0]);
                                         var numChars = string.length < parameters[1] ? string.length : parameters[1];
                                         var returnString = string.substring(0, numChars);
                                         returnString = VariableService.processValue(returnString, 'TEXT');
                                         expression = expression.replace(callToThisFunction, returnString);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:right") {
+                                    } else if (dhisFunction.name === "d2:right") {
                                         var string = String(parameters[0]);
                                         var numChars = string.length < parameters[1] ? string.length : parameters[1];
                                         var returnString = string.substring(string.length - numChars, string.length);
                                         returnString = VariableService.processValue(returnString, 'TEXT');
                                         expression = expression.replace(callToThisFunction, returnString);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:substring") {
+                                    } else if (dhisFunction.name === "d2:substring") {
                                         var string = String(parameters[0]);
                                         var startChar = string.length < parameters[1] - 1 ? -1 : parameters[1];
                                         var endChar = string.length < parameters[2] ? -1 : parameters[2];
@@ -3934,8 +3882,7 @@ function addNinListener() {
                                             expression = expression.replace(callToThisFunction, returnString);
                                             expressionUpdated = true;
                                         }
-                                    }
-                                    else if (dhisFunction.name === "d2:split") {
+                                    } else if (dhisFunction.name === "d2:split") {
                                         var string = String(parameters[0]);
                                         var splitArray = string.split(parameters[1]);
                                         var returnPart = "";
@@ -3945,42 +3892,37 @@ function addNinListener() {
                                         returnPart = VariableService.processValue(returnPart, 'TEXT');
                                         expression = expression.replace(callToThisFunction, returnPart);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:zScoreWFA") {
+                                    } else if (dhisFunction.name === "d2:zScoreWFA") {
                                         expression = expression.replace(callToThisFunction, getZScoreWFA(parameters[0], parameters[1], parameters[2]));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:zScoreHFA") {
+                                    } else if (dhisFunction.name === "d2:zScoreHFA") {
                                         expression = expression.replace(callToThisFunction, getZScoreHFA(parameters[0], parameters[1], parameters[2]));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:zScoreWFH") {
+                                    } else if (dhisFunction.name === "d2:zScoreWFH") {
                                         expression = expression.replace(callToThisFunction, getZScoreWFH(parameters[0], parameters[1], parameters[2]));
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:length") {
+                                    } else if (dhisFunction.name === "d2:length") {
                                         expression = expression.replace(callToThisFunction, String(parameters[0]).length);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:condition") {
+                                    } else if (dhisFunction.name === "d2:condition") {
                                         var toEvaluate = parameters[0] + "? " + parameters[1] + " : " + parameters[2];
                                         var result = eval(toEvaluate);
                                         expression = expression.replace(callsToThisFunction, result);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:inOrgUnitGroup") {
+                                    } else if (dhisFunction.name === "d2:inOrgUnitGroup") {
                                         var group = parameters[0];
                                         var isInGroup = "false";
                                         var orgUnitGroups = (selectedOrgUnit && selectedOrgUnit.g) || [];
-                                        var foundGroup = orgUnitGroups.find(function (o) { return o.id === group || o.code === group });
+                                        var foundGroup = orgUnitGroups.find(function (o) {
+                                            return o.id === group || o.code === group
+                                        });
                                         if (foundGroup) {
                                             isInGroup = "true"
                                         }
 
                                         expression = expression.replace(callToThisFunction, isInGroup);
                                         expressionUpdated = true;
-                                    }
-                                    else if (dhisFunction.name === "d2:hasUserRole") {
+                                    } else if (dhisFunction.name === "d2:hasUserRole") {
                                         var userRole = parameters[0];
                                         var user = SessionStorageService.get('USER_PROFILE');
                                         var valueFound = false;
@@ -4026,12 +3968,10 @@ function addNinListener() {
                             if (flag.verbose) {
                                 $log.info("Expression with id " + identifier + " was successfully run. Original condition was: " + beforereplacement + " - Evaluation ended up as:" + expression + " - Result of evaluation was:" + answer);
                             }
-                        }
-                        catch (e) {
+                        } catch (e) {
                             $log.warn("Expression with id " + identifier + " could not be run. Original condition was: " + beforereplacement + " - Evaluation ended up as:" + expression + " - error message:" + e);
                         }
-                    }
-                    else {
+                    } else {
                         //Just run the expression. This is much faster than the debug route: http://jsperf.com/try-catch-block-loop-performance-comparison
                         var dhisfunctionsevaluated = runDhisFunctions(expression, variablesHash, flag);
                         answer = eval(dhisfunctionsevaluated);
@@ -4043,12 +3983,10 @@ function addNinListener() {
                     var valueType = 'TEXT';
                     if (value === 'true' || value === 'false') {
                         valueType = 'BOOLEAN';
-                    }
-                    else if ((angular.isNumber(value) || !isNaN(value)) && (angular.isString(value) && value.substring(0, 1) != '0')) {
+                    } else if ((angular.isNumber(value) || !isNaN(value)) && (angular.isString(value) && value.substring(0, 1) != '0')) {
                         if (value % 1 !== 0) {
                             valueType = 'NUMBER';
-                        }
-                        else {
+                        } else {
                             valueType = 'INTEGER';
                         }
                     }
@@ -4060,7 +3998,7 @@ function addNinListener() {
                     if (effect.data) {
                         valArray = effect.data.split(',');
                         var newEventDataValues = [];
-                        var idList = { active: false };
+                        var idList = {active: false};
 
                         angular.forEach(valArray, function (value) {
                             var valParts = value.split(':');
@@ -4082,7 +4020,7 @@ function addNinListener() {
 
                                 var processedValue = VariableService.processValue(valVal, valueType);
                                 processedValue = $filter('trimquotes')(processedValue);
-                                newEventDataValues.push({ dataElement: valId, value: processedValue });
+                                newEventDataValues.push({dataElement: valId, value: processedValue});
                                 newEventDataValues[valId] = processedValue;
                             }
                         });
@@ -4136,17 +4074,15 @@ function addNinListener() {
                             if (programStage && programStage.dontPersistOnCreate) {
                                 newEvent.notPersisted = true;
                                 newEvent.executingEvent = executingEvent;
-                                $rootScope.$broadcast("eventcreated", { event: newEvent });
-                            }
-                            else {
+                                $rootScope.$broadcast("eventcreated", {event: newEvent});
+                            } else {
                                 DHIS2EventFactory.create(newEvent).then(function (result) {
-                                    $rootScope.$broadcast("eventcreated", { event: newEvent });
+                                    $rootScope.$broadcast("eventcreated", {event: newEvent});
                                 });
                             }
                             //1 event created
                             return 1;
-                        }
-                        else {
+                        } else {
                             //no events created
                             return 0;
                         }
@@ -4155,7 +4091,7 @@ function addNinListener() {
                     }
                 };
                 /**
-                 * 
+                 *
                  * @param {*} allProgramRules all program rules for the program
                  * @param {*} executingEvent the event context for the program
                  * @param {*} evs all events in the enrollment
@@ -4169,11 +4105,13 @@ function addNinListener() {
                 var internalFetchContextData = function (selectedEnrollment, executingEvent) {
                     return OrgUnitFactory.getFromStoreOrServer(selectedEnrollment ? selectedEnrollment.orgUnit : executingEvent.orgUnit)
                         .then(function (orgUnit) {
-                            var data = { selectedOrgUnit: orgUnit, selectedProgramStage: null };
+                            var data = {selectedOrgUnit: orgUnit, selectedProgramStage: null};
                             if (executingEvent && executingEvent.program && executingEvent.programStage) {
                                 return MetaDataFactory.get("programs", executingEvent.program).then(function (program) {
                                     if (program && program.programStages) {
-                                        data.selectedProgramStage = program.programStages.find(function (ps) { return ps.id === executingEvent.programStage });
+                                        data.selectedProgramStage = program.programStages.find(function (ps) {
+                                            return ps.id === executingEvent.programStage
+                                        });
                                     }
                                     return data;
                                 });
@@ -4188,13 +4126,13 @@ function addNinListener() {
                         var variablesHash = {};
 
                         //Concatenate rules produced by indicator definitions into the other rules:
-                        var rules = $filter('filter')(allProgramRules.programRules, { programStageId: null });
+                        var rules = $filter('filter')(allProgramRules.programRules, {programStageId: null});
 
                         if (executingEvent && executingEvent.programStage) {
                             if (!rules) {
                                 rules = [];
                             }
-                            rules = rules.concat($filter('filter')(allProgramRules.programRules, { programStageId: executingEvent.programStage }));
+                            rules = rules.concat($filter('filter')(allProgramRules.programRules, {programStageId: executingEvent.programStage}));
                         }
                         if (!rules) {
                             rules = [];
@@ -4285,8 +4223,7 @@ function addNinListener() {
                                                 //The variable exists, and is replaced with its corresponding value
                                                 $rootScope.ruleeffects[ruleEffectKey][action.id].data =
                                                     variablesHash[nameWithoutBrackets].variableValue;
-                                            }
-                                            else if (action.data.indexOf('{') !== -1 || action.data.indexOf('d2:') !== -1) {
+                                            } else if (action.data.indexOf('{') !== -1 || action.data.indexOf('d2:') !== -1) {
                                                 //Since the value couldnt be looked up directly, and contains a curly brace or a dhis function call,
                                                 //the expression was more complex than replacing a single variable value.
                                                 //Now we will have to make a thorough replacement and separate evaluation to find the correct value:
@@ -4320,7 +4257,7 @@ function addNinListener() {
                                                 $log.warn("Events to evaluate for CREATEEVENT action: " + action.id + ". Could it have been triggered at the wrong time or during registration?");
                                             }
                                         }
-                                        //In case the rule is of type "assign variable" and the rule is effective,
+                                            //In case the rule is of type "assign variable" and the rule is effective,
                                         //the variable data result needs to be applied to the correct variable:
                                         else if ($rootScope.ruleeffects[ruleEffectKey][action.id].action === "ASSIGN" && $rootScope.ruleeffects[ruleEffectKey][action.id].ineffect) {
                                             //from earlier evaluation, the data portion of the ruleeffect now contains the value of the variable to be assigned.
@@ -4360,7 +4297,11 @@ function addNinListener() {
                                         }
                                     });
                                 });
-                                var result = { event: ruleEffectKey, callerId: flag.callerId, eventsCreated: eventsCreated };
+                                var result = {
+                                    event: ruleEffectKey,
+                                    callerId: flag.callerId,
+                                    eventsCreated: eventsCreated
+                                };
                                 //Broadcast rules finished if there was any actual changes to the event.
                                 if (updatedEffectsExits) {
                                     $rootScope.$broadcast("ruleeffectsupdated", result);
@@ -4402,8 +4343,8 @@ function addNinListener() {
                             lastEventDate = currentEvent.eventDate;
 
 
-                            var pager = { pageSize: NUMBER_OF_EVENTS_IN_SCOPE };
-                            var ordering = { id: "eventDate", direction: "desc" };
+                            var pager = {pageSize: NUMBER_OF_EVENTS_IN_SCOPE};
+                            var ordering = {id: "eventDate", direction: "desc"};
 
                             var promise = DHIS2EventFactory.getByStage(orgUnitId, programStageId, null, pager, true, null, null, ordering).then(function (events) {
                                 var allEventsWithPossibleDuplicates = internalProcessEventGrid(events);
@@ -4426,7 +4367,7 @@ function addNinListener() {
                                 angular.forEach(allEventsWithPossibleDuplicates, function (eventInScope) {
                                     if (currentEvent.event !== eventInScope.event
                                         && !eventIdDictionary[eventInScope.event]) {
-                                        //Add event and update dictionary to avoid duplicates:                                
+                                        //Add event and update dictionary to avoid duplicates:
                                         eventIdDictionary[eventInScope.event] = true;
                                     }
                                 });
@@ -4436,23 +4377,21 @@ function addNinListener() {
                                 allEventsInScope = orderByFilter(allEventsInScope, '-eventDate').reverse();
                                 var byStage = {};
                                 byStage[currentEvent.programStage] = allEventsInScope;
-                                return { all: allEventsInScope, byStage: byStage };
+                                return {all: allEventsInScope, byStage: byStage};
                             });
-                        }
-                        else {
+                        } else {
                             //make a sorted list of all events to pass to rules execution service:
                             var allEvents = eventScopeExceptCurrent.concat([currentEvent]);
                             allEvents = orderByFilter(allEvents, '-eventDate').reverse();
                             var byStage = {};
                             byStage[currentEvent.programStage] = allEvents;
-                            return $q.when({ all: allEvents, byStage: byStage });
+                            return $q.when({all: allEvents, byStage: byStage});
                         }
-                    }
-                    else {
+                    } else {
                         //return a scope containing only the current event
                         var byStage = {};
                         byStage[currentEvent.programStage] = [currentEvent];
-                        return $q.when({ all: [currentEvent], byStage: byStage });
+                        return $q.when({all: [currentEvent], byStage: byStage});
                     }
                 };
                 var internalGetOrLoadRules = function (programId) {
@@ -4479,8 +4418,7 @@ function addNinListener() {
 
                             return rules;
                         });
-                    }
-                    else {
+                    } else {
                         return $q.when(allProgramRules);
                     }
                 };
@@ -4492,7 +4430,9 @@ function addNinListener() {
                         if (angular.isDefined(value) && value !== "") {
                             var optionSet = optionSets[prStDes[de].dataElement.optionSet.id];
                             //Find selectedOption by displayName
-                            var selectedOption = optionSet.options.find(function (o) { return o.displayName === value });
+                            var selectedOption = optionSet.options.find(function (o) {
+                                return o.displayName === value
+                            });
                             var shouldClear = !selectedOption;
 
                             //If has selected option and a option is not in showOnly or is in hidden, field should be cleared.
@@ -4516,7 +4456,9 @@ function addNinListener() {
                         if (angular.isDefined(value) && value !== "") {
                             var optionSet = optionSets[attributesById[attr].optionSet.id];
                             //Find selectedOption by displayName
-                            var selectedOption = optionSet.options.find(function (o) { return o.displayName === value });
+                            var selectedOption = optionSet.options.find(function (o) {
+                                return o.displayName === value
+                            });
                             var shouldClear = !selectedOption;
 
                             //If has selected option and a option is not in showOnly or is in hidden, field should be cleared.
@@ -4550,7 +4492,7 @@ function addNinListener() {
                         var hiddenSections = {};
                         var mandatoryFields = {};
                         var warningMessages = [];
-                        var optionVisibility = { showOnly: null, hidden: {} };
+                        var optionVisibility = {showOnly: null, hidden: {}};
 
                         var attributeOptionsChanged = [];
 
@@ -4562,8 +4504,7 @@ function addNinListener() {
                                         if (effect.content) {
                                             //TODO: Alerts is going to be replaced with a proper display mecanism.
                                             alert(effect.content);
-                                        }
-                                        else {
+                                        } else {
                                             //TODO: Alerts is going to be replaced with a proper display mecanism.
                                             alert(attributesById[effect.trackedEntityAttribute.id].displayName + " - was blanked out and hidden by your last action");
                                         }
@@ -4589,13 +4530,11 @@ function addNinListener() {
 
                                         if (effect.trackedEntityAttribute) {
                                             warningMessages[effect.trackedEntityAttribute.id] = message;
-                                        }
-                                        else {
+                                        } else {
                                             warningMessages.push(message);
                                         }
                                     }
-                                }
-                                else if (effect.action === "ASSIGN" && effect.trackedEntityAttribute) {
+                                } else if (effect.action === "ASSIGN" && effect.trackedEntityAttribute) {
                                     var processedValue = $filter('trimquotes')(effect.data);
 
                                     if (attributesById[effect.trackedEntityAttribute.id]
@@ -4612,17 +4551,15 @@ function addNinListener() {
                                     assignedFields[effect.trackedEntityAttribute.id] = true;
                                 } else if (effect.action === "SETMANDATORYFIELD" && effect.trackedEntityAttribute) {
                                     mandatoryFields[effect.trackedEntityAttribute.id] = effect.ineffect;
-                                }
-                                else if (effect.action === "HIDEOPTION") {
+                                } else if (effect.action === "HIDEOPTION") {
                                     if (effect.ineffect && effect.trackedEntityAttribute && effect.option) {
-                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = { hidden: {} };
-                                        optionVisibility[effect.trackedEntityAttribute.id].hidden[effect.option.id] = { id: effect.option.id };
+                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = {hidden: {}};
+                                        optionVisibility[effect.trackedEntityAttribute.id].hidden[effect.option.id] = {id: effect.option.id};
                                         if (attributeOptionsChanged.indexOf(effect.trackedEntityAttribute.id) === -1) attributeOptionsChanged.push(effect.trackedEntityAttribute.id);
                                     }
-                                }
-                                else if (effect.action === "SHOWOPTIONGROUP") {
+                                } else if (effect.action === "SHOWOPTIONGROUP") {
                                     if (effect.ineffect && effect.trackedEntityAttribute && effect.optionGroup) {
-                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = { hidden: {} };
+                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = {hidden: {}};
                                         var optionGroup = optionGroupsById[effect.optionGroup.id];
                                         if (optionGroup) {
                                             if (!optionVisibility[effect.trackedEntityAttribute.id].showOnly) optionVisibility[effect.trackedEntityAttribute.id].showOnly = {};
@@ -4633,10 +4570,9 @@ function addNinListener() {
                                         }
 
                                     }
-                                }
-                                else if (effect.action === "HIDEOPTIONGROUP") {
+                                } else if (effect.action === "HIDEOPTIONGROUP") {
                                     if (effect.ineffect && effect.trackedEntityAttribute && effect.optionGroup) {
-                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = { hidden: {} };
+                                        if (!optionVisibility[effect.trackedEntityAttribute.id]) optionVisibility[effect.trackedEntityAttribute.id] = {hidden: {}};
                                         var optionGroup = optionGroupsById[effect.optionGroup.id];
                                         if (optionGroup) {
                                             angular.extend(optionVisibility[effect.trackedEntityAttribute.id].hidden, optionGroup.optionsById);
@@ -4650,7 +4586,15 @@ function addNinListener() {
                             }
                         });
                         clearAttributeValueForShowHideOptionActions(attributeOptionsChanged, currentTei, optionVisibility, attributesById, optionSets);
-                        return { currentTei: currentTei, hiddenFields: hiddenFields, hiddenSections: hiddenSections, warningMessages: warningMessages, assignedFields: assignedFields, mandatoryFields: mandatoryFields, optionVisibility: optionVisibility };
+                        return {
+                            currentTei: currentTei,
+                            hiddenFields: hiddenFields,
+                            hiddenSections: hiddenSections,
+                            warningMessages: warningMessages,
+                            assignedFields: assignedFields,
+                            mandatoryFields: mandatoryFields,
+                            optionVisibility: optionVisibility
+                        };
                     },
                     processRuleEffectsForEvent: function (eventId, currentEvent, currentEventOriginalValues, prStDes, optionSets, optionGroupsById) {
                         var hiddenFields = {};
@@ -4658,7 +4602,7 @@ function addNinListener() {
                         var mandatoryFields = {};
                         var hiddenSections = {};
                         var warningMessages = [];
-                        var optionVisibility = { showOnly: null, hidden: {} };
+                        var optionVisibility = {showOnly: null, hidden: {}};
 
                         var dataElementOptionsChanged = [];
                         angular.forEach($rootScope.ruleeffects[eventId], function (effect) {
@@ -4669,8 +4613,7 @@ function addNinListener() {
                                         if (effect.content) {
                                             //TODO: Alerts is going to be replaced with a proper display mecanism.
                                             alert(effect.content);
-                                        }
-                                        else {
+                                        } else {
                                             //TODO: Alerts is going to be replaced with a proper display mecanism.
                                             alert(prStDes[effect.dataElement.id].dataElement.displayFormName + " - was blanked out and hidden by your last action");
                                         }
@@ -4678,23 +4621,19 @@ function addNinListener() {
                                     }
                                     currentEvent[effect.dataElement.id] = "";
                                     hiddenFields[effect.dataElement.id] = true;
-                                }
-                                else if (effect.action === "HIDESECTION") {
+                                } else if (effect.action === "HIDESECTION") {
                                     if (effect.programStageSection) {
                                         hiddenSections[effect.programStageSection] = effect.programStageSection;
                                     }
-                                }
-                                else if (effect.action === "SHOWERROR" && effect.dataElement.id) {
+                                } else if (effect.action === "SHOWERROR" && effect.dataElement.id) {
                                     var headerTxt = $translate.instant('validation_error');
                                     var bodyTxt = effect.content + (effect.data ? effect.data : "");
                                     NotificationService.showNotifcationDialog(headerTxt, bodyTxt);
 
                                     currentEvent[effect.dataElement.id] = currentEventOriginalValues[effect.dataElement.id];
-                                }
-                                else if (effect.action === "SHOWWARNING") {
+                                } else if (effect.action === "SHOWWARNING") {
                                     warningMessages.push(effect.content + (effect.data ? effect.data : ""));
-                                }
-                                else if (effect.action === "ASSIGN" && effect.dataElement) {
+                                } else if (effect.action === "ASSIGN" && effect.dataElement) {
                                     var processedValue = $filter('trimquotes')(effect.data);
 
                                     if (prStDes[effect.dataElement.id]
@@ -4708,21 +4647,18 @@ function addNinListener() {
 
                                     currentEvent[effect.dataElement.id] = processedValue;
                                     assignedFields[effect.dataElement.id] = true;
-                                }
-                                else if (effect.action === "SETMANDATORYFIELD" && effect.dataElement) {
+                                } else if (effect.action === "SETMANDATORYFIELD" && effect.dataElement) {
                                     mandatoryFields[effect.dataElement.id] = effect.ineffect;
-                                }
-                                else if (effect.action === "HIDEOPTION") {
+                                } else if (effect.action === "HIDEOPTION") {
                                     if (effect.ineffect && effect.dataElement && effect.option) {
-                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = { hidden: {} };
+                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = {hidden: {}};
                                         if (!optionVisibility[effect.dataElement.id].hidden) optionVisibility[effect.dataElement.id].hidden = {};
                                         optionVisibility[effect.dataElement.id].hidden[effect.option.id] = effect.ineffect;
                                         if (dataElementOptionsChanged.indexOf(effect.dataElement.id) === -1) dataElementOptionsChanged.push(effect.dataElement.id);
                                     }
-                                }
-                                else if (effect.action === "SHOWOPTIONGROUP") {
+                                } else if (effect.action === "SHOWOPTIONGROUP") {
                                     if (effect.ineffect && effect.dataElement && effect.optionGroup) {
-                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = { hidden: {} };
+                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = {hidden: {}};
                                         var optionGroup = optionGroupsById[effect.optionGroup.id];
                                         if (optionGroup) {
                                             if (!optionVisibility[effect.dataElement.id].showOnly) optionVisibility[effect.dataElement.id].showOnly = {};
@@ -4733,10 +4669,9 @@ function addNinListener() {
                                         }
 
                                     }
-                                }
-                                else if (effect.action === "HIDEOPTIONGROUP") {
+                                } else if (effect.action === "HIDEOPTIONGROUP") {
                                     if (effect.ineffect && effect.dataElement && effect.optionGroup) {
-                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = { hidden: {} };
+                                        if (!optionVisibility[effect.dataElement.id]) optionVisibility[effect.dataElement.id] = {hidden: {}};
                                         var optionGroup = optionGroupsById[effect.optionGroup.id];
                                         if (optionGroup) {
                                             angular.extend(optionVisibility[effect.dataElement.id].hidden, optionGroup.optionsById);
@@ -4749,7 +4684,15 @@ function addNinListener() {
                             }
                         });
                         clearDataElementValueForShowHideOptionActions(dataElementOptionsChanged, currentEvent, optionVisibility, prStDes, optionSets);
-                        return { currentEvent: currentEvent, hiddenFields: hiddenFields, hiddenSections: hiddenSections, warningMessages: warningMessages, assignedFields: assignedFields, mandatoryFields: mandatoryFields, optionVisibility: optionVisibility };
+                        return {
+                            currentEvent: currentEvent,
+                            hiddenFields: hiddenFields,
+                            hiddenSections: hiddenSections,
+                            warningMessages: warningMessages,
+                            assignedFields: assignedFields,
+                            mandatoryFields: mandatoryFields,
+                            optionVisibility: optionVisibility
+                        };
                     },
                     processRuleEffectAttribute: function (context, selectedTei, tei, currentEvent, currentEventOriginialValue, affectedEvent, attributesById, prStDes, optionSets, optionGroupsById) {
                         //Function used from registration controller to process effects for the tracked entity instance and for the events in the same operation
@@ -4792,7 +4735,7 @@ function addNinListener() {
                         var dvs = [];
                         angular.forEach(programStageDataElements, function (prStDe) {
                             if (event.hasOwnProperty(prStDe.dataElement.id)) {
-                                dvs.push({ dataElement: prStDe.dataElement.id, value: event[prStDe.dataElement.id] });
+                                dvs.push({dataElement: prStDe.dataElement.id, value: event[prStDe.dataElement.id]});
                             }
                         });
 
@@ -4999,6 +4942,7 @@ function addNinListener() {
                 var orgUnit, orgUnitPromise, rootOrgUnitPromise, orgUnitTreePromise;
                 var indexedDB = $window.indexedDB;
                 var db = null;
+
                 function openStore() {
                     var deferred = $q.defer();
                     var request = indexedDB.open("dhis2ou");
@@ -5014,6 +4958,7 @@ function addNinListener() {
 
                     return deferred.promise;
                 }
+
                 return {
                     getChildren: function (uid) {
                         if (orgUnit !== uid) {
@@ -5046,8 +4991,7 @@ function addNinListener() {
                             var ous = {};
                             ous.organisationUnits = settings && settings.dataViewOrganisationUnits && settings.dataViewOrganisationUnits.length > 0 ? settings.dataViewOrganisationUnits : settings && settings.organisationUnits ? settings.organisationUnits : [];
                             def.resolve(ous);
-                        }
-                        else {
+                        } else {
                             var url = DHIS2URL + '/me.json?fields=organisationUnits[id,displayName,level,path,children[id,displayName,level,children[id]]],dataViewOrganisationUnits[id,displayName,level,path,children[id,displayName,level,children[id]]]&paging=false';
                             $http.get(url).then(function (response) {
                                 response.data.organisationUnits = response.data.dataViewOrganisationUnits && response.data.dataViewOrganisationUnits.length > 0 ? response.data.dataViewOrganisationUnits : response.data.organisationUnits;
@@ -5064,8 +5008,7 @@ function addNinListener() {
                             var ous = {};
                             ous.organisationUnits = settings && settings.teiSearchOrganisationUnits && settings.teiSearchOrganisationUnits.length > 0 ? settings.teiSearchOrganisationUnits : settings && settings.organisationUnits ? settings.organisationUnits : [];
                             def.resolve(ous);
-                        }
-                        else {
+                        } else {
                             var url = DHIS2URL + '/me.json?fields=organisationUnits[id,displayName,programs[id],level,path,children[id,displayName,programs[id],level,children[id]]],teiSearchOrganisationUnits[id,displayName,programs[id],level,path,children[id,displayName,programs[id],level,children[id]]]&paging=false';
                             $http.get(url).then(function (response) {
                                 response.data.organisationUnits = response.data.teiSearchOrganisationUnits && response.data.teiSearchOrganisationUnits.length > 0 ? response.data.teiSearchOrganisationUnits : response.data.organisationUnits;
@@ -5087,19 +5030,17 @@ function addNinListener() {
                         var selectedOrgUnit = CurrentSelection.get()["orgUnit"];//SessionStorageService.get('SELECTED_OU');
                         if (selectedOrgUnit && selectedOrgUnit.id === uid) {
                             def.resolve(selectedOrgUnit);
-                        }
-                        else if (uid) {
+                        } else if (uid) {
                             this.get(uid).then(function (response) {
                                 def.resolve(response ? response : null);
                             });
-                        }
-                        else {
+                        } else {
                             def.resolve(null);
                         }
                         return def.promise;
                     },
                     getOrgUnitReportDateRange: function (orgUnit) {
-                        var reportDateRange = { maxDate: DateUtils.getToday(), minDate: '' };
+                        var reportDateRange = {maxDate: DateUtils.getToday(), minDate: ''};
                         var cdate = orgUnit.cdate ? orgUnit.cdate : orgUnit.closedDate ? DateUtils.getDateFromUTCString(orgUnit.closedDate) : null;
                         var odate = orgUnit.odate ? orgUnit.odate : orgUnit.openingDate ? DateUtils.getDateFromUTCString(orgUnit.openingDate) : null;
                         if (odate) {
@@ -5122,8 +5063,7 @@ function addNinListener() {
                             openStore().then(getOu, function () {
                                 deferred.reject("DB not opened");
                             });
-                        }
-                        else {
+                        } else {
                             getOu();
                         }
 
@@ -5140,8 +5080,7 @@ function addNinListener() {
                                     e.target.result.displayName = e.target.result.n;
                                     delete (e.target.result.n);
                                     deferred.resolve(e.target.result);
-                                }
-                                else {
+                                } else {
                                     var t = db.transaction(["ouPartial"]);
                                     var s = t.objectStore("ouPartial");
                                     var q = s.get(uid);
@@ -5153,8 +5092,7 @@ function addNinListener() {
                                             e.target.result.displayName = e.target.result.n;
                                             delete (e.target.result.n);
                                             deferred.resolve(e.target.result);
-                                        }
-                                        else {
+                                        } else {
                                             $http.get(DHIS2URL + '/organisationUnits/' + uid + '.json?fields=id,displayName,code,closedDate,openingDate,organisationUnitGroups[id,code,name]').then(function (response) {
                                                 if (response && response.data) {
                                                     deferred.resolve({
@@ -5182,7 +5120,6 @@ function addNinListener() {
                         }
 
 
-
                         function getOrgUnitClosedStatus(ou) {
                             var closed = false;
                             if (ou) {
@@ -5200,6 +5137,7 @@ function addNinListener() {
                             }
                             return closed;
                         }
+
                         return deferred.promise;
                     }
                 };
@@ -5222,7 +5160,7 @@ function addNinListener() {
                             method: "put",
                             url: getUrl(container, name),
                             data: data,
-                            headers: { 'Content-Type': 'application/json;charset=UTF-8' }
+                            headers: {'Content-Type': 'application/json;charset=UTF-8'}
                         };
 
                         $http(httpMessage).then(function (response) {
@@ -5330,9 +5268,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 5 */
-/***/ (function (module, exports) {
+    }),
+    /* 5 */
+    /***/ (function (module, exports) {
 
         /* global moment, angular, directive, dhis2, selection */
 
@@ -5362,8 +5300,7 @@ function addNinListener() {
                                     scope.$apply();
                                 });
                                 selection.responseReceived();
-                            }
-                            else {
+                            } else {
                                 console.log('Finished loading orgunit tree');
                                 orgUnitFromUrl = ($location.search()).ou;
                                 $("#orgUnitTree").addClass("disable-clicks"); //Disable ou selection until meta-data has downloaded
@@ -5377,8 +5314,9 @@ function addNinListener() {
 
                         //listen to user selection, and inform angular
                         selection.setListenerFunction(setSelectedOu, true);
+
                         function setSelectedOu(ids, names) {
-                            var ou = { id: ids[0], displayName: names[0] };
+                            var ou = {id: ids[0], displayName: names[0]};
                             if (orgUnitFromUrl && ou.id !== orgUnitFromUrl) {
                                 selection.setOrgUnitFromURL(orgUnitFromUrl);
                                 orgUnitFromUrl = null;
@@ -5396,7 +5334,7 @@ function addNinListener() {
             .directive('d2SetFocus', function ($timeout) {
 
                 return {
-                    scope: { trigger: '@d2SetFocus' },
+                    scope: {trigger: '@d2SetFocus'},
                     link: function (scope, element) {
                         scope.$watch('trigger', function (value) {
                             if (value === "true") {
@@ -5443,7 +5381,7 @@ function addNinListener() {
                     element.on('blur', function (event) {
                         if (hasChanged) {
                             scope.$apply(function () {
-                                fn(scope, { $event: event });
+                                fn(scope, {$event: event});
                             });
                             hasChanged = false;
                         }
@@ -5578,7 +5516,7 @@ function addNinListener() {
                                     movedIsIdentifeid = true;
                                 }
                             }
-                            var layout = { smallerWidgets: smallerWidgets, biggerWidgets: biggerWidgets };
+                            var layout = {smallerWidgets: smallerWidgets, biggerWidgets: biggerWidgets};
                             scope.applyWidgetsOrderChange(layout);
                         };
                     }
@@ -5822,14 +5760,17 @@ function addNinListener() {
                                     }
                                     scope.d2FileInputName[scope.d2FileInput.event][de] = data.response.fileResource.name;
                                     if (update) {
-                                        var updatedSingleValueEvent = { program: scope.d2FileInput.program, event: scope.d2FileInput.event, dataValues: [{ value: data.response.fileResource.id, dataElement: de }] };
+                                        var updatedSingleValueEvent = {
+                                            program: scope.d2FileInput.program,
+                                            event: scope.d2FileInput.event,
+                                            dataValues: [{value: data.response.fileResource.id, dataElement: de}]
+                                        };
                                         var updatedFullValueEvent = DHIS2EventService.reconstructEvent(scope.d2FileInput, scope.d2FileInputPs.programStageDataElements);
                                         DHIS2EventFactory.updateForSingleValue(updatedSingleValueEvent, updatedFullValueEvent).then(function (data) {
                                             scope.d2FileInputList = DHIS2EventService.refreshList(scope.d2FileInputList, scope.d2FileInput);
                                         });
                                     }
-                                }
-                                else {
+                                } else {
                                     NotificationService.showNotifcationDialog($translate.instant("error"),
                                         $translate.instant("file_upload_failed"));
                                 }
@@ -5857,8 +5798,7 @@ function addNinListener() {
                                         nameSetter(scope, data.name);
                                         scope.$apply();
                                     });
-                                }
-                                else {
+                                } else {
                                     NotificationService.showNotifcationDialog($translate.instant("error"),
                                         $translate.instant("file_missing"));
                                 }
@@ -6108,8 +6048,7 @@ function addNinListener() {
                                     CurrentSelection.setOptionSets(optionSets);
                                     openModal(optionSets);
                                 });
-                            }
-                            else {
+                            } else {
                                 openModal(optionSets);
                             }
                         };
@@ -6222,7 +6161,7 @@ function addNinListener() {
                                 }
 
                                 if (angular.isDefined($scope.customOnClick)) {
-                                    var promise = $scope.customOnClick({ value: tempValue });
+                                    var promise = $scope.customOnClick({value: tempValue});
                                     if (angular.isDefined(promise) && angular.isDefined(promise.then)) {
                                         promise.then(function (status) {
                                             if (angular.isUndefined(status) || status !== "notSaved") {
@@ -6233,20 +6172,16 @@ function addNinListener() {
                                             $scope.status = "error";
                                             $scope.value = originalValue;
                                         });
-                                    }
-                                    else if (angular.isDefined(promise)) {
+                                    } else if (angular.isDefined(promise)) {
                                         if (promise === false) {
                                             $scope.value = originalValue;
-                                        }
-                                        else {
+                                        } else {
                                             $scope.value = tempValue;
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         $scope.value = tempValue;
                                     }
-                                }
-                                else {
+                                } else {
                                     $scope.value = tempValue;
                                 }
                             };
@@ -6258,8 +6193,7 @@ function addNinListener() {
                             $scope.getDisabledIcon = function (inValue) {
                                 if (inValue === true || inValue === "true") {
                                     return "fa fa-check";
-                                }
-                                else if (inValue === false || inValue === "false") {
+                                } else if (inValue === false || inValue === "false") {
                                     return "fa fa-times";
                                 }
                                 return '';
@@ -6303,8 +6237,7 @@ function addNinListener() {
                             if (angular.isDefined(scope.value)) {
                                 if (scope.value === buttonValue && buttonValue === "true") {
                                     return 'fa fa-stack-1x fa-check';
-                                }
-                                else if (scope.value === buttonValue && buttonValue === "false") {
+                                } else if (scope.value === buttonValue && buttonValue === "false") {
                                     return 'fa fa-stack-1x fa-times';
                                 }
                             }
@@ -6340,16 +6273,16 @@ function addNinListener() {
                         $scope.$watch('d2Object', function (newObj, oldObj) {
                             if (angular.isObject(newObj)) {
                                 $scope.d2Object = newObj;
-                                $scope.model = { radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null };
+                                $scope.model = {radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null};
                             }
                         });
 
                         //In cases where the value is assigned with a program rule we need to set model.radio so that the UI updates.
                         $scope.$watch('d2Object[id]', function () {
-                            $scope.model = { radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null };
+                            $scope.model = {radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null};
                         });
 
-                        $scope.model = { radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null };
+                        $scope.model = {radio: $scope.d2Object[$scope.id] ? $scope.d2Object[$scope.id] : null};
 
                         $scope.saveValue = function (value) {
                             $scope.model.radio = value;
@@ -6359,7 +6292,7 @@ function addNinListener() {
 
                             $scope.d2Object[$scope.id] = $scope.model.radio;
                             if (angular.isDefined($scope.d2CallbackFunction)) {
-                                $scope.d2CallbackFunction({ value: $scope.model.radio });
+                                $scope.d2CallbackFunction({value: $scope.model.radio});
                             }
                         };
 
@@ -6433,7 +6366,7 @@ function addNinListener() {
                                     modalPresent === false &&
                                     calendarPresent === false &&
                                     calendarPresentInEvent === false) {
-                                    $scope.onDeselected({ id: $scope.id });
+                                    $scope.onDeselected({id: $scope.id});
                                     $scope.$apply();
                                     $document.off('click', $scope.documentClick);
                                     $scope.documentEventListenerSet = false;
@@ -6547,7 +6480,7 @@ function addNinListener() {
                             TEXT: {
                                 template: './templates/geometry-input-point.html',
                                 setGeoObject: function () {
-                                    $scope.geometry = { type: "Point", coordinates: [], coordinate: {} };
+                                    $scope.geometry = {type: "Point", coordinates: [], coordinate: {}};
                                     if ($scope.d2Object[$scope.d2ObjectId] && typeof ($scope.d2Object[$scope.d2ObjectId]) === 'string' && $scope.d2Object[$scope.d2ObjectId].startsWith("[") && $scope.d2Object[$scope.d2ObjectId].endsWith("]")) {
                                         var coordinates = $scope.d2Object[$scope.id].slice(1, -1).split(",");
                                         $scope.geometry.coordinates[0] = $scope.geometry.coordinate.longitude = coordinates[0];
@@ -6570,7 +6503,7 @@ function addNinListener() {
                                 type: "Point",
                                 template: './templates/geometry-input-point.html',
                                 setGeoObject: function () {
-                                    $scope.geometry = { type: "Point", coordinates: [], coordinate: {} };
+                                    $scope.geometry = {type: "Point", coordinates: [], coordinate: {}};
                                     if ($scope.d2Object && $scope.d2Object[$scope.d2ObjectId] && $scope.d2Object[$scope.d2ObjectId].coordinates && $scope.d2Object[$scope.d2ObjectId].type === 'Point') {
                                         $scope.geometry = angular.copy($scope.d2Object[$scope.d2ObjectId]);
                                         if ($scope.geometry && $scope.geometry.coordinates && $scope.geometry.coordinates.length === 2) {
@@ -6597,7 +6530,7 @@ function addNinListener() {
                                 type: "Polygon",
                                 template: './templates/geometry-input-polygon.html',
                                 setGeoObject: function () {
-                                    $scope.geometry = { type: "Polygon", coordinates: [] };
+                                    $scope.geometry = {type: "Polygon", coordinates: []};
                                     if ($scope.d2Object && $scope.d2Object[$scope.d2ObjectId] && $scope.d2Object[$scope.d2ObjectId].coordinates && $scope.d2Object[$scope.d2ObjectId].type === 'Polygon') {
                                         $scope.geometry = angular.copy($scope.d2Object[$scope.d2ObjectId]);
                                     }
@@ -6610,7 +6543,9 @@ function addNinListener() {
                                     }
                                 },
                                 parseValues: function () {
-                                    $scope.geometry.coordinates = $scope.geometry.coordinates.map(function (coordinate) { return coordinateParser(coordinate) });
+                                    $scope.geometry.coordinates = $scope.geometry.coordinates.map(function (coordinate) {
+                                        return coordinateParser(coordinate)
+                                    });
                                 },
                                 setD2ObjectValue: function () {
                                     $scope.d2Object[$scope.d2ObjectId] = angular.copy($scope.geometry);
@@ -6723,9 +6658,11 @@ function addNinListener() {
                                     if (!dhis2.validation.isNumber(coordinates[0]) || !dhis2.validation.isNumber(coordinates[0])) {
                                         NotificationService.showNotifcationDialog($translate.instant('error'), $translate.instant('invalid_coordinate_format') + ":  " + $scope.d2Object[$scope.id]);
                                     }
-                                    $scope.coordinateObject.coordinate = { latitude: parseFloat(coordinates[1]), longitude: parseFloat(coordinates[0]) };
-                                }
-                                else {
+                                    $scope.coordinateObject.coordinate = {
+                                        latitude: parseFloat(coordinates[1]),
+                                        longitude: parseFloat(coordinates[0])
+                                    };
+                                } else {
                                     $scope.coordinateObject.coordinate = {};
                                 }
                             }
@@ -6749,7 +6686,7 @@ function addNinListener() {
                                         return "Point";
                                     },
                                     geoJson: function () {
-                                        var geometry = { type: "Point", coordinates: [] };
+                                        var geometry = {type: "Point", coordinates: []};
                                         if ($scope.coordinateObject.coordinate.latitude && $scope.coordinateObject.coordinate.longitude) {
                                             geometry.coordinates = [$scope.coordinateObject.coordinate.longitude, $scope.coordinateObject.coordinate.latitude];
                                         }
@@ -6779,20 +6716,19 @@ function addNinListener() {
                                     if ($scope.d2CoordinateFormat === 'TEXT') {
                                         $scope.d2Object[$scope.id] = '[' + location.lng + ',' + location.lat + ']';
                                         if (angular.isDefined($scope.d2CallbackFunction)) {
-                                            $scope.d2CallbackFunction({ arg1: $scope.d2CallbackFunctionParamText });
+                                            $scope.d2CallbackFunction({arg1: $scope.d2CallbackFunctionParamText});
                                         }
-                                    }
-                                    else {
+                                    } else {
                                         $scope.d2Object.coordinate.latitude = location.lat;
                                         $scope.d2Object.coordinate.longitude = location.lng;
                                         if (angular.isDefined($scope.d2CallbackFunction)) {
-                                            $scope.d2CallbackFunction({ arg1: $scope.d2CallbackFunctionParamCoordinate });
+                                            $scope.d2CallbackFunction({arg1: $scope.d2CallbackFunctionParamCoordinate});
                                         }
                                     }
                                 } else {
                                     $scope.coordinateObject.coordinate.polygon = location;
                                     if (angular.isDefined($scope.d2CallbackFunction)) {
-                                        $scope.d2CallbackFunction({ arg1: location });
+                                        $scope.d2CallbackFunction({arg1: location});
                                     }
                                 }
                             }, function () {
@@ -6804,8 +6740,7 @@ function addNinListener() {
                             if (field) {
                                 if (angular.isDefined(form)) {
                                     status = form.$submitted || field.$dirty;
-                                }
-                                else {
+                                } else {
                                     status = $scope.coordinateForm.$submitted || field.$dirty;
                                 }
                             }
@@ -6817,16 +6752,14 @@ function addNinListener() {
                             var saveCoordinate = function (format, param) {
                                 if (!$scope.coordinateObject.coordinate.longitude && !$scope.coordinateObject.coordinate.latitude) {
                                     if (format === 'COORDINATE') {
-                                        $scope.d2Object.coordinate = { latitude: "", longitude: "" };
-                                    }
-                                    else {
+                                        $scope.d2Object.coordinate = {latitude: "", longitude: ""};
+                                    } else {
                                         $scope.d2Object[$scope.id] = '';
                                     }
-                                    $scope.d2CallbackFunction({ arg1: param });
-                                }
-                                else {
+                                    $scope.d2CallbackFunction({arg1: param});
+                                } else {
                                     if ($scope.coordinateObject.coordinate.longitude && $scope.coordinateObject.coordinate.latitude) {
-                                        $scope.d2CallbackFunction({ arg1: param });
+                                        $scope.d2CallbackFunction({arg1: param});
                                     }
                                 }
                             };
@@ -6844,8 +6777,7 @@ function addNinListener() {
                                 if ($scope.d2CoordinateFormat === 'TEXT') {
                                     $scope.d2Object[$scope.id] = '[' + $scope.coordinateObject.coordinate.longitude + ',' + $scope.coordinateObject.coordinate.latitude + ']';
                                     saveCoordinate('TEXT', $scope.prStDe);
-                                }
-                                else {
+                                } else {
                                     $scope.d2Object.coordinate.latitude = $scope.coordinateObject.coordinate.latitude;
                                     $scope.d2Object.coordinate.longitude = $scope.coordinateObject.coordinate.longitude;
 
@@ -6887,7 +6819,7 @@ function addNinListener() {
                     controller: function ($scope, ModalService, DateUtils) {
                         $scope.firstInput = true;
                         $scope.dateTimeInit = function () {
-                            $scope.dateTime = { date: null, time: null };
+                            $scope.dateTime = {date: null, time: null};
                             if (!$scope.datetimeModel[$scope.datetimeModelId]) {
                                 return;
                             }
@@ -7190,7 +7122,11 @@ function addNinListener() {
                         };
 
                         $scope.saveAge = function () {
-                            var dob = moment().subtract({ days: $scope.age.days ? $scope.age.days : 0, months: $scope.age.months ? $scope.age.months : 0, years: $scope.age.years ? $scope.age.years : 0 });
+                            var dob = moment().subtract({
+                                days: $scope.age.days ? $scope.age.days : 0,
+                                months: $scope.age.months ? $scope.age.months : 0,
+                                years: $scope.age.years ? $scope.age.years : 0
+                            });
                             $scope.age.dob = DateUtils.format(dob);
                             formatAge();
                         };
@@ -7204,8 +7140,7 @@ function addNinListener() {
                             if (field) {
                                 if (angular.isDefined(form)) {
                                     status = form.$submitted || field.$dirty;
-                                }
-                                else {
+                                } else {
                                     status = $scope.ageForm.$submitted || field.$dirty;
                                 }
                             }
@@ -7330,7 +7265,6 @@ function addNinListener() {
                         });
 
 
-
                         $scope.showMore = function ($select, $event) {
                             if ($event) {
                                 $event.stopPropagation();
@@ -7366,9 +7300,9 @@ function addNinListener() {
             });
 
         /***/
-}),
-/* 6 */
-/***/ (function (module, exports) {
+    }),
+    /* 6 */
+    /***/ (function (module, exports) {
 
         angular.module("d2Directives")
             .directive('d2NumberValidator', function () {
@@ -7383,26 +7317,22 @@ function addNinListener() {
                                     value = value === 0 ? value.toString() : value;
                                     return value === 'null' || !value ? !isRequired : dhis2.validation.isNumber(value);
                                 };
-                            }
-                            else if (numberType === 'INTEGER_POSITIVE') {
+                            } else if (numberType === 'INTEGER_POSITIVE') {
                                 ngModel.$validators.posInt = function (value) {
                                     value = value === 0 ? value.toString() : value;
                                     return value === 'null' || !value ? !isRequired : dhis2.validation.isPositiveInt(value);
                                 };
-                            }
-                            else if (numberType === 'INTEGER_NEGATIVE') {
+                            } else if (numberType === 'INTEGER_NEGATIVE') {
                                 ngModel.$validators.negInt = function (value) {
                                     value = value === 0 ? value.toString() : value;
                                     return value === 'null' || !value ? !isRequired : dhis2.validation.isNegativeInt(value);
                                 };
-                            }
-                            else if (numberType === 'INTEGER_ZERO_OR_POSITIVE') {
+                            } else if (numberType === 'INTEGER_ZERO_OR_POSITIVE') {
                                 ngModel.$validators.zeroPositiveInt = function (value) {
                                     value = value === 0 ? value.toString() : value;
                                     return value === 'null' || !value ? !isRequired : dhis2.validation.isZeroOrPositiveInt(value);
                                 };
-                            }
-                            else if (numberType === 'INTEGER') {
+                            } else if (numberType === 'INTEGER') {
                                 ngModel.$validators.integer = function (value) {
                                     value = value === 0 ? value.toString() : value;
                                     return value === 'null' || !value ? !isRequired : dhis2.validation.isInt(value);
@@ -7618,7 +7548,8 @@ function addNinListener() {
 
                         function uniqunessValidatior(attributeData) {
                             element.on('blur', function () {
-                                var deferred = $q.defer(), currentValue = ngModel.$modelValue, programOrTetUrl = null, ouMode = 'ACCESSIBLE';
+                                var deferred = $q.defer(), currentValue = ngModel.$modelValue, programOrTetUrl = null,
+                                    ouMode = 'ACCESSIBLE';
 
                                 if (currentValue) {
 
@@ -7642,8 +7573,7 @@ function addNinListener() {
                                                 ngModel.$setValidity('uniqunessValidator', false);
                                                 return;
                                             }
-                                        }
-                                        else {
+                                        } else {
                                             if (data.rows.length > 0) {
                                                 ngModel.$setValidity('uniqunessValidator', false);
                                                 return
@@ -7671,9 +7601,9 @@ function addNinListener() {
             });
 
         /***/
-}),
-/* 7 */
-/***/ (function (module, exports) {
+    }),
+    /* 7 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -7691,8 +7621,7 @@ function addNinListener() {
 
                     if (!filters) {
                         return data;
-                    }
-                    else {
+                    } else {
 
                         var dateFilter = {},
                             textFilter = {},
@@ -7705,8 +7634,7 @@ function addNinListener() {
                                 if (filters[key].start || filters[key].end) {
                                     dateFilter[key] = filters[key];
                                 }
-                            }
-                            else if (filterTypes[key] === 'NUMBER' ||
+                            } else if (filterTypes[key] === 'NUMBER' ||
                                 filterTypes[key] === 'INTEGER' ||
                                 filterTypes[key] === 'INTEGER_POSITIVE' ||
                                 filterTypes[key] === 'INTEGER_NEGATIVE' ||
@@ -7714,8 +7642,7 @@ function addNinListener() {
                                 if (filters[key].start || filters[key].end) {
                                     numberFilter[key] = filters[key];
                                 }
-                            }
-                            else {
+                            } else {
                                 textFilter[key] = filters[key];
                             }
                         }
@@ -7851,13 +7778,11 @@ function addNinListener() {
                                 if (co.organisationUnits.indexOf(selectedOrgUnit.id) !== -1) {
                                     _categoryOptions.push(co);
                                 }
-                            }
-                            else {
+                            } else {
                                 _categoryOptions.push(co);
                             }
                         });
-                    }
-                    else {
+                    } else {
                         _categoryOptions = categoryOptions;
                     }
 
@@ -7866,11 +7791,10 @@ function addNinListener() {
             })
 
 
-
         /***/
-}),
-/* 8 */
-/***/ (function (module, exports) {
+    }),
+    /* 8 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -7880,13 +7804,13 @@ function addNinListener() {
             //Controller for column show/hide
             .controller('ColumnDisplayController',
                 function ($scope,
-                    $modalInstance,
-                    hiddenGridColumns,
-                    gridColumns,
-                    gridColumnDomainKey,
-                    gridColumnKey,
-                    gridColumnsInUserStore,
-                    GridColumnService) {
+                          $modalInstance,
+                          hiddenGridColumns,
+                          gridColumns,
+                          gridColumnDomainKey,
+                          gridColumnKey,
+                          gridColumnsInUserStore,
+                          GridColumnService) {
 
                     $scope.gridColumns = gridColumns;
                     $scope.hiddenGridColumns = hiddenGridColumns;
@@ -7899,8 +7823,7 @@ function addNinListener() {
 
                         if (gridColumn.show) {
                             $scope.hiddenGridColumns--;
-                        }
-                        else {
+                        } else {
                             $scope.hiddenGridColumns++;
                         }
 
@@ -7914,20 +7837,20 @@ function addNinListener() {
             //controller for dealing with google map
             .controller('MapController',
                 function ($scope,
-                    $modalInstance,
-                    $translate,
-                    $http,
-                    $window,
-                    $q,
-                    $timeout,
-                    CommonUtils,
-                    leafletData,
-                    CurrentSelection,
-                    DHIS2URL,
-                    NotificationService,
-                    ModalService,
-                    geometryType,
-                    geoJson) {
+                          $modalInstance,
+                          $translate,
+                          $http,
+                          $window,
+                          $q,
+                          $timeout,
+                          CommonUtils,
+                          leafletData,
+                          CurrentSelection,
+                          DHIS2URL,
+                          NotificationService,
+                          ModalService,
+                          geometryType,
+                          geoJson) {
                     var inDrawMode = false;
                     $scope.tilesDictionaryKeys = ['openstreetmap', 'googlemap'];
                     $scope.selectedTileKey = 'openstreetmap';
@@ -7973,7 +7896,7 @@ function addNinListener() {
                                         map.setView([firstCoordinate[1], firstCoordinate[0]], $scope.maxZoom);
                                     }
                                 });
-                                /*         
+                                /*
                              if( $scope.marker && $scope.marker.m1 && $scope.marker.m1.lat && $scope.marker.m1.lng ){
                                  map.setView([$scope.marker.m1.lat, $scope.marker.m1.lng], $scope.maxZoom);
                              }*/
@@ -7994,7 +7917,13 @@ function addNinListener() {
                             markerEnabled: true,
                             initialize: function () {
                                 if (geoJson && geoJson.coordinates.length === 2) {
-                                    $scope.marker = { m1: { lat: geoJson.coordinates[1], lng: geoJson.coordinates[0], draggable: true } };
+                                    $scope.marker = {
+                                        m1: {
+                                            lat: geoJson.coordinates[1],
+                                            lng: geoJson.coordinates[0],
+                                            draggable: true
+                                        }
+                                    };
                                 }
                                 if ($scope.marker) {
                                     leafletData.getMap($scope.selectedTileKey).then(function (map) {
@@ -8032,7 +7961,7 @@ function addNinListener() {
 
                     $scope.maxZoom = 8;
 
-                    $scope.center = { lat: 8.88, lng: -11.55, zoom: $scope.maxZoom };
+                    $scope.center = {lat: 8.88, lng: -11.55, zoom: $scope.maxZoom};
 
                     var systemSetting = CommonUtils.getSystemSetting();
 
@@ -8077,6 +8006,7 @@ function addNinListener() {
                     leafletData.getMap($scope.selectedTileKey).then(function (map) {
                         L.geoJSON($scope.selectedGeoJson).addTo(map);
                     });
+
                     function pointToLayer(feature, latlng) {
                         return L.circleMarker(latlng, geojsonMarkerOptions);
                     };
@@ -8099,8 +8029,7 @@ function addNinListener() {
                                     contextmenuItems: getContextMenuItems(feature)
                                 });
                             });
-                        }
-                        else {
+                        } else {
                             layer.bindContextMenu({
                                 contextmenu: true,
                                 contextmenuWidth: 180,
@@ -8148,11 +8077,11 @@ function addNinListener() {
                         });
                         if (geometryType === "Point") {
                             items.unshift({
-                                text: setCoordinateLabel,
-                                callback: function (e) {
-                                    setCoordinate(e, feature);
-                                }
-                            },
+                                    text: setCoordinateLabel,
+                                    callback: function (e) {
+                                        setCoordinate(e, feature);
+                                    }
+                                },
                                 {
                                     separator: true
                                 });
@@ -8202,7 +8131,7 @@ function addNinListener() {
 
 
                                 if (!geoJsonHasCoordinates && latlngs.length > 0) {
-                                    map.fitBounds(latlngs, { maxZoom: $scope.maxZoom });
+                                    map.fitBounds(latlngs, {maxZoom: $scope.maxZoom});
                                 }
                             });
                         });
@@ -8211,21 +8140,19 @@ function addNinListener() {
                     function setCoordinate(e, feature, layer) {
                         if (feature && feature.geometry && feature.geometry.type === 'Point') {
                             var m = feature.geometry.coordinates;
-                            $scope.marker = { m1: { lat: m[1], lng: m[0], draggable: true } };
-                        }
-                        else {
-                            $scope.marker = { m1: { lat: e.latlng.lat, lng: e.latlng.lng, draggable: true } };
+                            $scope.marker = {m1: {lat: m[1], lng: m[0], draggable: true}};
+                        } else {
+                            $scope.marker = {m1: {lat: e.latlng.lat, lng: e.latlng.lng, draggable: true}};
                         }
 
-                        $scope.location = { lat: $scope.marker.m1.lat, lng: $scope.marker.m1.lng };
+                        $scope.location = {lat: $scope.marker.m1.lat, lng: $scope.marker.m1.lng};
                     };
 
                     function zoomIn(e, feature) {
                         $scope.maxZoom += 2;
                         if (feature && feature.id) {
                             zoomMap(feature, 'IN');
-                        }
-                        else {
+                        } else {
                             $scope.center = angular.copy(e.latlng);
                             $scope.center.zoom = $scope.maxZoom;
                         }
@@ -8235,8 +8162,7 @@ function addNinListener() {
                         $scope.maxZoom -= 2;
                         if (feature && feature.id) {
                             zoomMap(feature, 'OUT');
-                        }
-                        else {
+                        } else {
                             $scope.center = angular.copy(e.latlng);
                             $scope.center.zoom = $scope.maxZoom;
                         }
@@ -8251,7 +8177,7 @@ function addNinListener() {
                     function integrateGeoCoder() {
 
                         leafletData.getMap($scope.selectedTileKey).then(function (map) {
-                            /*         
+                            /*
                          if( $scope.marker && $scope.marker.m1 && $scope.marker.m1.lat && $scope.marker.m1.lng ){
                              map.setView([$scope.marker.m1.lat, $scope.marker.m1.lng], $scope.maxZoom);
                          }*/
@@ -8261,7 +8187,13 @@ function addNinListener() {
                             }).addTo(map);
 
                             $scope.geocoder.on('markgeocode', function (e) {
-                                $scope.marker = { m1: { lat: e.geocode.center.lat, lng: e.geocode.center.lng, draggable: true } };
+                                $scope.marker = {
+                                    m1: {
+                                        lat: e.geocode.center.lat,
+                                        lng: e.geocode.center.lng,
+                                        draggable: true
+                                    }
+                                };
                                 map.setView([e.geocode.center.lat, e.geocode.center.lng], 16);
                             })
                                 .addTo(map);
@@ -8342,7 +8274,6 @@ function addNinListener() {
                     }
 
 
-
                     $scope.setTile = function (tileKey) {
                         if (tileKey === $scope.selectedTileKey) {
                             return;
@@ -8353,8 +8284,7 @@ function addNinListener() {
                                 $scope.googleMapLayers = null;
                                 $scope.selectedTileKey = tileKey;
                                 promise = $q.when();
-                            }
-                            else if (tileKey === 'googlemap') {
+                            } else if (tileKey === 'googlemap') {
                                 if ($window.google && $window.google.maps) {
                                     $scope.selectedTileKey = tileKey;
                                     promise = $q.when();
@@ -8398,12 +8328,12 @@ function addNinListener() {
                             };
                             ModalService.showModal({}, modalOptions).then(function () {
                                 internalCaptureCoordinate();
-                            }, function () { });
+                            }, function () {
+                            });
                             return;
                         }
                         internalCaptureCoordinate();
                     };
-
 
 
                     function setDraggedMarker(args) {
@@ -8425,22 +8355,24 @@ function addNinListener() {
             //Controller for audit history
             .controller('AuditHistoryController',
                 function ($scope,
-                    $modalInstance,
-                    $translate,
-                    AuditHistoryDataService,
-                    DateUtils,
-                    eventId,
-                    dataType,
-                    nameIdMap,
-                    optionSets,
-                    CommonUtils) {
+                          $modalInstance,
+                          $translate,
+                          AuditHistoryDataService,
+                          DateUtils,
+                          eventId,
+                          dataType,
+                          nameIdMap,
+                          optionSets,
+                          CommonUtils) {
 
 
                     $scope.model = {
                         type: dataType,
                         name: dataType === 'dataElement' ? $translate.instant('data_element') : $translate.instant('attribute'),
                         searchPlaceholder: dataType === 'dataElement' ? $translate.instant('search_by_data_element') : $translate.instant('search_by_attribute'),
-                        auditColumns: ['name', 'auditType', 'value', 'modifiedBy', 'created'], itemList: [], uniqueRows: []
+                        auditColumns: ['name', 'auditType', 'value', 'modifiedBy', 'created'],
+                        itemList: [],
+                        uniqueRows: []
                     };
 
                     $scope.close = function () {
@@ -8501,7 +8433,7 @@ function addNinListener() {
 
             .controller('OrgUnitTreeController', function ($scope, $modalInstance, OrgUnitFactory, orgUnitId, orgUnitNames) {
 
-                $scope.model = { selectedOrgUnitId: orgUnitId ? orgUnitId : null };
+                $scope.model = {selectedOrgUnitId: orgUnitId ? orgUnitId : null};
                 $scope.orgUnitNames = orgUnitNames ? orgUnitNames : {};
 
                 function expandOrgUnit(orgUnit, ou) {
@@ -8678,20 +8610,19 @@ function addNinListener() {
                                 ou.hasChildren = ou.children && ou.children.length > 0 ? true : false;
                             });
                         });
-                    }
-                    else {
+                    } else {
                         orgUnit.show = !orgUnit.show;
                     }
                 };
 
                 $scope.setSelectedOrgUnit = function (orgUnit) {
-                    $scope.model.selectedOrgUnit = { id: orgUnit.id, displayName: orgUnit.displayName };
+                    $scope.model.selectedOrgUnit = {id: orgUnit.id, displayName: orgUnit.displayName};
                     $scope.model.selectedOrgUnitId = orgUnit.id;
                     $scope.orgUnitNames[orgUnit.id] = orgUnit.displayName;
                 };
 
                 $scope.select = function () {
-                    $modalInstance.close({ selected: $scope.model.selectedOrgUnit, names: $scope.orgUnitNames });
+                    $modalInstance.close({selected: $scope.model.selectedOrgUnit, names: $scope.orgUnitNames});
                 };
 
                 $scope.close = function () {
@@ -8701,9 +8632,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 9 */
-/***/ (function (module, exports) {
+    }),
+    /* 9 */
+    /***/ (function (module, exports) {
 
         angular.module('d2Templates', []).run(['$templateCache', function ($templateCache) {
             $templateCache.put('./templates/age-input.html', '<div ng-form="ageForm">\n    <div class="input-group" style="width: 100%; padding-top: 5px;">\n        <input type="text" \n               d2-date name="dob" \n               d2-date-validator\n               ng-model="age.dob"\n               blur-or-change="saveDOB()"\n               ng-required="d2Required"\n               ng-disabled="d2Disabled"\n               ng-attr-placeholder="{{\'dob\'| translate}}" \n               ng-attr-title="{{\'dob\'| translate}}" \n               class="form-control no-right-radius"\n               ng-class="{\'input-success\': d2AgeSaved}"/>\n        <span class="input-group-btn empty-span"></span>\n        <span class="has-float-label">\n            <input type="number" \n                   name="years"\n                   ng-model="age.years" \n                   ng-model-options="{updateOn: \'blur\'}"\n                   ng-change="saveAge()"\n                   ng-disabled="d2Disabled"\n                   d2-number-validator\n                   number-type="INTEGER_ZERO_OR_POSITIVE"\n                   ng-attr-placeholder="{{\'years\'| translate}}"\n                   ng-attr-title="{{\'years\'| translate}}" \n                   class="form-control no-right-radius no-left-radius"\n                   ng-class="{\'input-success\': d2AgeSaved}"\n                   id="year"/>\n            <label for="year">{{\'years\'| translate}}</label>\n        </span>\n        <span class="input-group-btn empty-span"></span>\n        <span class="has-float-label">\n            <input type="number" \n                   name="months"\n                   ng-model="age.months" \n                   ng-model-options="{updateOn: \'blur\'}"\n                   ng-change="saveAge()"\n                   ng-disabled="d2Disabled"\n                   d2-number-validator\n                   number-type="INTEGER_ZERO_OR_POSITIVE"\n                   ng-attr-placeholder="{{\'months\'| translate}}"\n                   ng-attr-title="{{\'months\'| translate}}" \n                   class="form-control no-right-radius no-left-radius"\n                   ng-class="{\'input-success\': d2AgeSaved}"\n                   id="month"/>\n            <label for="month">{{\'months\'| translate}}</label>\n        </span>\n        <span class="input-group-btn empty-span"></span>\n        <span class="has-float-label">\n            <input type="number" \n                   name="days"\n                   ng-model="age.days" \n                   ng-model-options="{updateOn: \'blur\'}"\n                   ng-change="saveAge()"\n                   ng-disabled="d2Disabled"\n                   d2-number-validator\n                   number-type="INTEGER_ZERO_OR_POSITIVE"\n                   ng-attr-placeholder="{{\'days\'| translate}}"\n                   ng-attr-title="{{\'days\'| translate}}" \n                   class="form-control no-left-radius no-right-radius"\n                   ng-class="{\'input-success\': d2AgeSaved}"\n                   id="day"/>\n            <label for="day">{{\'days\'| translate}}</label>\n        </span>\n        <span class="input-group-btn"> \n            <button class="btn btn-danger hideInPrint trim" type="button" ng-attr-title="{{\'remove\'| translate}}" ng-click="removeAge()" ng-disabled="!age.dob || d2Disabled"> \n                <i class="fa fa-trash-o"></i> \n            </button>\n        </span>\n    </div>\n    <div ng-messages="ageForm.dob.$error" ng-if="ageInteracted(ageForm.dob, outerDataEntryForm)" class="required" ng-messages-include="./templates/error-messages.html"></div>\n    <div ng-messages="ageForm.years.$error" ng-if="ageInteracted(ageForm.years, outerDataEntryForm)" class="required" ng-messages-include="./templates/error-messages.html"></div>\n    <div ng-messages="ageForm.months.$error" ng-if="ageInteracted(ageForm.months, outerDataEntryForm)" class="required" ng-messages-include="./templates/error-messages.html"></div>\n    <div ng-messages="ageForm.days.$error" ng-if="ageInteracted(ageForm.days, outerDataEntryForm)" class="required" ng-messages-include="./templates/error-messages.html"></div>\n</div>');
@@ -8732,9 +8663,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 10 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 10 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         // style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -8755,13 +8686,15 @@ function addNinListener() {
                 });
             }
             // When the module is disposed, remove the <style> tags
-            module.hot.dispose(function () { update(); });
+            module.hot.dispose(function () {
+                update();
+            });
         }
 
         /***/
-}),
-/* 11 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 11 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         exports = module.exports = __webpack_require__(12)();
         // imports
@@ -8774,9 +8707,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 12 */
-/***/ (function (module, exports) {
+    }),
+    /* 12 */
+    /***/ (function (module, exports) {
 
         /*
            MIT License http://www.opensource.org/licenses/mit-license.php
@@ -8831,9 +8764,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 13 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 13 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         /*
            MIT License http://www.opensource.org/licenses/mit-license.php
@@ -8913,7 +8846,7 @@ function addNinListener() {
                     for (var j = 0; j < item.parts.length; j++) {
                         parts.push(addStyle(item.parts[j], options));
                     }
-                    stylesInDom[item.id] = { id: item.id, refs: 1, parts: parts };
+                    stylesInDom[item.id] = {id: item.id, refs: 1, parts: parts};
                 }
             }
         }
@@ -8927,9 +8860,9 @@ function addNinListener() {
                 var css = item[1];
                 var media = item[2];
                 var sourceMap = item[3];
-                var part = { css: css, media: media, sourceMap: sourceMap };
+                var part = {css: css, media: media, sourceMap: sourceMap};
                 if (!newStyles[id])
-                    styles.push(newStyles[id] = { id: id, parts: [part] });
+                    styles.push(newStyles[id] = {id: id, parts: [part]});
                 else
                     newStyles[id].parts.push(part);
             }
@@ -9072,7 +9005,7 @@ function addNinListener() {
                 css += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(sourceMap)))) + " */";
             }
 
-            var blob = new Blob([css], { type: "text/css" });
+            var blob = new Blob([css], {type: "text/css"});
 
             var oldSrc = linkElement.href;
 
@@ -9084,9 +9017,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 14 */
-/***/ (function (module, exports) {
+    }),
+    /* 14 */
+    /***/ (function (module, exports) {
 
         /* global angular, moment, dhis2 */
 
@@ -9133,28 +9066,119 @@ function addNinListener() {
             /* Service to fetch/store dasboard widgets */
             .service('DashboardLayoutService', ["$http", "DHIS2URL", "NotificationService", "$translate", function ($http, DHIS2URL, NotificationService, $translate) {
 
-                var ButtonIds = { Complete: "Complete", Incomplete: "Incomplete", Validate: "Validate", Delete: "Delete", Skip: "Skip", Unskip: "Unskip", Note: "Note" };
+                var ButtonIds = {
+                    Complete: "Complete",
+                    Incomplete: "Incomplete",
+                    Validate: "Validate",
+                    Delete: "Delete",
+                    Skip: "Skip",
+                    Unskip: "Unskip",
+                    Note: "Note"
+                };
 
                 var w = {};
-                w.enrollmentWidget = { title: 'enrollment', view: "components/enrollment/enrollment.html", show: true, expand: true, parent: 'biggerWidget', order: 0 };
-                w.indicatorWidget = { title: 'indicators', view: "components/rulebound/rulebound.html", show: true, expand: true, parent: 'biggerWidget', order: 1, canBeUsedAsTopBar: true, topBarView: "components/rulebound/rulebound-topbar.html#indicators" };
-                w.dataentryWidget = { title: 'dataentry', view: "components/dataentry/dataentry.html", show: true, expand: true, parent: 'biggerWidget', order: 2 };
-                w.dataentryTabularWidget = { title: 'dataentryTabular', view: "components/dataentry/dataentry-tabular-layout.html", show: false, expand: true, parent: 'biggerWidget', order: 3 };
-                w.reportWidget = { title: 'report', view: "components/report/tei-report.html", show: true, expand: true, parent: 'biggerWidget', order: 4 };
-                w.selectedWidget = { title: 'current_selections', view: "components/selected/selected.html", show: false, expand: true, parent: 'smallerWidget', order: 0 };
-                w.feedbackWidget = { title: 'feedback', view: "components/rulebound/rulebound.html", show: true, expand: true, parent: 'smallerWidget', order: 1, canBeUsedAsTopBar: true, topBarView: "components/rulebound/rulebound-topbar.html#feedback" };
-                w.profileWidget = { title: 'profile', view: "components/profile/profile.html", show: true, expand: true, parent: 'smallerWidget', order: 2, canBeUsedAsTopBar: true, topBarView: "components/profile/profile-topbar.html" };
-                w.relationshipWidget = { title: 'relationships', view: "components/relationship/relationship.html", show: true, expand: true, parent: 'smallerWidget', order: 3 };
-                w.notesWidget = { title: 'notes', view: "components/notes/notes.html", show: true, expand: true, parent: 'smallerWidget', order: 4 };
-                w.messagingWidget = { title: 'messaging', view: "components/messaging/messaging.html", show: false, expand: true, parent: 'smallerWidget', order: 5 };
+                w.enrollmentWidget = {
+                    title: 'enrollment',
+                    view: "components/enrollment/enrollment.html",
+                    show: true,
+                    expand: true,
+                    parent: 'biggerWidget',
+                    order: 0
+                };
+                w.indicatorWidget = {
+                    title: 'indicators',
+                    view: "components/rulebound/rulebound.html",
+                    show: true,
+                    expand: true,
+                    parent: 'biggerWidget',
+                    order: 1,
+                    canBeUsedAsTopBar: true,
+                    topBarView: "components/rulebound/rulebound-topbar.html#indicators"
+                };
+                w.dataentryWidget = {
+                    title: 'dataentry',
+                    view: "components/dataentry/dataentry.html",
+                    show: true,
+                    expand: true,
+                    parent: 'biggerWidget',
+                    order: 2
+                };
+                w.dataentryTabularWidget = {
+                    title: 'dataentryTabular',
+                    view: "components/dataentry/dataentry-tabular-layout.html",
+                    show: false,
+                    expand: true,
+                    parent: 'biggerWidget',
+                    order: 3
+                };
+                w.reportWidget = {
+                    title: 'report',
+                    view: "components/report/tei-report.html",
+                    show: true,
+                    expand: true,
+                    parent: 'biggerWidget',
+                    order: 4
+                };
+                w.selectedWidget = {
+                    title: 'current_selections',
+                    view: "components/selected/selected.html",
+                    show: false,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 0
+                };
+                w.feedbackWidget = {
+                    title: 'feedback',
+                    view: "components/rulebound/rulebound.html",
+                    show: true,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 1,
+                    canBeUsedAsTopBar: true,
+                    topBarView: "components/rulebound/rulebound-topbar.html#feedback"
+                };
+                w.profileWidget = {
+                    title: 'profile',
+                    view: "components/profile/profile.html",
+                    show: true,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 2,
+                    canBeUsedAsTopBar: true,
+                    topBarView: "components/profile/profile-topbar.html"
+                };
+                w.relationshipWidget = {
+                    title: 'relationships',
+                    view: "components/relationship/relationship.html",
+                    show: true,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 3
+                };
+                w.notesWidget = {
+                    title: 'notes',
+                    view: "components/notes/notes.html",
+                    show: true,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 4
+                };
+                w.messagingWidget = {
+                    title: 'messaging',
+                    view: "components/messaging/messaging.html",
+                    show: false,
+                    expand: true,
+                    parent: 'smallerWidget',
+                    order: 5
+                };
                 var defaultLayout = new Object();
 
-                defaultLayout['DEFAULT'] = { widgets: w, program: 'DEFAULT' };
+                defaultLayout['DEFAULT'] = {widgets: w, program: 'DEFAULT'};
 
                 var programStageLayout = {};
 
                 var getDefaultLayout = function getDefaultLayout(customLayout) {
-                    var dashboardLayout = { customLayout: customLayout, defaultLayout: defaultLayout };
+                    var dashboardLayout = {customLayout: customLayout, defaultLayout: defaultLayout};
                     var promise = $http.get(DHIS2URL + '/dataStore/tracker-capture/keyTrackerDashboardDefaultLayout').then(function (response) {
                         angular.extend(dashboardLayout.defaultLayout, response.data);
                         return dashboardLayout;
@@ -9172,7 +9196,7 @@ function addNinListener() {
                                 method: "put",
                                 url: url,
                                 data: dashboardLayout,
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: {'Content-Type': 'application/json'}
                             }).then(function (response) {
                                 return response.data;
                             }, function (error) {
@@ -9180,7 +9204,7 @@ function addNinListener() {
                                     method: "post",
                                     url: url,
                                     data: dashboardLayout,
-                                    headers: { 'Content-Type': 'application/json' }
+                                    headers: {'Content-Type': 'application/json'}
                                 }).then(function (response) {
                                     return response.data;
                                 }, function (error) {
@@ -9203,7 +9227,7 @@ function addNinListener() {
                                 method: "post",
                                 url: url,
                                 data: dashboardLayout,
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: {'Content-Type': 'application/json'}
                             }).then(function (response) {
                                 return response.data;
                             }, function (error) {
@@ -9242,7 +9266,7 @@ function addNinListener() {
                             method: "put",
                             url: url,
                             data: list,
-                            headers: { 'Content-Type': 'application/json' }
+                            headers: {'Content-Type': 'application/json'}
                         }).then(function (response) {
                             return response.data;
                         }, function (error) {
@@ -9250,7 +9274,7 @@ function addNinListener() {
                                 method: "post",
                                 url: url,
                                 data: list,
-                                headers: { 'Content-Type': 'application/json' }
+                                headers: {'Content-Type': 'application/json'}
                             }).then(function (response) {
                                 return response.data;
                             }, function (error) {
@@ -9293,7 +9317,12 @@ function addNinListener() {
                     }
                     var calendarSetting = CalendarService.getSetting();
 
-                    return { year: moment(dateValue, calendarSetting.momentFormat).year(), month: moment(dateValue, calendarSetting.momentFormat).month(), week: moment(dateValue, calendarSetting.momentFormat).week(), day: moment(dateValue, calendarSetting.momentFormat).day() };
+                    return {
+                        year: moment(dateValue, calendarSetting.momentFormat).year(),
+                        month: moment(dateValue, calendarSetting.momentFormat).month(),
+                        week: moment(dateValue, calendarSetting.momentFormat).week(),
+                        day: moment(dateValue, calendarSetting.momentFormat).day()
+                    };
                 };
 
                 function processPeriodsForEvent(periods, event) {
@@ -9310,7 +9339,7 @@ function addNinListener() {
                         periods.splice(index, 1);
                     }
 
-                    return { available: periods, occupied: occupied };
+                    return {available: periods, occupied: occupied};
                 };
 
                 this.getPeriods = function (events, stage, enrollment, _periodOffset) {
@@ -9331,7 +9360,7 @@ function addNinListener() {
                     var hasFuturePeriod = false;
                     if (!stage.periodType) {
                         angular.forEach(events, function (event) {
-                            occupiedPeriods.push({ event: event.event, name: event.sortingDate, stage: stage.id });
+                            occupiedPeriods.push({event: event.event, name: event.sortingDate, stage: stage.id});
                         });
                     } else {
 
@@ -9342,7 +9371,11 @@ function addNinListener() {
 
                         //generate availablePeriods
                         var pt = new PeriodType();
-                        var d2Periods = pt.get(stage.periodType).generatePeriods({ offset: periodOffset, filterFuturePeriods: false, reversePeriods: false });
+                        var d2Periods = pt.get(stage.periodType).generatePeriods({
+                            offset: periodOffset,
+                            filterFuturePeriods: false,
+                            reversePeriods: false
+                        });
 
                         angular.forEach(d2Periods, function (p) {
                             p.endDate = DateUtils.formatFromApiToUser(p.endDate);
@@ -9367,14 +9400,19 @@ function addNinListener() {
                         });
                     }
 
-                    return { occupiedPeriods: occupiedPeriods, availablePeriods: availablePeriods, periodOffset: periodOffset, hasFuturePeriod: hasFuturePeriod };
+                    return {
+                        occupiedPeriods: occupiedPeriods,
+                        availablePeriods: availablePeriods,
+                        periodOffset: periodOffset,
+                        hasFuturePeriod: hasFuturePeriod
+                    };
                 };
 
                 this.managePeriods = function (periods, isNewEvent) {
 
                     //remove future periods
                     if (isNewEvent) {
-                        periods = $filter('removeFuturePeriod')(periods, { endDate: DateUtils.getToday() });
+                        periods = $filter('removeFuturePeriod')(periods, {endDate: DateUtils.getToday()});
                     }
 
                     return periods;
@@ -9507,7 +9545,7 @@ function addNinListener() {
                         } else {
                             TCStorageService.currentStore.open().done(function () {
                                 TCStorageService.currentStore.getAll('programAccess').done(function (programAccess) {
-                                    access = { programsById: {}, programStagesById: {}, programIdNameMap: {} };
+                                    access = {programsById: {}, programStagesById: {}, programIdNameMap: {}};
                                     angular.forEach(programAccess, function (program) {
                                         access.programsById[program.id] = program.access;
                                         access.programIdNameMap[program.id] = program.displayName;
@@ -9557,7 +9595,7 @@ function addNinListener() {
                                     programs = orderByFilter(programs, '-displayName').reverse();
 
                                     $rootScope.$apply(function () {
-                                        def.resolve({ programs: programs });
+                                        def.resolve({programs: programs});
                                     });
                                 });
                             });
@@ -9627,7 +9665,7 @@ function addNinListener() {
                                     }
 
                                     $rootScope.$apply(function () {
-                                        def.resolve({ programs: programs, selectedProgram: selectedProgram });
+                                        def.resolve({programs: programs, selectedProgram: selectedProgram});
                                     });
                                 });
                             });
@@ -9637,12 +9675,12 @@ function addNinListener() {
                     extendWithSearchGroups: function extendWithSearchGroups(programs, attributesById) {
                         angular.forEach(programs, function (program) {
                             var searchGroups = [];
-                            var group = { attributes: [] };
+                            var group = {attributes: []};
                             if (program.programAttributes) {
                                 angular.forEach(program.attributes, function (programAttribute) {
                                     var attr = attributesById[programAttribute.attribute];
                                     if (attr.unique) {
-                                        searchGroups.push({ attributes: [teAttribute] });
+                                        searchGroups.push({attributes: [teAttribute]});
                                     } else if (programAttribute.searchable) {
                                         group.attributes.push(programAttribute);
                                     }
@@ -9685,7 +9723,12 @@ function addNinListener() {
                         for (var k in attributesById) {
                             if (k in formTei) {
                                 var att = attributesById[k];
-                                tei.attributes.push({ attribute: att.id, value: formTei[k], displayName: att.displayName, valueType: att.valueType });
+                                tei.attributes.push({
+                                    attribute: att.id,
+                                    value: formTei[k],
+                                    displayName: att.displayName,
+                                    valueType: att.valueType
+                                });
                                 formEmpty = false;
                             }
                             delete tei[k];
@@ -9712,7 +9755,7 @@ function addNinListener() {
                                 }
                             });
                         }
-                        return { tei: tei, formEmpty: formEmpty, formChanged: formChanged };
+                        return {tei: tei, formEmpty: formEmpty, formChanged: formChanged};
                     }
                 };
             }])
@@ -9817,7 +9860,8 @@ function addNinListener() {
                 };
             }]).factory('EnrollmentUtils', function () {
                 return {
-                    isExpired: function isExpired(program, enrollment) { }
+                    isExpired: function isExpired(program, enrollment) {
+                    }
                 };
             }).factory('TeiAccessApiService', ["$http", "$q", "$modal", function ($http, $q, $modal) {
                 var _auditCancelledSettings = {};
@@ -9953,14 +9997,14 @@ function addNinListener() {
                     extendWithSearchGroups: function extendWithSearchGroups(trackedEntityTypes, attributesById) {
                         angular.forEach(trackedEntityTypes, function (te) {
                             var searchGroups = [];
-                            var group = { attributes: [] };
+                            var group = {attributes: []};
                             if (te.attributes) {
                                 angular.forEach(te.attributes, function (teAttribute) {
                                     var attr = attributesById[teAttribute.attribute];
                                     var searchAttribute = teAttribute;
                                     searchAttribute.attribute = angular.copy(attr);
                                     if (attr.unique) {
-                                        searchGroups.push({ attributes: [searchAttribute] });
+                                        searchGroups.push({attributes: [searchAttribute]});
                                     } else if (searchAttribute.searchable) {
                                         group.attributes.push(searchAttribute);
                                     }
@@ -10122,7 +10166,7 @@ function addNinListener() {
                         return promise;
                     },
                     markPotentialDuplicate: function markPotentialDuplicate(tei) {
-                        var promise = $http.post(DHIS2URL + '/potentialDuplicates/', { teiA: tei.id }).then(function (response) {
+                        var promise = $http.post(DHIS2URL + '/potentialDuplicates/', {teiA: tei.id}).then(function (response) {
                             return response.data;
                         });
                         return promise;
@@ -10163,7 +10207,7 @@ function addNinListener() {
                             if (format) {
                                 attributesById = CurrentSelection.getAttributesById();
                                 if (format === "json") {
-                                    jsonData = { "trackedEntityInstances": [] };
+                                    jsonData = {"trackedEntityInstances": []};
                                     rows = response.data.rows;
                                     headers = response.data.headers;
                                     for (var i = 0; i < rows.length; i++) {
@@ -10247,7 +10291,10 @@ function addNinListener() {
                         var formattedTei = convertFromUserToApi(angular.copy(tei));
                         var attributes = [];
                         angular.forEach(formattedTei.attributes, function (att) {
-                            attributes.push({ attribute: att.attribute, value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API') });
+                            attributes.push({
+                                attribute: att.attribute,
+                                value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API')
+                            });
                         });
                         formattedTei.attributes = attributes;
                         var programFilter = programId ? "?program=" + programId : "";
@@ -10263,21 +10310,26 @@ function addNinListener() {
                         var formattedTei = convertFromUserToApi(angular.copy(tei));
                         var attributes = [];
                         angular.forEach(formattedTei.attributes, function (att) {
-                            attributes.push({ attribute: att.attribute, value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API') });
+                            attributes.push({
+                                attribute: att.attribute,
+                                value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API')
+                            });
                         });
-
 
                         // Check if the key exists in localStorage
                         if (localStorage.getItem('mappedData')) {
-                            try{
+                            try {
                                 // If the key exists, parse it and merge the lists
                                 let myList = JSON.parse(localStorage.getItem('mappedData'));
                                 attributes = mergeLists(myList, attributes);
-                            }catch(err){}
+                            } catch (err) {
+                            }
                         }
 
-                        formattedTei.attributes = attributes;
 
+                        formattedTei.attributes = attributes;
+                        console.log(attributes);
+                        console.log(formattedTei);
                         var promise = $http.post(DHIS2URL + '/trackedEntityInstances', formattedTei).then(function (response) {
                             return response.data;
                         }, function (response) {
@@ -10485,7 +10537,16 @@ function addNinListener() {
 
                             if (!processed && fromEnrollment) {
                                 //attribute was empty, so a chance to put some value
-                                teiAttributes.push({ show: true, order: i, allowFutureDate: requiredAttributes[i].allowFutureDate ? requiredAttributes[i].allowFutureDate : false, mandatory: requiredAttributes[i].mandatory ? requiredAttributes[i].mandatory : false, attribute: requiredAttributes[i].id, displayName: requiredAttributes[i].displayName, type: requiredAttributes[i].valueType, value: '' });
+                                teiAttributes.push({
+                                    show: true,
+                                    order: i,
+                                    allowFutureDate: requiredAttributes[i].allowFutureDate ? requiredAttributes[i].allowFutureDate : false,
+                                    mandatory: requiredAttributes[i].mandatory ? requiredAttributes[i].mandatory : false,
+                                    attribute: requiredAttributes[i].id,
+                                    displayName: requiredAttributes[i].displayName,
+                                    type: requiredAttributes[i].valueType,
+                                    value: ''
+                                });
                             }
                         }
 
@@ -10774,7 +10835,13 @@ function addNinListener() {
 
             /* Returns a function for getting rules for a specific program */
             .factory('TrackerRulesFactory', ["$q", "MetaDataFactory", "$filter", function ($q, MetaDataFactory, $filter) {
-                var staticReplacements = [{ regExp: new RegExp("([^\w\d])(and)([^\w\d])", "gi"), replacement: "$1&&$3" }, { regExp: new RegExp("([^\w\d])(or)([^\w\d])", "gi"), replacement: "$1||$3" }, { regExp: new RegExp("V{execution_date}", "g"), replacement: "V{event_date}" }];
+                var staticReplacements = [{
+                    regExp: new RegExp("([^\w\d])(and)([^\w\d])", "gi"),
+                    replacement: "$1&&$3"
+                }, {
+                    regExp: new RegExp("([^\w\d])(or)([^\w\d])", "gi"),
+                    replacement: "$1||$3"
+                }, {regExp: new RegExp("V{execution_date}", "g"), replacement: "V{event_date}"}];
 
                 var performStaticReplacements = function performStaticReplacements(expression) {
                     angular.forEach(staticReplacements, function (staticReplacement) {
@@ -10906,7 +10973,7 @@ function addNinListener() {
                                     }
                                 });
 
-                                var programIndicators = { rules: programRules, variables: variables };
+                                var programIndicators = {rules: programRules, variables: variables};
 
                                 MetaDataFactory.getByProgram('programRuleVariables', programUid).then(function (programVariables) {
                                     MetaDataFactory.getByProgram('programRules', programUid).then(function (prs) {
@@ -10916,7 +10983,12 @@ function addNinListener() {
                                             rule.programStageId = rule.programStage && rule.programStage.id ? rule.programStage.id : null;
                                             programRules.push(rule);
                                         });
-                                        def.resolve({ constants: constants, programIndicators: programIndicators, programVariables: programVariables, programRules: programRules });
+                                        def.resolve({
+                                            constants: constants,
+                                            programIndicators: programIndicators,
+                                            programVariables: programVariables,
+                                            programRules: programRules
+                                        });
                                     });
                                 });
                             });
@@ -10928,7 +11000,7 @@ function addNinListener() {
 
                 this.getAttributesQuery = function (attributes, enrollment) {
 
-                    var query = { url: null, hasValue: false };
+                    var query = {url: null, hasValue: false};
 
                     angular.forEach(attributes, function (attribute) {
 
@@ -11090,7 +11162,7 @@ function addNinListener() {
                             });
                         }
 
-                        var entityList = { own: [], other: [] };
+                        var entityList = {own: [], other: []};
 
                         var attributesById = CurrentSelection.getAttributesById();
 
@@ -11161,9 +11233,27 @@ function addNinListener() {
                         }
 
                         //also add extra columns which are not part of attributes (orgunit for example)
-                        columns.push({ id: 'orgUnitName', displayName: $translate.instant('registering_unit'), valueType: 'TEXT', displayInListNoProgram: false, attribute: false });
-                        columns.push({ id: 'created', displayName: $translate.instant('registration_date'), valueType: 'DATE', displayInListNoProgram: false, attribute: false });
-                        columns.push({ id: 'inactive', displayName: $translate.instant('inactive'), valueType: 'BOOLEAN', displayInListNoProgram: false, attribute: false });
+                        columns.push({
+                            id: 'orgUnitName',
+                            displayName: $translate.instant('registering_unit'),
+                            valueType: 'TEXT',
+                            displayInListNoProgram: false,
+                            attribute: false
+                        });
+                        columns.push({
+                            id: 'created',
+                            displayName: $translate.instant('registration_date'),
+                            valueType: 'DATE',
+                            displayInListNoProgram: false,
+                            attribute: false
+                        });
+                        columns.push({
+                            id: 'inactive',
+                            displayName: $translate.instant('inactive'),
+                            valueType: 'BOOLEAN',
+                            displayInListNoProgram: false,
+                            attribute: false
+                        });
                         columns = columns.concat(returnAttributes ? returnAttributes : []);
 
                         //generate grid column for the selected program/attributes
@@ -11180,10 +11270,25 @@ function addNinListener() {
                                 filterText[column.id] = {};
                             }
                         });
-                        return { columns: columns, filterTypes: filterTypes, filterText: filterText };
+                        return {columns: columns, filterTypes: filterTypes, filterText: filterText};
                     },
                     makeGridColumns: function makeGridColumns(attributes, config, savedGridColumnsKeyMap) {
-                        var gridColumns = [{ id: 'orgUnitName', displayName: $translate.instant('registering_unit'), show: false, valueType: 'TEXT' }, { id: 'created', displayName: $translate.instant('registration_date'), show: false, valueType: 'DATE' }, { id: 'inactive', displayName: $translate.instant('inactive'), show: false, valueType: 'BOOLEAN' }];
+                        var gridColumns = [{
+                            id: 'orgUnitName',
+                            displayName: $translate.instant('registering_unit'),
+                            show: false,
+                            valueType: 'TEXT'
+                        }, {
+                            id: 'created',
+                            displayName: $translate.instant('registration_date'),
+                            show: false,
+                            valueType: 'DATE'
+                        }, {
+                            id: 'inactive',
+                            displayName: $translate.instant('inactive'),
+                            show: false,
+                            valueType: 'BOOLEAN'
+                        }];
                         setShowGridColumn(gridColumns[0], 0, config, savedGridColumnsKeyMap);
                         setShowGridColumn(gridColumns[1], 1, config, savedGridColumnsKeyMap);
                         setShowGridColumn(gridColumns[2], 2, config, savedGridColumnsKeyMap);
@@ -11193,7 +11298,13 @@ function addNinListener() {
                         angular.forEach(attributes, function (attr) {
                             if (attr.displayInListNoProgram) {
                                 gridColumnIndex++;
-                                var gridColumn = { id: attr.id, displayName: attr.displayName, formName: attr.formName, show: false, valueType: attr.valueType };
+                                var gridColumn = {
+                                    id: attr.id,
+                                    displayName: attr.displayName,
+                                    formName: attr.formName,
+                                    show: false,
+                                    valueType: attr.valueType
+                                };
                                 setShowGridColumn(gridColumn, gridColumnIndex, config, savedGridColumnsKeyMap);
                                 gridColumns.push(gridColumn);
                             }
@@ -11221,9 +11332,27 @@ function addNinListener() {
 
                         if (!existedColumns) {
                             //also add extra columns which are not part of attributes (orgunit for example)
-                            columns.push({ id: 'orgUnitName', displayName: $translate.instant('registering_unit'), valueType: 'TEXT', displayInListNoProgram: false, attribute: false });
-                            columns.push({ id: 'created', displayName: $translate.instant('registration_date'), valueType: 'DATE', displayInListNoProgram: false, attribute: false });
-                            columns.push({ id: 'inactive', displayName: $translate.instant('inactive'), valueType: 'BOOLEAN', displayInListNoProgram: false, attribute: false });
+                            columns.push({
+                                id: 'orgUnitName',
+                                displayName: $translate.instant('registering_unit'),
+                                valueType: 'TEXT',
+                                displayInListNoProgram: false,
+                                attribute: false
+                            });
+                            columns.push({
+                                id: 'created',
+                                displayName: $translate.instant('registration_date'),
+                                valueType: 'DATE',
+                                displayInListNoProgram: false,
+                                attribute: false
+                            });
+                            columns.push({
+                                id: 'inactive',
+                                displayName: $translate.instant('inactive'),
+                                valueType: 'BOOLEAN',
+                                displayInListNoProgram: false,
+                                attribute: false
+                            });
                             columns = columns.concat(returnAttributes ? returnAttributes : []);
                             //generate grid column for the selected program/attributes
                             angular.forEach(columns, function (column) {
@@ -11263,7 +11392,7 @@ function addNinListener() {
                                 }
                             }
                         }
-                        return { columns: columns, filterTypes: filterTypes, filterText: filterText };
+                        return {columns: columns, filterTypes: filterTypes, filterText: filterText};
                     },
                     getData: function getData(rows, columns) {
                         var data = [];
@@ -11311,7 +11440,8 @@ function addNinListener() {
 
                         if (evs.length > 0) {
                             evs = orderByFilter(evs, '-eventDate');
-                            if (programStage.periodType) { } else {
+                            if (programStage.periodType) {
+                            } else {
                                 referenceDate = evs[0].eventDate;
                                 offset = programStage.standardInterval;
                             }
@@ -11355,7 +11485,7 @@ function addNinListener() {
                     angular.forEach(programStage.programStageDataElements, function (prStDe) {
                         if (dhis2Event[prStDe.dataElement.id] || dhis2Event[prStDe.dataElement.id] === 0) {
                             var value = CommonUtils.formatDataValue(dhis2Event.event, dhis2Event[prStDe.dataElement.id], prStDe.dataElement, optionSets, 'API');
-                            var val = { value: value, dataElement: prStDe.dataElement.id };
+                            var val = {value: value, dataElement: prStDe.dataElement.id};
                             if (dhis2Event.providedElsewhere[prStDe.dataElement.id]) {
                                 val.providedElsewhere = dhis2Event.providedElsewhere[prStDe.dataElement.id];
                             }
@@ -11437,7 +11567,7 @@ function addNinListener() {
                         }
                     },
                     autoGenerateEvents: function autoGenerateEvents(teiId, program, orgUnit, enrollment, availableEvent) {
-                        var dhis2Events = { events: [] };
+                        var dhis2Events = {events: []};
                         if (teiId && program && orgUnit && enrollment) {
                             angular.forEach(program.programStages, function (stage) {
                                 if (availableEvent && availableEvent.programStage && availableEvent.programStage === stage.id) {
@@ -11529,30 +11659,58 @@ function addNinListener() {
                     getGridColumns: function getGridColumns(stage, prStDes) {
                         var partial = [],
                             allColumns = [];
-                        partial.push({ id: 'sortingDate', valueType: 'DATE', name: stage.executionDateLabel ? stage.executionDateLabel : $translate.instant('report_date') });
-                        partial.push({ id: 'orgUnitName', valueType: 'TEXT', name: $translate.instant('org_unit') });
-                        allColumns.push({ id: 'sortingDate', valueType: 'DATE', name: stage.executionDateLabel ? stage.executionDateLabel : $translate.instant('report_date') });
-                        allColumns.push({ id: 'orgUnitName', valueType: 'TEXT', name: $translate.instant('org_unit') });
+                        partial.push({
+                            id: 'sortingDate',
+                            valueType: 'DATE',
+                            name: stage.executionDateLabel ? stage.executionDateLabel : $translate.instant('report_date')
+                        });
+                        partial.push({id: 'orgUnitName', valueType: 'TEXT', name: $translate.instant('org_unit')});
+                        allColumns.push({
+                            id: 'sortingDate',
+                            valueType: 'DATE',
+                            name: stage.executionDateLabel ? stage.executionDateLabel : $translate.instant('report_date')
+                        });
+                        allColumns.push({id: 'orgUnitName', valueType: 'TEXT', name: $translate.instant('org_unit')});
                         if (stage.enableUserAssignment) {
-                            partial.push({ id: 'assignedUserUsername', valueType: 'TEXT', name: $translate.instant('assigned_user') });
-                            allColumns.push({ id: 'assignedUserUsername', valueType: 'TEXT', name: $translate.instant('assigned_user') });
+                            partial.push({
+                                id: 'assignedUserUsername',
+                                valueType: 'TEXT',
+                                name: $translate.instant('assigned_user')
+                            });
+                            allColumns.push({
+                                id: 'assignedUserUsername',
+                                valueType: 'TEXT',
+                                name: $translate.instant('assigned_user')
+                            });
                         }
 
-                        var displayInReports = $filter('filter')(stage.programStageDataElements, { displayInReports: true });
+                        var displayInReports = $filter('filter')(stage.programStageDataElements, {displayInReports: true});
                         if (displayInReports.length > 0) {
                             angular.forEach(displayInReports, function (c) {
                                 if (prStDes[c.dataElement.id] && prStDes[c.dataElement.id].dataElement) {
-                                    partial.push({ id: c.dataElement.id, valueType: prStDes[c.dataElement.id].dataElement.valueType, name: prStDes[c.dataElement.id].dataElement.displayFormName });
+                                    partial.push({
+                                        id: c.dataElement.id,
+                                        valueType: prStDes[c.dataElement.id].dataElement.valueType,
+                                        name: prStDes[c.dataElement.id].dataElement.displayFormName
+                                    });
                                 }
                             });
                         }
                         for (var i = 0; i < stage.programStageDataElements.length; i++) {
                             if (i < $rootScope.maxGridColumnSize && displayInReports.length === 0) {
-                                partial.push({ id: stage.programStageDataElements[i].dataElement.id, valueType: stage.programStageDataElements[i].dataElement.valueType, name: prStDes[stage.programStageDataElements[i].dataElement.id].dataElement.displayFormName });
+                                partial.push({
+                                    id: stage.programStageDataElements[i].dataElement.id,
+                                    valueType: stage.programStageDataElements[i].dataElement.valueType,
+                                    name: prStDes[stage.programStageDataElements[i].dataElement.id].dataElement.displayFormName
+                                });
                             }
-                            allColumns.push({ id: stage.programStageDataElements[i].dataElement.id, valueType: stage.programStageDataElements[i].dataElement.valueType, name: prStDes[stage.programStageDataElements[i].dataElement.id].dataElement.displayFormName });
+                            allColumns.push({
+                                id: stage.programStageDataElements[i].dataElement.id,
+                                valueType: stage.programStageDataElements[i].dataElement.valueType,
+                                name: prStDes[stage.programStageDataElements[i].dataElement.id].dataElement.displayFormName
+                            });
                         }
-                        return { partial: partial, all: allColumns };
+                        return {partial: partial, all: allColumns};
                     },
                     getEditingStatus: function getEditingStatus(dhis2Event, stage, orgUnit, tei, enrollment, program, searchOrgUnits) {
                         return dhis2Event.orgUnit !== orgUnit.id || stage.blockEntryForm && dhis2Event.status === 'COMPLETED' || tei.inactive || enrollment.status !== 'ACTIVE';
@@ -11620,7 +11778,7 @@ function addNinListener() {
                     }).result;
                     return modalInstance;
                 };
-                this.eventCreationActions = { add: 'ADD', schedule: 'SCHEDULE', referral: 'REFERRAL' };
+                this.eventCreationActions = {add: 'ADD', schedule: 'SCHEDULE', referral: 'REFERRAL'};
             }]).service('MessagingService', ["$http", "$translate", "NotificationService", "DHIS2URL", function ($http, $translate, NotificationService, DHIS2URL) {
                 return {
                     sendMessage: function sendMessage(message) {
@@ -11661,28 +11819,28 @@ function addNinListener() {
                     var defaultWorkingLists = [{
                         name: "active_enrollment",
                         description: "active_enrollment",
-                        program: { id: program.id },
+                        program: {id: program.id},
                         enrollmentStatus: "ACTIVE",
-                        style: { icon: "fa fa-circle-o" },
+                        style: {icon: "fa fa-circle-o"},
                         sortOrder: 1
                     }, {
                         name: "all_enrollments",
                         description: "all_enrollment",
-                        program: { id: program.id },
-                        style: { icon: "fa fa-list" },
+                        program: {id: program.id},
+                        style: {icon: "fa fa-list"},
                         sortOrder: 0
                     }, {
                         name: "completed_enrollment",
                         description: "completed_enrollment",
-                        program: { id: program.id },
-                        style: { icon: "fa fa-check" },
+                        program: {id: program.id},
+                        style: {icon: "fa fa-check"},
                         enrollmentStatus: "COMPLETED",
                         sortOrder: 2
                     }, {
                         name: "cancelled_enrollment",
                         description: "cancelled_enrollment",
-                        program: { id: program.id },
-                        style: { icon: "fa fa-times" },
+                        program: {id: program.id},
+                        style: {icon: "fa fa-times"},
                         enrollmentStatus: "CANCELLED",
                         sortOrder: 3
                     }];
@@ -11721,7 +11879,7 @@ function addNinListener() {
                 };
                 var getCachedMultipleEventFiltersData = function getCachedMultipleEventFiltersData(workingList, pager, sortColumn) {
                     var cachedData = cachedMultipleEventFiltersData[workingList.name];
-                    if (!pager) pager = { page: 1, pageSize: 50, pageCount: Math.ceil(cachedData.rows.length / 50) };
+                    if (!pager) pager = {page: 1, pageSize: 50, pageCount: Math.ceil(cachedData.rows.length / 50)};
                     var pageEnd = pager.pageSize * pager.page;
                     var pageStart = pageEnd - pager.pageSize;
 
@@ -11731,7 +11889,7 @@ function addNinListener() {
                         height: pageRows.length,
                         width: cachedData.width,
                         headers: cachedData.headers,
-                        metaData: { pager: pager }
+                        metaData: {pager: pager}
                     };
                     return data;
                 };
@@ -11751,7 +11909,7 @@ function addNinListener() {
                             promises.push(TEIService.search(searchParams.orgUnitId, "SELECTED", searchParams.sortUrl, searchParams.programUrl, eventUrl, tempPager, true));
                         });
                         $q.all(promises).then(function (response) {
-                            var data = { height: 0, width: 0, rows: [] };
+                            var data = {height: 0, width: 0, rows: []};
                             var existingTeis = {};
                             var allRows = [];
                             angular.forEach(response, function (responseData) {
@@ -11848,15 +12006,20 @@ function addNinListener() {
                 var trackedEntityTypeSearchConfigsById = {};
                 var defaultOperators = OperatorFactory.defaultOperators;
                 var textOperators = OperatorFactory.textOperators;
-                var searchScopes = { PROGRAM: "PROGRAM", TET: "TET" };
+                var searchScopes = {PROGRAM: "PROGRAM", TET: "TET"};
 
                 this.getSearchScopes = function () {
                     return searchScopes;
                 };
                 var makeSearchConfig = function makeSearchConfig(dimensionAttributes, minAttributesRequiredToSearch, orgUnitUniqueAsSearchGroup) {
-                    var searchConfig = { searchGroups: [], searchGroupsByAttributeId: {} };
+                    var searchConfig = {searchGroups: [], searchGroupsByAttributeId: {}};
                     if (dimensionAttributes) {
-                        var defaultSearchGroup = { id: dhis2.util.uid(), attributes: [], ouMode: { name: 'ACCESSIBLE' }, orgunitUnique: false };
+                        var defaultSearchGroup = {
+                            id: dhis2.util.uid(),
+                            attributes: [],
+                            ouMode: {name: 'ACCESSIBLE'},
+                            orgunitUnique: false
+                        };
                         var attributes = AttributesFactory.generateAttributeFilters(angular.copy(dimensionAttributes));
                         angular.forEach(attributes, function (attr) {
                             if (attr.searchable || attr.unique && !attr.orgunitScope) {
@@ -11869,10 +12032,10 @@ function addNinListener() {
                                         uniqueGroup: true,
                                         orgunitUnique: uniqueAttr.orgunitScope,
                                         attributes: [uniqueAttr],
-                                        ouMode: { name: 'ACCESSIBLE' },
+                                        ouMode: {name: 'ACCESSIBLE'},
                                         minAttributesRequiredToSearch: 1
                                     };
-                                    if (uniqueAttr.orgunitScope) uniqueSearchGroup.ouMode = { name: 'SELECTED' };
+                                    if (uniqueAttr.orgunitScope) uniqueSearchGroup.ouMode = {name: 'SELECTED'};
                                     searchConfig.searchGroups.push(uniqueSearchGroup);
                                     searchConfig.searchGroupsByAttributeId[uniqueAttr.id].unique = uniqueSearchGroup;
                                 }
@@ -11895,7 +12058,7 @@ function addNinListener() {
                     var uniqueSearch = false;
                     var numberOfSetAttributes = 0;
                     var filteredAttributes = {};
-                    var query = { url: null, hasValue: false };
+                    var query = {url: null, hasValue: false};
                     if (searchGroup) {
                         angular.forEach(searchGroup.attributes, function (attr) {
                             if (searchGroup.uniqueGroup) uniqueSearch = true;
@@ -12009,7 +12172,15 @@ function addNinListener() {
                         var programOrTETUrl = searchScope === searchScopes.PROGRAM ? "program=" + program.id : "trackedEntityType=" + trackedEntityType.id;
 
                         var searchOrgUnit = searchGroup.orgUnit ? searchGroup.orgUnit : orgUnit;
-                        return { orgUnit: searchOrgUnit, ouMode: searchGroup.ouMode.name, programOrTETUrl: programOrTETUrl, queryUrl: query.url, pager: pager, paging: !uniqueSearch, uniqueSearch: uniqueSearch };
+                        return {
+                            orgUnit: searchOrgUnit,
+                            ouMode: searchGroup.ouMode.name,
+                            programOrTETUrl: programOrTETUrl,
+                            queryUrl: query.url,
+                            pager: pager,
+                            paging: !uniqueSearch,
+                            uniqueSearch: uniqueSearch
+                        };
                     }
                 };
 
@@ -12140,7 +12311,12 @@ function addNinListener() {
                                 if (onEditHeadersFromReponse) {
                                     response.headers = onEditHeadersFromReponse(response.headers, program.programTrackedEntityAttributes);
                                 }
-                                var result = { data: response, callingScope: searchScopes.PROGRAM, resultScope: searchScopes.PROGRAM, onRefetch: programScopeFetchAsyncFn };
+                                var result = {
+                                    data: response,
+                                    callingScope: searchScopes.PROGRAM,
+                                    resultScope: searchScopes.PROGRAM,
+                                    onRefetch: programScopeFetchAsyncFn
+                                };
 
                                 var def = $q.defer();
                                 if (params.uniqueSearch) {
@@ -12156,18 +12332,18 @@ function addNinListener() {
                                         result.callingScope = searchScopes.PROGRAM;
                                         return result;
                                     }, function () {
-                                        return { status: "NOMATCH" };
+                                        return {status: "NOMATCH"};
                                     });
                                 } else {
                                     var def = $q.defer();
-                                    def.resolve({ status: "NOMATCH" });
+                                    def.resolve({status: "NOMATCH"});
                                     return def.promise;
                                 }
                             }
                         }, function (error) {
                             var d = $q.defer();
                             if (error && error.data && error.data.message === "maxteicountreached") {
-                                d.resolve({ status: "TOOMANYMATCHES", data: null });
+                                d.resolve({status: "TOOMANYMATCHES", data: null});
                             } else {
                                 d.reject(error);
                             }
@@ -12175,7 +12351,7 @@ function addNinListener() {
                         });
                     } else {
                         var def = $q.defer();
-                        def.resolve({ status: "NOMATCH" });
+                        def.resolve({status: "NOMATCH"});
                         return def.promise;
                     }
                 };
@@ -12191,7 +12367,12 @@ function addNinListener() {
                             if (onEditHeadersFromReponse) {
                                 response.headers = onEditHeadersFromReponse(response.headers, trackedEntityType.trackedEntityTypeAttributes);
                             }
-                            var result = { data: response, callingScope: searchScopes.TET, resultScope: searchScopes.TET, onRefetch: tetScopeFetchAsyncFn };
+                            var result = {
+                                data: response,
+                                callingScope: searchScopes.TET,
+                                resultScope: searchScopes.TET,
+                                onRefetch: tetScopeFetchAsyncFn
+                            };
                             if (response && response.rows && response.rows.length > 0) {
                                 if (params.uniqueSearch) {
                                     result.status = "UNIQUE";
@@ -12205,7 +12386,7 @@ function addNinListener() {
                         }, function (error) {
                             var d = $q.defer();
                             if (error && error.data && error.data.message === "maxteicountreached") {
-                                d.resolve({ status: "TOOMANYMATCHES", data: null });
+                                d.resolve({status: "TOOMANYMATCHES", data: null});
                             } else {
                                 d.reject(error);
                             }
@@ -12213,7 +12394,7 @@ function addNinListener() {
                         });
                     } else {
                         var def = $q.defer();
-                        def.resolve({ status: "NOMATCH" });
+                        def.resolve({status: "NOMATCH"});
                         return def.promise;
                     }
                 };
@@ -12236,7 +12417,7 @@ function addNinListener() {
 
                         if (!event || event === 'registration') return;
 
-                        //In case the 
+                        //In case the
                         if (ruleBoundData.lastEventUpdated !== event) {
                             ruleBoundData.displayTextEffects = {};
                             ruleBoundData.displayKeyDataEffects = {};
@@ -12356,9 +12537,9 @@ function addNinListener() {
             }]);
 
         /***/
-}),
-/* 15 */
-/***/ (function (module, exports) {
+    }),
+    /* 15 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -12402,9 +12583,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 16 */
-/***/ (function (module, exports) {
+    }),
+    /* 16 */
+    /***/ (function (module, exports) {
 
         /* global directive, selection, dhis2, angular */
 
@@ -12478,7 +12659,7 @@ function addNinListener() {
                     deleteActionCustom: '=', //optional
                     skipActionCustom: '=', //optional
                     unskipActionCustom: '=', //optional
-                    notesActionCustom: '=', //optional            
+                    notesActionCustom: '=', //optional
                     applicableButtons: '=', //optional
                     actions: '=',
                     allEvents: '=',
@@ -12598,13 +12779,62 @@ function addNinListener() {
                     };
 
                     $scope.eventTableOptions = {};
-                    $scope.eventTableOptions[COMPLETE] = { text: "Complete", tooltip: 'Complete', icon: "<span class='glyphicon glyphicon-check'></span>", value: COMPLETE, onClick: $scope.completeAction, sort: 0 };
-                    $scope.eventTableOptions[INCOMPLETE] = { text: "Reopen", tooltip: 'Reopen', icon: "<span class='glyphicon glyphicon-pencil'></span>", value: INCOMPLETE, onClick: $scope.reopenAction, sort: 1 };
-                    $scope.eventTableOptions[VALIDATE] = { text: "Validate", tooltip: 'Validate', icon: "<span class='glyphicon glyphicon-cog'></span>", value: VALIDATE, onClick: $scope.validateAction, sort: 2 };
-                    $scope.eventTableOptions[DELETE] = { text: "Delete", tooltip: 'Delete', icon: "<span class='glyphicon glyphicon-floppy-remove'></span>", value: DELETE, onClick: $scope.deleteAction, sort: 3 };
-                    $scope.eventTableOptions[SKIP] = { text: "Skip", tooltip: 'Skip', icon: "<span class='glyphicon glyphicon-step-forward'></span>", value: SKIP, onClick: $scope.skipAction, sort: 4 };
-                    $scope.eventTableOptions[UNSKIP] = { text: "Schedule back", tooltip: 'Schedule back', icon: "<span class='glyphicon glyphicon-step-backward'></span>", value: UNSKIP, onClick: $scope.unskipAction, sort: 5 };
-                    $scope.eventTableOptions[NOTE] = { text: "Notes", tooltip: 'Show notes', icon: "<span class='glyphicon glyphicon-list-alt'></span>", value: NOTE, onClick: $scope.showNotes, sort: 6 };
+                    $scope.eventTableOptions[COMPLETE] = {
+                        text: "Complete",
+                        tooltip: 'Complete',
+                        icon: "<span class='glyphicon glyphicon-check'></span>",
+                        value: COMPLETE,
+                        onClick: $scope.completeAction,
+                        sort: 0
+                    };
+                    $scope.eventTableOptions[INCOMPLETE] = {
+                        text: "Reopen",
+                        tooltip: 'Reopen',
+                        icon: "<span class='glyphicon glyphicon-pencil'></span>",
+                        value: INCOMPLETE,
+                        onClick: $scope.reopenAction,
+                        sort: 1
+                    };
+                    $scope.eventTableOptions[VALIDATE] = {
+                        text: "Validate",
+                        tooltip: 'Validate',
+                        icon: "<span class='glyphicon glyphicon-cog'></span>",
+                        value: VALIDATE,
+                        onClick: $scope.validateAction,
+                        sort: 2
+                    };
+                    $scope.eventTableOptions[DELETE] = {
+                        text: "Delete",
+                        tooltip: 'Delete',
+                        icon: "<span class='glyphicon glyphicon-floppy-remove'></span>",
+                        value: DELETE,
+                        onClick: $scope.deleteAction,
+                        sort: 3
+                    };
+                    $scope.eventTableOptions[SKIP] = {
+                        text: "Skip",
+                        tooltip: 'Skip',
+                        icon: "<span class='glyphicon glyphicon-step-forward'></span>",
+                        value: SKIP,
+                        onClick: $scope.skipAction,
+                        sort: 4
+                    };
+                    $scope.eventTableOptions[UNSKIP] = {
+                        text: "Schedule back",
+                        tooltip: 'Schedule back',
+                        icon: "<span class='glyphicon glyphicon-step-backward'></span>",
+                        value: UNSKIP,
+                        onClick: $scope.unskipAction,
+                        sort: 5
+                    };
+                    $scope.eventTableOptions[NOTE] = {
+                        text: "Notes",
+                        tooltip: 'Show notes',
+                        icon: "<span class='glyphicon glyphicon-list-alt'></span>",
+                        value: NOTE,
+                        onClick: $scope.showNotes,
+                        sort: 6
+                    };
 
                     $scope.event.validatedEventDate = $scope.event.eventDate;
 
@@ -12714,7 +12944,7 @@ function addNinListener() {
                         }
                     }
 
-                    //-----------                
+                    //-----------
                     $scope.notesModal = function () {
 
                         var def = $q.defer();
@@ -12723,7 +12953,7 @@ function addNinListener() {
                         if ($scope.event.notes) {
                             for (var i = 0; i < $scope.event.notes.length; i++) {
                                 var currentNote = $scope.event.notes[i];
-                                bodyList.push({ value1: currentNote.storedDate, value2: currentNote.value });
+                                bodyList.push({value1: currentNote.storedDate, value2: currentNote.value});
                             }
                         }
 
@@ -12732,7 +12962,12 @@ function addNinListener() {
                             textAreaButtonText: 'Add',
                             textAreaButtonShow: $scope.event.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true,
                             headerText: 'Notes',
-                            bodyTextAreas: [{ model: 'note', placeholder: 'Add another note here', required: true, show: $scope.event.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true }],
+                            bodyTextAreas: [{
+                                model: 'note',
+                                placeholder: 'Add another note here',
+                                required: true,
+                                show: $scope.event.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true
+                            }],
                             bodyList: bodyList,
                             currentEvent: $scope.event
                         };
@@ -12763,7 +12998,7 @@ function addNinListener() {
 
                                 $scope.addNote = function () {
 
-                                    var newNote = { value: $scope.note };
+                                    var newNote = {value: $scope.note};
                                     var date = DateUtils.formatToHrsMins(new Date());
 
                                     var e = {
@@ -12777,11 +13012,20 @@ function addNinListener() {
 
                                     DHIS2EventFactory.updateForNote(e).then(function (data) {
                                         if (angular.isUndefined($scope.modalOptions.bodyList) || $scope.modalOptions.bodyList.length === 0) {
-                                            $scope.modalOptions.bodyList = [{ value1: date, value2: newNote.value }];
-                                            $scope.modalOptions.currentEvent.notes = [{ storedDate: date, value: newNote.value }];
+                                            $scope.modalOptions.bodyList = [{value1: date, value2: newNote.value}];
+                                            $scope.modalOptions.currentEvent.notes = [{
+                                                storedDate: date,
+                                                value: newNote.value
+                                            }];
                                         } else {
-                                            $scope.modalOptions.bodyList.splice(0, 0, { value1: date, value2: newNote.value });
-                                            $scope.modalOptions.currentEvent.notes.splice(0, 0, { storedDate: date, value: newNote.value });
+                                            $scope.modalOptions.bodyList.splice(0, 0, {
+                                                value1: date,
+                                                value2: newNote.value
+                                            });
+                                            $scope.modalOptions.currentEvent.notes.splice(0, 0, {
+                                                storedDate: date,
+                                                value: newNote.value
+                                            });
                                         }
                                         $scope.note = $scope.textAreaValues["note"] = "";
                                     });
@@ -12861,7 +13105,7 @@ function addNinListener() {
 
                         /*
                         dhis2EventToUpdate.dataValues = [];
-                        
+
                         for(var key in $scope.event[assocValuesProp]){
                             dhis2EventToUpdate.dataValues.push($scope.event[assocValuesProp][key]);
                         } */
@@ -12906,7 +13150,8 @@ function addNinListener() {
                 scope: {
                     body: '='
                 },
-                controller: ['$scope', '$translate', function ($scope, $translate) { }]
+                controller: ['$scope', '$translate', function ($scope, $translate) {
+                }]
             };
         }).directive('trackerTeiList', function () {
             return {
@@ -12949,7 +13194,7 @@ function addNinListener() {
                                     columnAttributes.push(attr);
                                 }
                             });
-                            var gridColumnConfig = { showAll: true };
+                            var gridColumnConfig = {showAll: true};
                             $scope.gridColumns = TEIGridService.makeGridColumns(columnAttributes, gridColumnConfig);
                         }
                     };
@@ -12960,29 +13205,29 @@ function addNinListener() {
                         if ($scope.sortColumn && $scope.sortColumn.id === gridHeader.id) {
                             $scope.sortColumn.direction = $scope.sortColumn.direction === 'asc' ? 'desc' : 'asc';
                         } else if (!$scope.sortColumn) {
-                            $scope.sortColumn = { id: gridHeader.id, direction: 'asc' };
+                            $scope.sortColumn = {id: gridHeader.id, direction: 'asc'};
                         } else {
                             $scope.sortColumn.id = gridHeader.id;
                             $scope.sortColumn.direction = 'asc';
                         }
                         $scope.pager = undefined;
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.onTeiClickedInternal = function (tei) {
-                        $scope.onTeiClicked({ tei: tei });
+                        $scope.onTeiClicked({tei: tei});
                     };
 
                     $scope.onMarkDuplicateInternal = function (tei) {
-                        $scope.onMarkDuplicate({ tei: tei });
+                        $scope.onMarkDuplicate({tei: tei});
                     };
 
                     $scope.onUnMarkDuplicateInternal = function (tei) {
-                        $scope.onUnMarkDuplicate({ tei: tei });
+                        $scope.onUnMarkDuplicate({tei: tei});
                     };
 
                     $scope.onGetDuplicateInternal = function (tei) {
-                        var dupe = $scope.onGetDuplicate({ tei: tei });
+                        var dupe = $scope.onGetDuplicate({tei: tei});
                         if (dupe) {
                             return true;
                         } else {
@@ -12993,19 +13238,19 @@ function addNinListener() {
                     $scope.getPage = function (page) {
                         $scope.pager.page = page;
 
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.resetPageSize = function () {
                         $scope.pager.page = 1;
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.jumpToPage = function () {
                         if ($scope.pager && $scope.pager.page && $scope.pager.pageCount && $scope.pager.page > $scope.pager.pageCount) {
                             $scope.pager.page = $scope.pager.pageCount;
                         }
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
                 }]
             };
@@ -13065,7 +13310,7 @@ function addNinListener() {
                                     columnAttributes.push(attr);
                                 }
                             });
-                            var gridColumnConfig = { showAll: true };
+                            var gridColumnConfig = {showAll: true};
                             $scope.gridColumns = TEIGridService.makeGridColumns(columnAttributes, gridColumnConfig);
                         }
                     };
@@ -13076,28 +13321,28 @@ function addNinListener() {
                         if ($scope.sortColumn && $scope.sortColumn.id === gridHeader.id) {
                             $scope.sortColumn.direction = $scope.sortColumn.direction === 'asc' ? 'desc' : 'asc';
                         } else if (!$scope.sortColumn) {
-                            $scope.sortColumn = { id: gridHeader.id, direction: 'asc' };
+                            $scope.sortColumn = {id: gridHeader.id, direction: 'asc'};
                         } else {
                             $scope.sortColumn.id = gridHeader.id;
                             $scope.sortColumn.direction = 'asc';
                         }
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.onTeiClickedInternal = function (tei) {
-                        $scope.onTeiClicked({ tei: tei });
+                        $scope.onTeiClicked({tei: tei});
                     };
 
                     $scope.onMarkDuplicateInternal = function (tei) {
-                        $scope.onMarkDuplicate({ tei: tei });
+                        $scope.onMarkDuplicate({tei: tei});
                     };
 
                     $scope.onUnMarkDuplicateInternal = function (tei) {
-                        $scope.onUnMarkDuplicate({ tei: tei });
+                        $scope.onUnMarkDuplicate({tei: tei});
                     };
 
                     $scope.onGetDuplicateInternal = function (tei) {
-                        var dupe = $scope.onGetDuplicate({ tei: tei });
+                        var dupe = $scope.onGetDuplicate({tei: tei});
                         if (dupe) {
                             return true;
                         } else {
@@ -13107,27 +13352,27 @@ function addNinListener() {
 
                     $scope.onGetPage = function (page) {
                         $scope.pager.page = page;
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.onChangePageSize = function (newPageSize) {
                         $scope.pager.page = 1;
                         $scope.pager.pageSize = newPageSize;
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
 
                     $scope.onChangePage = function (newPage) {
                         $scope.pager.page = newPage;
-                        $scope.refetchData({ pager: $scope.pager, sortColumn: $scope.sortColumn });
+                        $scope.refetchData({pager: $scope.pager, sortColumn: $scope.sortColumn});
                     };
                 }]
             };
         });
 
         /***/
-}),
-/* 17 */
-/***/ (function (module, exports) {
+    }),
+    /* 17 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13145,9 +13390,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 18 */
-/***/ (function (module, exports) {
+    }),
+    /* 18 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13176,9 +13421,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 19 */
-/***/ (function (module, exports) {
+    }),
+    /* 19 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13192,9 +13437,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 20 */
-/***/ (function (module, exports) {
+    }),
+    /* 20 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13212,7 +13457,9 @@ function addNinListener() {
                         disabled: '=disabledSticky'
                     },
                     link: function linkFn($scope, $elem, $attrs) {
-                        var mediaQuery, stickyClass, unstickyClass, bodyClass, elem, $body, doc, initialCSS, initialStyle, isSticking, stickyLine, stickyBottomLine, offset, anchor, confine, prevOffset, matchMedia, usePlaceholder, placeholder;
+                        var mediaQuery, stickyClass, unstickyClass, bodyClass, elem, $body, doc, initialCSS,
+                            initialStyle, isSticking, stickyLine, stickyBottomLine, offset, anchor, confine, prevOffset,
+                            matchMedia, usePlaceholder, placeholder;
 
                         $scope.initSticky = function () {
                             isSticking = false;
@@ -13547,9 +13794,9 @@ function addNinListener() {
         })();
 
         /***/
-}),
-/* 21 */
-/***/ (function (module, exports) {
+    }),
+    /* 21 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13669,12 +13916,13 @@ function addNinListener() {
 
                     return def.promise;
                 };
-            }]); /**
-      * ng-csv module
-      * Export Javascript's arrays to csv files from the browser
-      *
-      * Author: asafdav - https://github.com/asafdav
-      */
+            }]);
+            /**
+             * ng-csv module
+             * Export Javascript's arrays to csv files from the browser
+             *
+             * Author: asafdav - https://github.com/asafdav
+             */
             angular.module('ngCsv.directives').directive('ngCsv', ['$parse', '$q', 'CSV', '$document', '$timeout', function ($parse, $q, CSV, $document, $timeout) {
                 return {
                     restrict: 'AC',
@@ -13763,9 +14011,9 @@ function addNinListener() {
         })(window, document);
 
         /***/
-}),
-/* 22 */
-/***/ (function (module, exports) {
+    }),
+    /* 22 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -13805,7 +14053,7 @@ function addNinListener() {
             $scope.displayEnrollment = false;
             $scope.dataEntryMainMenuItemSelected = false;
             $scope.metaDataCached = false;
-            $scope.model = { orgUnitClosed: false };
+            $scope.model = {orgUnitClosed: false};
             if (!dhis2.tc.metaDataCached) {
                 downloadMetaData().then(function () {
                     updateDashboard();
@@ -13944,7 +14192,7 @@ function addNinListener() {
                                                     });
                                                 }
 
-                                                ProgramFactory.getProgramsByOu($scope.selectedOrgUnit, selectedEnrollment ? true : false, selectedEnrollment ? { id: selectedEnrollment.program } : null).then(function (response) {
+                                                ProgramFactory.getProgramsByOu($scope.selectedOrgUnit, selectedEnrollment ? true : false, selectedEnrollment ? {id: selectedEnrollment.program} : null).then(function (response) {
                                                     $scope.programs = [];
                                                     $scope.programNames = [];
                                                     $scope.programStageNames = [];
@@ -14013,7 +14261,7 @@ function addNinListener() {
                 $rootScope.dashboardWidgets = [];
                 $scope.widgetsChanged = [];
                 $scope.dashboardStatus = [];
-                $scope.dashboardWidgetsOrder = { biggerWidgets: [], smallerWidgets: [] };
+                $scope.dashboardWidgetsOrder = {biggerWidgets: [], smallerWidgets: []};
                 $scope.orderChanged = false;
 
                 DashboardLayoutService.getLockedList().then(function (r) {
@@ -14064,7 +14312,7 @@ function addNinListener() {
                     }
 
                     $scope.hasBigger = false;
-                    angular.forEach(orderByFilter($filter('filter')($scope.dashboardWidgets, { parent: "biggerWidget" }), 'order'), function (w) {
+                    angular.forEach(orderByFilter($filter('filter')($scope.dashboardWidgets, {parent: "biggerWidget"}), 'order'), function (w) {
                         if (w.show) {
                             $scope.hasBigger = true;
                         }
@@ -14072,7 +14320,7 @@ function addNinListener() {
                     });
 
                     $scope.hasSmaller = false;
-                    angular.forEach(orderByFilter($filter('filter')($scope.dashboardWidgets, { parent: "smallerWidget" }), 'order'), function (w) {
+                    angular.forEach(orderByFilter($filter('filter')($scope.dashboardWidgets, {parent: "smallerWidget"}), 'order'), function (w) {
                         if (w.show) {
                             $scope.hasSmaller = true;
                         }
@@ -14095,14 +14343,14 @@ function addNinListener() {
 
             var setWidgetsSize = function setWidgetsSize() {
 
-                $scope.widgetSize = { smaller: "col-sm-6 col-md-4", bigger: "col-sm-6 col-md-8" };
+                $scope.widgetSize = {smaller: "col-sm-6 col-md-4", bigger: "col-sm-6 col-md-8"};
 
                 if (!$scope.hasSmaller) {
-                    $scope.widgetSize = { smaller: "col-sm-1", bigger: "col-sm-11" };
+                    $scope.widgetSize = {smaller: "col-sm-1", bigger: "col-sm-11"};
                 }
 
                 if (!$scope.hasBigger) {
-                    $scope.widgetSize = { smaller: "col-sm-11", bigger: "col-sm-1" };
+                    $scope.widgetSize = {smaller: "col-sm-11", bigger: "col-sm-1"};
                 }
             };
 
@@ -14149,7 +14397,12 @@ function addNinListener() {
                     widgets.push(w);
                 });
 
-                return { widgets: widgets, topBarSettings: $scope.topBarConfig.settings, program: $scope.selectedProgram && $scope.selectedProgram.id ? $scope.selectedProgram.id : 'DEFAULT', programStageTimeLineLayout: DashboardLayoutService.getProgramStageLayout() };
+                return {
+                    widgets: widgets,
+                    topBarSettings: $scope.topBarConfig.settings,
+                    program: $scope.selectedProgram && $scope.selectedProgram.id ? $scope.selectedProgram.id : 'DEFAULT',
+                    programStageTimeLineLayout: DashboardLayoutService.getProgramStageLayout()
+                };
             }
 
             function saveDashboardLayout() {
@@ -14251,9 +14504,16 @@ function addNinListener() {
                 if (pr) {
                     $scope.selectedProgram = pr;
                 } else {
-                    $location.path('/dashboard').search({ ou: $scope.selectedOrgUnit.id, tei: $scope.selectedTei.trackedEntityInstance });
+                    $location.path('/dashboard').search({
+                        ou: $scope.selectedOrgUnit.id,
+                        tei: $scope.selectedTei.trackedEntityInstance
+                    });
                 }
-                $location.path('/dashboard').search({ program: pr.id, ou: $scope.selectedOrgUnit.id, tei: $scope.selectedTei.trackedEntityInstance });
+                $location.path('/dashboard').search({
+                    program: pr.id,
+                    ou: $scope.selectedOrgUnit.id,
+                    tei: $scope.selectedTei.trackedEntityInstance
+                });
             };
 
             $scope.broadCastSelections = function (tei) {
@@ -14292,13 +14552,13 @@ function addNinListener() {
                 });
                 $timeout(function () {
                     selectedItemsBroadcasted = true;
-                    $rootScope.$broadcast('selectedItems', { programExists: $scope.programs.length > 0 });
+                    $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});
                 }, 500);
             };
 
             $scope.$on('registrationControllerReady', function () {
                 if (!registrationWidgetReady && selectedItemsBroadcasted) {
-                    $rootScope.$broadcast('selectedItems', { programExists: $scope.programs.length > 0 });
+                    $rootScope.$broadcast('selectedItems', {programExists: $scope.programs.length > 0});
                 }
                 registrationWidgetReady = true;
             });
@@ -14320,7 +14580,8 @@ function addNinListener() {
                         setInactiveMessage();
                         $scope.broadCastSelections($scope.selectedTei);
                     });
-                }, function () { });
+                }, function () {
+                });
             };
 
             var canDeleteTei = function canDeleteTei() {
@@ -14375,7 +14636,7 @@ function addNinListener() {
                 if (!$scope.dataEntryMainMenuItemSelected) {
                     //reload OU tree
                     selection.load();
-                    $location.path('/').search({ program: $scope.selectedProgramId });
+                    $location.path('/').search({program: $scope.selectedProgramId});
                 } else {
                     $rootScope.$broadcast('DashboardBackClicked');
                     $scope.dataEntryMainMenuItemSelected = false;
@@ -14405,7 +14666,8 @@ function addNinListener() {
                 ModalService.showModal({}, modalOptions).then(function (result) {
                     widget.show = false;
                     saveDashboardLayout();
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.expandCollapse = function (widget) {
@@ -14419,7 +14681,8 @@ function addNinListener() {
                     controller: "DashboardWidgetsController"
                 });
 
-                modalInstance.result.then(function () { });
+                modalInstance.result.then(function () {
+                });
             };
 
             $rootScope.closeOpenWidget = function () {
@@ -14457,7 +14720,11 @@ function addNinListener() {
                 } else {
                     tei = $scope.sortedTeiIds[current - 1];
                 }
-                $location.path('/dashboard').search({ tei: tei, program: pr ? pr : null, ou: orgUnitUrl ? orgUnitUrl : null });
+                $location.path('/dashboard').search({
+                    tei: tei,
+                    program: pr ? pr : null,
+                    ou: orgUnitUrl ? orgUnitUrl : null
+                });
             };
 
             $scope.showManageTeiDropdown = function () {
@@ -14466,9 +14733,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 23 */
-/***/ (function (module, exports) {
+    }),
+    /* 23 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -14482,13 +14749,23 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 24 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 24 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         'use strict';
 
-        var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; /* global trackerCapture, angular */
+        var _extends = Object.assign || function (target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        }; /* global trackerCapture, angular */
 
 
         var _processRegistration = __webpack_require__(25);
@@ -14510,13 +14787,13 @@ function addNinListener() {
             $scope.mandatoryFields = [];
             $scope.currentEvent = null;
             $scope.completeEventOnRegistration = null;
-            $scope.completeStageInfo = { description: $translate.instant("complete_stage_info") };
+            $scope.completeStageInfo = {description: $translate.instant("complete_stage_info")};
             $scope.prStDes = null;
             $scope.registrationAndDataEntry = false;
-            $scope.model = { autoGeneratedAttFailed: false, savingRegistration: false };
+            $scope.model = {autoGeneratedAttFailed: false, savingRegistration: false};
             $scope.helpTexts = {};
             $scope.registrationMode = 'REGISTRATION';
-            var flag = { debug: true, verbose: $location.search().verbose ? true : false };
+            var flag = {debug: true, verbose: $location.search().verbose ? true : false};
             $rootScope.ruleeffects = {};
             $scope.userAuthority = AuthorityService.getUserAuthorities(SessionStorageService.get('USER_PROFILE'));
 
@@ -14586,7 +14863,7 @@ function addNinListener() {
                 orgUnitName: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.displayName : ""
             };
 
-            $scope.trackedEntityTypes = { available: [] };
+            $scope.trackedEntityTypes = {available: []};
             var trackedEntityTypesById = {};
 
             var loadTrackedEntityTypes = function loadTrackedEntityTypes() {
@@ -14906,7 +15183,7 @@ function addNinListener() {
                     $scope.apiFormattedTei = {};
                     $scope.currentEvent = {};
                     $timeout(function () {
-                        $rootScope.$broadcast('registrationWidget', { registrationMode: 'REGISTRATION' });
+                        $rootScope.$broadcast('registrationWidget', {registrationMode: 'REGISTRATION'});
                     });
                 }
             };
@@ -14982,7 +15259,7 @@ function addNinListener() {
                                 if ($scope.returnUrl) {
                                     $location.path(atob(returnUrl));
                                 } else {
-                                    $location.path('/').search({ program: $scope.selectedProgram.id });
+                                    $location.path('/').search({program: $scope.selectedProgram.id});
                                 }
                             }
                         } else {
@@ -15048,7 +15325,7 @@ function addNinListener() {
                 $rootScope.$broadcast('teienrolled', {});
             }
 
-            /* 
+            /*
             We decided to temporarily(?) remove the ongoing checks for duplicates and run them only when the form is submitted.
             This was due to the performance problems in Bangladesh. This is the event handler for the submit click.
             */
@@ -15175,7 +15452,7 @@ function addNinListener() {
                     var enrollment = $scope.selectedEnrollment && $scope.selectedEnrollment.orgUnit ? $scope.selectedEnrollment : null;
                     var evs = null;
                     if (eventExists) {
-                        evs = { all: [], byStage: {} };
+                        evs = {all: [], byStage: {}};
                         evs.all = [$scope.currentEvent];
                         evs.byStage[$scope.currentStage.id] = [$scope.currentEvent];
                     }
@@ -15482,13 +15759,13 @@ function addNinListener() {
                             skipTotalPages: true
                         });
                         $scope.openTei = function (tei) {
-                            $modalInstance.close({ action: "OPENTEI", tei: tei });
+                            $modalInstance.close({action: "OPENTEI", tei: tei});
                         };
                         $scope.register = function (destination) {
-                            $modalInstance.close({ action: "REGISTERTEI", destination: destination });
+                            $modalInstance.close({action: "REGISTERTEI", destination: destination});
                         };
                         $scope.cancel = function () {
-                            $modalInstance.close({ action: "CANCEL" });
+                            $modalInstance.close({action: "CANCEL"});
                         };
                         $scope.refetchData = function (pager, sortColumn) {
                             $scope.error = false;
@@ -15562,10 +15839,10 @@ function addNinListener() {
                         $scope.translateWithTEAName = modalData.translateWithTEAName;
                         $scope.translateWithTETName = modalData.translateWithTETName;
                         $scope.openTei = function (tei) {
-                            $modalInstance.close({ action: "OPENTEI", tei: tei });
+                            $modalInstance.close({action: "OPENTEI", tei: tei});
                         };
                         $scope.cancel = function () {
-                            $modalInstance.close({ action: "CANCEL" });
+                            $modalInstance.close({action: "CANCEL"});
                         };
                     }],
                     resolve: {
@@ -15608,7 +15885,7 @@ function addNinListener() {
                     windowClass: 'modal-full-window',
                     resolve: {
                         location: function location() {
-                            return { lat: lat, lng: lng };
+                            return {lat: lat, lng: lng};
                         }
                     }
                 });
@@ -15617,7 +15894,8 @@ function addNinListener() {
                     if (angular.isObject(location)) {
                         obj[id] = location.lng + ',' + location.lat;
                     }
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.showDataElementMap = function (obj, id) {
@@ -15634,7 +15912,7 @@ function addNinListener() {
                     windowClass: 'modal-full-window',
                     resolve: {
                         location: function location() {
-                            return { lat: lat, lng: lng };
+                            return {lat: lat, lng: lng};
                         }
                     }
                 });
@@ -15643,7 +15921,8 @@ function addNinListener() {
                     if (angular.isObject(location)) {
                         obj[id] = location.lng + ',' + location.lat;
                     }
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.showProgramStageMap = function (event) {
@@ -15653,7 +15932,7 @@ function addNinListener() {
                     windowClass: 'modal-full-window',
                     resolve: {
                         location: function location() {
-                            return { lat: event.coordinate.latitude, lng: event.coordinate.longitude };
+                            return {lat: event.coordinate.latitude, lng: event.coordinate.longitude};
                         }
                     }
                 });
@@ -15663,7 +15942,8 @@ function addNinListener() {
                         event.coordinate.latitude = location.lat;
                         event.coordinate.longitude = location.lng;
                     }
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.saveDatavalue = function () {
@@ -15851,9 +16131,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 25 */
-/***/ (function (module, exports) {
+    }),
+    /* 25 */
+    /***/ (function (module, exports) {
 
         "use strict";
 
@@ -15861,6 +16141,7 @@ function addNinListener() {
             value: true
         });
         exports.processRegistration = processRegistration;
+
         function showOnlyDisplayInListAttributes(headers, attributesContainer) {
             var attributeHeaders = headers.slice(7);
             attributeHeaders.forEach(function (attributeHeader) {
@@ -15925,7 +16206,7 @@ function addNinListener() {
         function doUniqueSearchGroupsVerification(searchGroups, verificationDependencies) {
             if (!searchGroups || searchGroups.length === 0) {
                 var def = verificationDependencies.$q.defer();
-                def.resolve({ isUnique: true });
+                def.resolve({isUnique: true});
                 return def.promise;
             }
             return processUniqueSearchGroupVerification(searchGroups, 0, verificationDependencies);
@@ -15966,9 +16247,9 @@ function addNinListener() {
 
             var promise;
             if (useProgramSearchScope) {
-                promise = SearchGroupService.programScopeSearch(defaultSearchGroup, tetSearchGroup, program, trackedEntityType, orgUnit, { skipTotalPages: true }, undefined, showOnlyDisplayInListAttributes);
+                promise = SearchGroupService.programScopeSearch(defaultSearchGroup, tetSearchGroup, program, trackedEntityType, orgUnit, {skipTotalPages: true}, undefined, showOnlyDisplayInListAttributes);
             } else {
-                promise = SearchGroupService.tetScopeSearch(defaultSearchGroup, trackedEntityType, orgUnit, { skipTotalPages: true }, undefined, showOnlyDisplayInListAttributes);
+                promise = SearchGroupService.tetScopeSearch(defaultSearchGroup, trackedEntityType, orgUnit, {skipTotalPages: true}, undefined, showOnlyDisplayInListAttributes);
             }
 
             return promise.then(function (res) {
@@ -16076,9 +16357,9 @@ function addNinListener() {
         }
 
         /***/
-}),
-/* 26 */
-/***/ (function (module, exports) {
+    }),
+    /* 26 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -16090,7 +16371,12 @@ function addNinListener() {
             var selections;
             $scope.userAuthority = AuthorityService.getUserAuthorities(SessionStorageService.get('USER_PROFILE'));
             var currentReportDate;
-            var inputNotificationClasses = { pending: 'input-pending', saved: 'input-success', error: 'input-error', none: '' };
+            var inputNotificationClasses = {
+                pending: 'input-pending',
+                saved: 'input-success',
+                error: 'input-error',
+                none: ''
+            };
             var getDefaultReportDateState = function getDefaultReportDateState() {
                 return {
                     date: "",
@@ -16198,7 +16484,7 @@ function addNinListener() {
 
                 $scope.enrollmentDateState = getDefaultReportDateState();
                 $scope.incidentDateState = getDefaultReportDateState();
-                $scope.enrollmentGeometryState = { editable: false, geometry: null };
+                $scope.enrollmentGeometryState = {editable: false, geometry: null};
                 angular.forEach(selections.enrollments, function (en) {
                     if (en.status === "ACTIVE" && $scope.selectedProgram && $scope.selectedProgram.id !== en.program) {
                         $scope.activeEnrollments.push(en);
@@ -16242,7 +16528,7 @@ function addNinListener() {
                 $scope.allEventsSorted = args.allEventsSorted;
             });
             $scope.$on('teienrolled', function (event, args) {
-                $route.updateParams({ program: event.currentScope.selectedProgram.id });
+                $route.updateParams({program: event.currentScope.selectedProgram.id});
                 $route.reload();
             });
             $scope.verifyExpiryDate = function (eventDateStr) {
@@ -16294,7 +16580,7 @@ function addNinListener() {
                     $scope.showEnrollmentHistoryDiv = false;
 
                     //load new enrollment details
-                    $scope.selectedEnrollment = { orgUnitName: $scope.selectedOrgUnit.displayName };
+                    $scope.selectedEnrollment = {orgUnitName: $scope.selectedOrgUnit.displayName};
 
                     if ($scope.selectedProgram && $scope.selectedProgram.captureCoordinates) {
                         $scope.selectedEnrollment.coordinate = {};
@@ -16451,7 +16737,7 @@ function addNinListener() {
                             });
 
                             $timeout(function () {
-                                $rootScope.$broadcast('ErollmentDeleted', { enrollments: $scope.enrollments });
+                                $rootScope.$broadcast('ErollmentDeleted', {enrollments: $scope.enrollments});
                             }, 200);
 
                             $scope.currentEnrollment = null;
@@ -16518,7 +16804,7 @@ function addNinListener() {
                     closeButtonText: 'cancel',
                     headerText: dateName,
                     bodyText: 'change_date_with_dependency_information',
-                    actionButtons: [{ text: 'update', action: {}, class: 'btn btn-primary' }]
+                    actionButtons: [{text: 'update', action: {}, class: 'btn btn-primary'}]
                 };
 
                 return ModalService.showModal({}, modalOptions);
@@ -16538,7 +16824,7 @@ function addNinListener() {
             };
 
             var updateReportDate = function updateReportDate(type) {
-                currentReportDate = { type: type, status: 'pending' };
+                currentReportDate = {type: type, status: 'pending'};
                 EnrollmentService.update($scope.selectedEnrollment).then(function () {
                     currentReportDate.status = 'saved';
                 }, function () {
@@ -16551,7 +16837,11 @@ function addNinListener() {
                 if (pr && pr === program) {
                     $route.reload();
                 } else {
-                    $location.path('/dashboard').search({ tei: $scope.selectedTeiId, program: program, ou: $scope.selectedOrgUnit.id });
+                    $location.path('/dashboard').search({
+                        tei: $scope.selectedTeiId,
+                        program: program,
+                        ou: $scope.selectedOrgUnit.id
+                    });
                 }
             };
 
@@ -16584,9 +16874,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 27 */
-/***/ (function (module, exports) {
+    }),
+    /* 27 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -16607,7 +16897,7 @@ function addNinListener() {
             $scope.showAttributeCategoryOptions = false;
 
             //Data entry form
-            $scope.outerDataEntryForm = { longitude: {}, latitude: {} };
+            $scope.outerDataEntryForm = {longitude: {}, latitude: {}};
             $scope.displayCustomForm = false;
             $scope.currentElement = {};
             $scope.schedulingEnabled = false;
@@ -16645,11 +16935,19 @@ function addNinListener() {
             $scope.useBottomLine = false;
 
             //hideTopLineEventsForFormTypes is only used with main menu
-            $scope.hideTopLineEventsForFormTypes = { TABLE: true, COMPARE: true };
-            $scope.timelineDataEntryModes = { DATAENTRYFORM: 1, COMPAREPREVIOUSDATAENTRYFORM: 2, COMPAREALLDATAENTRYFORM: 3, TABLEDATAENTRYFORM: 4 };
-            $scope.compareDataEntryFormModes = { PREVIOUS: 1, ALL: 2 };
-            $scope.visibleWidgetsInMainMenu = { enrollment: true, dataentry: true, close_file: true };
-            $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', { visible: $scope.useMainMenu, visibleItems: $scope.visibleWidgetsInMainMenu });
+            $scope.hideTopLineEventsForFormTypes = {TABLE: true, COMPARE: true};
+            $scope.timelineDataEntryModes = {
+                DATAENTRYFORM: 1,
+                COMPAREPREVIOUSDATAENTRYFORM: 2,
+                COMPAREALLDATAENTRYFORM: 3,
+                TABLEDATAENTRYFORM: 4
+            };
+            $scope.compareDataEntryFormModes = {PREVIOUS: 1, ALL: 2};
+            $scope.visibleWidgetsInMainMenu = {enrollment: true, dataentry: true, close_file: true};
+            $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', {
+                visible: $scope.useMainMenu,
+                visibleItems: $scope.visibleWidgetsInMainMenu
+            });
 
             $scope.attributesById = CurrentSelection.getAttributesById();
             $scope.optionGroupsById = CurrentSelection.getOptionGroupsById();
@@ -16684,7 +16982,12 @@ function addNinListener() {
                 });
             }
 
-            var modalCompleteIncompleteActions = { complete: 'complete', completeAndExit: 'completeandexit', completeEnrollment: 'completeenrollment', edit: 'edit' };
+            var modalCompleteIncompleteActions = {
+                complete: 'complete',
+                completeAndExit: 'completeandexit',
+                completeEnrollment: 'completeenrollment',
+                edit: 'edit'
+            };
 
             //Labels
             $scope.dataElementLabel = $translate.instant('data_element');
@@ -16712,7 +17015,27 @@ function addNinListener() {
             //note
             $scope.note = {};
 
-            $scope.eventStyles = [{ color: 'custom-tracker-complete', description: 'completed', showInStageLegend: true, showInEventLegend: true }, { color: 'alert-warning', description: 'executed', showInStageLegend: true, showInEventLegend: true }, { color: 'alert-success', description: 'ontime', showInStageLegend: true, showInEventLegend: true }, { color: 'alert-danger', description: 'overdue', showInStageLegend: true, showInEventLegend: true }, { color: 'alert-default', description: 'skipped', showInStageLegend: false, showInEventLegend: true } /*,
+            $scope.eventStyles = [{
+                color: 'custom-tracker-complete',
+                description: 'completed',
+                showInStageLegend: true,
+                showInEventLegend: true
+            }, {
+                color: 'alert-warning',
+                description: 'executed',
+                showInStageLegend: true,
+                showInEventLegend: true
+            }, {
+                color: 'alert-success',
+                description: 'ontime',
+                showInStageLegend: true,
+                showInEventLegend: true
+            }, {
+                color: 'alert-danger',
+                description: 'overdue',
+                showInStageLegend: true,
+                showInEventLegend: true
+            }, {color: 'alert-default', description: 'skipped', showInStageLegend: false, showInEventLegend: true} /*,
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   {color: '', description: 'empty', showInStageLegend: true, showInEventLegend: false}*/
             ];
 
@@ -16723,9 +17046,9 @@ function addNinListener() {
 
             $scope.filterLegend = function () {
                 if ($scope.mainMenuStageSelected()) {
-                    return { showInEventLegend: true };
+                    return {showInEventLegend: true};
                 } else {
-                    return { showInStageLegend: true };
+                    return {showInStageLegend: true};
                 }
             };
 
@@ -16834,7 +17157,10 @@ function addNinListener() {
                     layout.customLayout[$scope.selectedProgramId].programStageTimeLineLayout = {};
                 }
 
-                layout.customLayout[$scope.selectedProgramId].programStageTimeLineLayout[$scope.currentStage.id] = { timelineDataEntryMode: $scope.currentStage.timelineDataEntryMode, tableEditMode: $scope.tableEditMode || $scope.tableEditMode === 0 ? $scope.tableEditMode : -1 };
+                layout.customLayout[$scope.selectedProgramId].programStageTimeLineLayout[$scope.currentStage.id] = {
+                    timelineDataEntryMode: $scope.currentStage.timelineDataEntryMode,
+                    tableEditMode: $scope.tableEditMode || $scope.tableEditMode === 0 ? $scope.tableEditMode : -1
+                };
 
                 DashboardLayoutService.saveLayout(layout.customLayout, false);
                 DashboardLayoutService.setProgramStageLayout(layout.customLayout[$scope.selectedProgramId].programStageTimeLineLayout);
@@ -16865,7 +17191,11 @@ function addNinListener() {
                     widgets.push(w);
                 });
 
-                return { widgets: widgets, topBarSettings: $scope.topBarConfig.settings, program: $scope.selectedProgram && $scope.selectedProgram.id ? $scope.selectedProgram.id : 'DEFAULT' };
+                return {
+                    widgets: widgets,
+                    topBarSettings: $scope.topBarConfig.settings,
+                    program: $scope.selectedProgram && $scope.selectedProgram.id ? $scope.selectedProgram.id : 'DEFAULT'
+                };
             }
 
             //Adds support for HIDEPROGRAMSTAGE even if no event exists in enrollment
@@ -16897,13 +17227,13 @@ function addNinListener() {
                     //The data entry widget does not have an event selected.
                     return;
                 } else if (event === 'dataEntryInit') {
-                    //The data entry widget is associated with an event, 
+                    //The data entry widget is associated with an event,
                     //and therefore we do not want to process rule effects from the registration form.
                     return;
                 }
 
                 if (event !== affectedEvent.event) {
-                    //if the current event is not the same as the affected event, 
+                    //if the current event is not the same as the affected event,
                     //the effecs should be disregarded in the current events controller instance.
                     return;
                 }
@@ -16914,7 +17244,8 @@ function addNinListener() {
                 $scope.errorMessages[event] = [];
                 $scope.hiddenFields[event] = [];
                 $scope.mandatoryFields[event] = [];
-                $scope.optionVisibility[event] = { showOnly: null, hidden: {} };;
+                $scope.optionVisibility[event] = {showOnly: null, hidden: {}};
+                ;
 
                 var dataElementOptionsChanged = [];
 
@@ -17023,13 +17354,13 @@ function addNinListener() {
                         }
                     } else if (effect.action === "HIDEOPTION") {
                         if (effect.ineffect && effect.dataElement && effect.option) {
-                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = { hidden: {} };
-                            $scope.optionVisibility[event][effect.dataElement.id].hidden[effect.option.id] = { id: effect.option.id };
+                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = {hidden: {}};
+                            $scope.optionVisibility[event][effect.dataElement.id].hidden[effect.option.id] = {id: effect.option.id};
                             if (dataElementOptionsChanged.indexOf(effect.dataElement.id) === -1) dataElementOptionsChanged.push(effect.dataElement.id);
                         }
                     } else if (effect.action === "SHOWOPTIONGROUP") {
                         if (effect.ineffect && effect.dataElement && effect.optionGroup) {
-                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = { hidden: {} };
+                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = {hidden: {}};
                             var optionGroup = $scope.optionGroupsById[effect.optionGroup.id];
                             if (optionGroup) {
                                 if (!$scope.optionVisibility[event][effect.dataElement.id].showOnly) $scope.optionVisibility[event][effect.dataElement.id].showOnly = {};
@@ -17041,7 +17372,7 @@ function addNinListener() {
                         }
                     } else if (effect.action === "HIDEOPTIONGROUP") {
                         if (effect.ineffect && effect.dataElement && effect.optionGroup) {
-                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = { hidden: {} };
+                            if (!$scope.optionVisibility[event][effect.dataElement.id]) $scope.optionVisibility[event][effect.dataElement.id] = {hidden: {}};
                             var optionGroup = $scope.optionGroupsById[effect.optionGroup.id];
                             if (optionGroup) {
                                 angular.extend($scope.optionVisibility[event][effect.dataElement.id].hidden, optionGroup.optionsById);
@@ -17057,7 +17388,7 @@ function addNinListener() {
                 clearValueForShowHideOptionActions(dataElementOptionsChanged, affectedEvent);
 
                 updateTabularEntryStages();
-                $rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+                $rootScope.$broadcast('tei-report-widget', {events: $scope.allEventsSorted});
             };
 
             var clearValueForShowHideOptionActions = function clearValueForShowHideOptionActions(dataElements, affectedEvent) {
@@ -17136,7 +17467,7 @@ function addNinListener() {
 
                 $rootScope.$broadcast('DataEntryMainMenuItemSelected');
 
-                $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', { visible: false });
+                $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', {visible: false});
             };
 
             $scope.$on('DashboardBackClicked', function (event) {
@@ -17146,7 +17477,10 @@ function addNinListener() {
             $scope.backToMainMenu = function () {
                 $scope.selectedMainMenuStage = {};
                 $scope.deSelectCurrentEvent();
-                $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', { visible: true, visibleItems: $scope.visibleWidgetsInMainMenu });
+                $rootScope.$broadcast('DataEntryMainMenuVisibilitySet', {
+                    visible: true,
+                    visibleItems: $scope.visibleWidgetsInMainMenu
+                });
             };
 
             $scope.bottomLineItems = {};
@@ -17227,6 +17561,7 @@ function addNinListener() {
             }
 
             $scope.topLineEvents = [];
+
             function getTopLineEvents(allEvents) {
                 if (!topLineEventsIsFiltered()) {
                     $scope.topLineEvents = $scope.allEventsSorted;
@@ -17289,7 +17624,7 @@ function addNinListener() {
 
             //check if field is hidden
             $scope.isHidden = function (id, event) {
-                //In case the field contains a value, we cant hide it. 
+                //In case the field contains a value, we cant hide it.
                 //If we hid a field with a value, it would falsely seem the user was aware that the value was entered in the UI.
                 var EventToCheck = angular.isDefined(event) ? event : $scope.currentEvent;
 
@@ -17317,11 +17652,15 @@ function addNinListener() {
                 }
                 allSorted = orderByFilter(allSorted, '-sortingDate').reverse();
 
-                var evs = { all: allSorted, byStage: $scope.eventsByStage };
+                var evs = {all: allSorted, byStage: $scope.eventsByStage};
 
-                var flag = { debug: true, verbose: $location.search().verbose ? true : false, callerId: $scope.instanceId };
+                var flag = {
+                    debug: true,
+                    verbose: $location.search().verbose ? true : false,
+                    callerId: $scope.instanceId
+                };
 
-                //If the events is displayed in a table, it is necessary to run the rules for all visible events.        
+                //If the events is displayed in a table, it is necessary to run the rules for all visible events.
                 if ($scope.currentStage && $scope.currentStage.displayEventsInTable && angular.isUndefined($scope.currentStage.rulesExecuted)) {
                     angular.forEach($scope.currentStageEvents, function (event) {
                         TrackerRulesExecutionService.executeRules($scope.allProgramRules, event, evs, $scope.prStDes, $scope.attributesById, $scope.selectedTei, $scope.selectedEnrollment, $scope.optionSets, flag);
@@ -17473,14 +17812,22 @@ function addNinListener() {
             };
 
             function broadcastDataEntryControllerData() {
-                $rootScope.$broadcast('dataEntryControllerData', { programStages: $scope.programStages, allEventsSorted: $scope.allEventsSorted, eventsByStage: $scope.eventsByStage, addNewEvent: $scope.addNewEvent, openEvent: $scope.openEventExternal, deleteScheduleOverDueEvents: $scope.deleteScheduleAndOverdueEvents, executeRules: $scope.executeRules });
+                $rootScope.$broadcast('dataEntryControllerData', {
+                    programStages: $scope.programStages,
+                    allEventsSorted: $scope.allEventsSorted,
+                    eventsByStage: $scope.eventsByStage,
+                    addNewEvent: $scope.addNewEvent,
+                    openEvent: $scope.openEventExternal,
+                    deleteScheduleOverDueEvents: $scope.deleteScheduleAndOverdueEvents,
+                    executeRules: $scope.executeRules
+                });
             }
 
             $scope.getEvents = function () {
 
                 $scope.allEventsSorted = [];
                 var events = CurrentSelection.getSelectedTeiEvents();
-                events = $filter('filter')(events, { program: $scope.selectedProgram.id });
+                events = $filter('filter')(events, {program: $scope.selectedProgram.id});
                 if (angular.isObject(events) && events.length > 0) {
                     angular.forEach(events, function (dhis2Event) {
                         if ($scope.selectedEnrollment && $scope.selectedEnrollment.enrollment === dhis2Event.enrollment && dhis2Event.orgUnit) {
@@ -17556,7 +17903,13 @@ function addNinListener() {
                 }
             };
 
-            $scope.stageNeedsEventErrors = { enrollment: 1, complete: 2, scheduleDisabled: 3, scheduledFound: 4, notRepeatable: 5 };
+            $scope.stageNeedsEventErrors = {
+                enrollment: 1,
+                complete: 2,
+                scheduleDisabled: 3,
+                scheduledFound: 4,
+                notRepeatable: 5
+            };
 
             $scope.stageNeedsEventOfType = function (stage, type, completeRequired, errorResponseContainer) {
 
@@ -17765,7 +18118,8 @@ function addNinListener() {
 
                     //get applicable events
                     var allApplicableEvents = [];
-                    if (!$scope.allEventsSorted || $scope.allEventsSorted.length === 0) { } else if (angular.isUndefined($scope.stagesNotShowingInStageTasks)) {
+                    if (!$scope.allEventsSorted || $scope.allEventsSorted.length === 0) {
+                    } else if (angular.isUndefined($scope.stagesNotShowingInStageTasks)) {
                         allApplicableEvents = $scope.allEventsSorted.slice();
                     } else {
                         angular.forEach($scope.allEventsSorted, function (event) {
@@ -17830,7 +18184,8 @@ function addNinListener() {
                             $scope.showDataEntry(newEvent, true, true);
                         }
                     }
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.setCurrentStage = function (stage, openDataEntry) {
@@ -17915,9 +18270,9 @@ function addNinListener() {
                     $scope.currentStage = null;
                 }
                 $scope.currentEvent = null;
-                $scope.currentElement = { id: '', saved: false };
+                $scope.currentElement = {id: '', saved: false};
                 $scope.showDataEntryDiv = !$scope.showDataEntryDiv;
-                $rootScope.$broadcast("dataEntryEventChanged", { event: null });
+                $rootScope.$broadcast("dataEntryEventChanged", {event: null});
             };
 
             $scope.tableRowIsEditable = function (eventRow) {
@@ -17932,7 +18287,7 @@ function addNinListener() {
                 return event.orgUnit === $scope.selectedOrgUnit.id && $scope.selectedEntity.inactive === false && $scope.selectedEnrollment.status === 'ACTIVE';
             };
 
-            $scope.tableEditModes = { form: 0, table: 1, tableAndForm: 2 };
+            $scope.tableEditModes = {form: 0, table: 1, tableAndForm: 2};
             $scope.tableEditMode = $scope.tableEditModes.table;
 
             $scope.eventRowChanged = false;
@@ -17974,7 +18329,7 @@ function addNinListener() {
                     //completed, deleted or skipped
                     $scope.currentEvent = {};
                 }, function () {
-                    //closed            
+                    //closed
                 });
             };
 
@@ -18001,7 +18356,7 @@ function addNinListener() {
                 var otherValues = {};
                 //Only default forms need to build an other values list.
                 if ($scope.displayCustomForm === "DEFAULT" || $scope.displayCustomForm === false) {
-                    //Build a list of datavalues OUTSIDE the current event. 
+                    //Build a list of datavalues OUTSIDE the current event.
                     angular.forEach($scope.currentStage.programStageDataElements, function (programStageDataElement) {
                         angular.forEach($scope.programStages, function (stage) {
                             for (var i = 0; i < $scope.eventsByStage[stage.id].length; i++) {
@@ -18096,7 +18451,11 @@ function addNinListener() {
 
                 $scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
 
-                var period = { event: $scope.currentEvent.event, stage: $scope.currentEvent.programStage, name: $scope.currentEvent.sortingDate };
+                var period = {
+                    event: $scope.currentEvent.event,
+                    stage: $scope.currentEvent.programStage,
+                    name: $scope.currentEvent.sortingDate
+                };
                 $scope.currentPeriod[$scope.currentEvent.programStage] = period;
 
                 //Because of separatae dataentry-controllers for tabular and timeline data entry,
@@ -18105,7 +18464,7 @@ function addNinListener() {
 
                 //Execute rules for the first time, to make the initial page appear correctly.
                 //Subsequent calls will be made from the "saveDataValue" function.
-                $rootScope.$broadcast("dataEntryEventChanged", { event: $scope.currentEvent.event });
+                $rootScope.$broadcast("dataEntryEventChanged", {event: $scope.currentEvent.event});
                 $scope.executeRules();
 
             };
@@ -18165,7 +18524,7 @@ function addNinListener() {
 
                 if (field && field.$invalid && prStDe.dataElement.valueType !== "ORGANISATION_UNIT") {
                     $scope.currentEvent[prStDe.dataElement.id] = oldValue;
-                    $scope.currentElement = { id: prStDe.dataElement.id, saved: false, event: eventToSave.event };
+                    $scope.currentElement = {id: prStDe.dataElement.id, saved: false, event: eventToSave.event};
                     return false;
                 }
 
@@ -18235,7 +18594,7 @@ function addNinListener() {
                         console.log("OU:", ou);
 
                         // Define the URL
-                        const url = `/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
+                        const url = `/ima2/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
 
                         // Fetch the JSON data
                         fetch(url)
@@ -18259,7 +18618,7 @@ function addNinListener() {
                                         const attributeKey = attribute.attribute;
                                         if (invertedMap.hasOwnProperty(attributeKey)) {
                                             const invertedKey = invertedMap[attributeKey];
-                                            newMappings.push({ value: attribute.value, [invertedKey]: attribute.value });
+                                            newMappings.push({value: attribute.value, [invertedKey]: attribute.value});
                                             if (invertedKey === 'ioXkKfrgCJa:FHmHV9mElbD') {
                                                 try {
                                                     // Split the string by ":"
@@ -18293,7 +18652,13 @@ function addNinListener() {
                     //Do not change the input notification variables for background updates
                     if (!backgroundUpdate) {
                         $scope.updateSuccess = false;
-                        $scope.currentElement = { id: prStDe.dataElement.id, event: eventToSave.event, saved: false, failed: false, pending: true };
+                        $scope.currentElement = {
+                            id: prStDe.dataElement.id,
+                            event: eventToSave.event,
+                            saved: false,
+                            failed: false,
+                            pending: true
+                        };
                     }
 
                     var ev = {
@@ -18337,9 +18702,9 @@ function addNinListener() {
 
                         $scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
 
-                        $rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
-                        //In some cases, the rules execution should be suppressed to avoid the 
-                        //possibility of infinite loops(rules updating datavalues, that triggers a new 
+                        $rootScope.$broadcast('tei-report-widget', {events: $scope.allEventsSorted});
+                        //In some cases, the rules execution should be suppressed to avoid the
+                        //possibility of infinite loops(rules updating datavalues, that triggers a new
                         //rule execution)
                         if (!backgroundUpdate) {
                             //Run rules on updated data:
@@ -18386,7 +18751,7 @@ function addNinListener() {
                 }
                 $scope.eventDateSaved = false;
 
-                $scope.currentElement = { id: "eventDate", event: eventToSave.event, saved: false };
+                $scope.currentElement = {id: "eventDate", event: eventToSave.event, saved: false};
 
                 var e = {
                     event: eventToSave.event,
@@ -18406,7 +18771,7 @@ function addNinListener() {
                     eventToSave.sortingDate = DateUtils.formatFromUserToApi(eventToSave.eventDate);
 
                     $scope.invalidDate = false;
-                    $scope.validatedDateSetForEvent = { date: eventToSave.eventDate, event: eventToSave };
+                    $scope.validatedDateSetForEvent = {date: eventToSave.eventDate, event: eventToSave};
 
                     $scope.eventDateSaved = eventToSave.event;
                     eventToSave.statusColor = EventUtils.getEventStatusColor(eventToSave);
@@ -18422,7 +18787,7 @@ function addNinListener() {
 
                     sortEventsByStage('UPDATE');
 
-                    $scope.currentElement = { id: "eventDate", event: eventToSave.event, saved: true };
+                    $scope.currentElement = {id: "eventDate", event: eventToSave.event, saved: true};
                     $scope.currentEventOriginal = angular.copy($scope.currentEvent);
                     $scope.currentStageEventsOriginal = angular.copy($scope.currentStageEvents);
                     $scope.executeRules();
@@ -18514,7 +18879,7 @@ function addNinListener() {
                     return;
                 }
 
-                var newNote = { value: $scope.note.value, storedDate: today, displayDate: today, storedBy: storedBy };
+                var newNote = {value: $scope.note.value, storedDate: today, displayDate: today, storedBy: storedBy};
 
                 UsersService.getByQuery(storedBy).then(function (users) {
                     if (users.length === 1) {
@@ -18534,7 +18899,7 @@ function addNinListener() {
                     programStage: $scope.currentEvent.programStage,
                     orgUnit: $scope.currentEvent.orgUnit,
                     trackedEntityInstance: $scope.currentEvent.trackedEntityInstance,
-                    notes: [{ value: newNote.value }]
+                    notes: [{value: newNote.value}]
                 };
 
                 DHIS2EventFactory.updateForNote(e).then(function (data) {
@@ -18549,7 +18914,7 @@ function addNinListener() {
                 if ($scope.currentEvent.notes) {
                     for (i = 0; i < $scope.currentEvent.notes.length; i++) {
                         var currentNote = $scope.currentEvent.notes[i];
-                        bodyList.push({ value1: currentNote.storedDate, value2: currentNote.value });
+                        bodyList.push({value1: currentNote.storedDate, value2: currentNote.value});
                     }
                 }
 
@@ -18558,7 +18923,12 @@ function addNinListener() {
                     textAreaButtonText: 'Add',
                     textAreaButtonShow: $scope.currentEvent.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true,
                     headerText: 'Notes',
-                    bodyTextAreas: [{ model: 'note', placeholder: 'Add another note here', required: true, show: $scope.currentEvent.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true }],
+                    bodyTextAreas: [{
+                        model: 'note',
+                        placeholder: 'Add another note here',
+                        required: true,
+                        show: $scope.currentEvent.status === $scope.EVENTSTATUSSKIPPEDLABEL ? false : true
+                    }],
                     bodyList: bodyList,
                     currentEvent: $scope.currentEvent
                 };
@@ -18589,7 +18959,7 @@ function addNinListener() {
 
                         $scope.addNote = function () {
 
-                            newNote = { value: $scope.note };
+                            newNote = {value: $scope.note};
                             var date = DateUtils.formatToHrsMins(new Date());
                             var today = DateUtils.getToday();
 
@@ -18603,11 +18973,19 @@ function addNinListener() {
                             };
                             DHIS2EventFactory.updateForNote(e).then(function (data) {
                                 if (angular.isUndefined($scope.modalOptions.bodyList) || $scope.modalOptions.bodyList.length === 0) {
-                                    $scope.modalOptions.bodyList = [{ value1: date, value2: newNote.value }];
-                                    $scope.modalOptions.currentEvent.notes = [{ storedDate: date, displayDate: today, value: newNote.value }];
+                                    $scope.modalOptions.bodyList = [{value1: date, value2: newNote.value}];
+                                    $scope.modalOptions.currentEvent.notes = [{
+                                        storedDate: date,
+                                        displayDate: today,
+                                        value: newNote.value
+                                    }];
                                 } else {
-                                    $scope.modalOptions.bodyList.splice(0, 0, { value1: date, value2: newNote.value });
-                                    $scope.modalOptions.currentEvent.notes.splice(0, 0, { storedDate: date, displayDate: today, value: newNote.value });
+                                    $scope.modalOptions.bodyList.splice(0, 0, {value1: date, value2: newNote.value});
+                                    $scope.modalOptions.currentEvent.notes.splice(0, 0, {
+                                        storedDate: date,
+                                        displayDate: today,
+                                        value: newNote.value
+                                    });
                                 }
                                 $scope.note = $scope.textAreaValues["note"] = "";
                             });
@@ -18671,7 +19049,7 @@ function addNinListener() {
                         if (data && data.status === 'OK') {
                             $scope.selectedEnrollment.status = 'COMPLETED';
                             selection.load();
-                            $location.path('/').search({ program: $scope.selectedProgramId });
+                            $location.path('/').search({program: $scope.selectedProgramId});
                         }
                     });
                 });
@@ -18697,7 +19075,8 @@ function addNinListener() {
                             dhis2EventToUpdate.dataValues.push(dataValue);
                         }
                     });
-                };
+                }
+                ;
                 return dhis2EventToUpdate;
             };
 
@@ -18725,7 +19104,7 @@ function addNinListener() {
                     };
                     dhis2Event.status = 'ACTIVE';
                 } else {
-                    //complete event    
+                    //complete event
                     //We must execute the rules right before deciding wheter to allow completion:
                     $scope.executeRules();
 
@@ -18787,13 +19166,25 @@ function addNinListener() {
                             modalOptions.sections = [warningSection];
                         }
 
-                        modalOptions.actionButtons = [{ text: 'complete', action: modalCompleteIncompleteActions.complete, class: 'btn btn-primary' }];
+                        modalOptions.actionButtons = [{
+                            text: 'complete',
+                            action: modalCompleteIncompleteActions.complete,
+                            class: 'btn btn-primary'
+                        }];
 
-                        modalOptions.actionButtons.push({ text: 'complete_and_exit', action: modalCompleteIncompleteActions.completeAndExit, class: 'btn btn-primary' });
+                        modalOptions.actionButtons.push({
+                            text: 'complete_and_exit',
+                            action: modalCompleteIncompleteActions.completeAndExit,
+                            class: 'btn btn-primary'
+                        });
 
                         if ($scope.currentStage.remindCompleted) {
                             modalOptions.bodyText = 'are_you_sure_to_complete_event_and_enrollment';
-                            modalOptions.actionButtons.push({ text: 'complete_event_and_enrollment', action: modalCompleteIncompleteActions.completeEnrollment, class: 'btn btn-primary' });
+                            modalOptions.actionButtons.push({
+                                text: 'complete_event_and_enrollment',
+                                action: modalCompleteIncompleteActions.completeEnrollment,
+                                class: 'btn btn-primary'
+                            });
                         }
 
                         modalDefaults.templateUrl = 'components/dataentry/modal-complete-event.html';
@@ -18833,13 +19224,13 @@ function addNinListener() {
 
                     if (modalResult === modalCompleteIncompleteActions.completeAndExit) {
                         selection.load();
-                        $location.path('/').search({ program: $scope.selectedProgramId });
+                        $location.path('/').search({program: $scope.selectedProgramId});
                     } else {
                         if ($scope.currentEvent.status === 'COMPLETED') {
                             //activiate event
                             $scope.currentEvent.status = 'ACTIVE';
                         } else {
-                            //complete event                    
+                            //complete event
                             $scope.currentEvent.status = 'COMPLETED';
                         }
 
@@ -18914,10 +19305,10 @@ function addNinListener() {
                 return DHIS2EventFactory.update(dhis2Event).then(function (data) {
 
                     if ($scope.currentEvent.status === 'SKIPPED') {
-                        //activiate event                    
+                        //activiate event
                         $scope.currentEvent.status = 'SCHEDULE';
                     } else {
-                        //complete event                    
+                        //complete event
                         $scope.currentEvent.status = 'SKIPPED';
                     }
 
@@ -19184,7 +19575,7 @@ function addNinListener() {
                     }
 
                     $timeout(function () {
-                        $rootScope.$broadcast('tei-report-widget', { events: $scope.allEventsSorted });
+                        $rootScope.$broadcast('tei-report-widget', {events: $scope.allEventsSorted});
                     }, 200);
                 }
                 $scope.allEventsSorted = orderByFilter($scope.allEventsSorted, '-sortingDate').reverse();
@@ -19197,7 +19588,7 @@ function addNinListener() {
 
             $scope.showDataEntryForEvent = function (event) {
 
-                var period = { event: event.event, stage: event.programStage, name: event.sortingDate };
+                var period = {event: event.event, stage: event.programStage, name: event.sortingDate};
                 $scope.currentPeriod[event.programStage] = period;
 
                 var event = null;
@@ -19292,7 +19683,15 @@ function addNinListener() {
                 return 'col-xs-' + Math.floor(colSize);
             };
             //for compare-mode
-            $scope.compareModeColDefs = { header: 1, otherEvent: 2, currentEvent: 3, otherEvents: 4, providedElsewhere: 5, nextEvent: 6, nextEvents: 7 };
+            $scope.compareModeColDefs = {
+                header: 1,
+                otherEvent: 2,
+                currentEvent: 3,
+                otherEvents: 4,
+                providedElsewhere: 5,
+                nextEvent: 6,
+                nextEvents: 7
+            };
             $scope.getCompareModeColSize = function (colId) {
 
                 var otherEventsCnt = $scope.otherStageEvents.length;
@@ -19404,7 +19803,7 @@ function addNinListener() {
                         }
 
                         var relative = -j - 1;
-                        $scope.otherStageEventIndexes.unshift({ relative: relative, position: position });
+                        $scope.otherStageEventIndexes.unshift({relative: relative, position: position});
                     }
                     if ($scope.compareMode === $scope.compareDataEntryFormModes.ALL) {
                         var subsequentEventsCount = $scope.maxCompareItemsInCompareView - $scope.otherStageEventIndexes.length;
@@ -19416,7 +19815,7 @@ function addNinListener() {
                                 }
 
                                 var relative = k + 1;
-                                $scope.otherStageEventIndexes.push({ relative: relative, position: position });
+                                $scope.otherStageEventIndexes.push({relative: relative, position: position});
                             }
                         }
                     }
@@ -19467,7 +19866,7 @@ function addNinListener() {
                 }
             });
 
-            $scope.buttonType = { back: 1, forward: 2 };
+            $scope.buttonType = {back: 1, forward: 2};
             $scope.showOtherEventsNavigationButtonInCompareForm = function (type) {
                 if (type === $scope.buttonType.back) {
                     if ($scope.otherStageEventIndexes.length > 0) {
@@ -19550,11 +19949,11 @@ function addNinListener() {
                 return '';
             };
 
-            $scope.descriptionTypes = { full: 1, label: 2 };
+            $scope.descriptionTypes = {full: 1, label: 2};
             $scope.getDescriptionTextForEventStyle = function (style, descriptionType, useInStage) {
 
                 if (angular.isDefined(style) && style !== "") {
-                    var eventStyles = $filter('filter')($scope.eventStyles, { color: style }, true);
+                    var eventStyles = $filter('filter')($scope.eventStyles, {color: style}, true);
                     if (angular.isDefined(eventStyles) && eventStyles.length === 1) {
                         return $scope.getDescriptionTextForDescription(eventStyles[0].description, descriptionType, useInStage);
                     }
@@ -19597,7 +19996,7 @@ function addNinListener() {
             };
 
             $scope.getEventForStage = function (stage) {
-                //get first incomplete not skipped. If none, get latest nok skipped         
+                //get first incomplete not skipped. If none, get latest nok skipped
                 var lastComplete = -1;
                 var firstOpen = -1;
 
@@ -19647,7 +20046,7 @@ function addNinListener() {
             };
 
             $scope.getEventFromEventCollection = function (eventCollection) {
-                //get first incomplete not skipped. If none, get latest nok skipped         
+                //get first incomplete not skipped. If none, get latest nok skipped
                 var lastComplete = -1;
                 var firstOpen = -1;
 
@@ -19900,7 +20299,7 @@ function addNinListener() {
             $scope.saveAttributeCategoryOptions = function () {
                 var selectedOptions = [],
                     optionsReady = true;
-                $scope.changedCat = { id: -1, saved: false };
+                $scope.changedCat = {id: -1, saved: false};
                 for (var i = 0; i < $scope.selectedCategories.length; i++) {
 
                     if ($scope.selectedCategories[i].selectedOption.id !== $scope.currentEvent.attributeCategoryOptions.split(';')[i]) {
@@ -19919,7 +20318,14 @@ function addNinListener() {
                     var ev = EventUtils.processEvent($scope.currentEvent, $scope.currentStage, $scope.optionSets, $scope.prStDes);
 
                     if (ev.event && ev.enrollment && ev.trackedEntityInstance && ev.attributeCategoryOptions && ev.attributeOptionCombo) {
-                        var dhis2Event = { event: ev.event, orgUnit: ev.orgUnit, enrollment: ev.enrollment, program: ev.program, programStage: ev.programStage, dataValues: ev.dataValues };
+                        var dhis2Event = {
+                            event: ev.event,
+                            orgUnit: ev.orgUnit,
+                            enrollment: ev.enrollment,
+                            program: ev.program,
+                            programStage: ev.programStage,
+                            dataValues: ev.dataValues
+                        };
 
                         if (ev.status) {
                             dhis2Event.status = ev.status;
@@ -19997,13 +20403,48 @@ function addNinListener() {
             };
 
             $scope.eventTableOptions = {};
-            $scope.eventTableOptions[COMPLETE] = { text: "Complete", tooltip: 'Complete', icon: "<span class='glyphicon glyphicon-check'></span>", value: COMPLETE, onClick: $scope.completeIncompleteEventFromTable, sort: 0 };
-            $scope.eventTableOptions[INCOMPLETE] = { text: "Reopen", tooltip: 'Reopen', icon: "<span class='glyphicon glyphicon-pencil'></span>", value: INCOMPLETE, onClick: $scope.completeIncompleteEventFromTable, sort: 1 };
-            //$scope.eventTableOptions[VALIDATE] = {text: "Validate", tooltip: 'Validate', icon: "<span class='glyphicon glyphicon-cog'></span>", value: VALIDATE, onClick: $scope.validateEvent, sort: 6};    
-            $scope.eventTableOptions[DELETE] = { text: "Delete", tooltip: 'Delete', icon: "<span class='glyphicon glyphicon-floppy-remove'></span>", value: DELETE, onClick: $scope.deleteEvent, sort: 2 };
-            $scope.eventTableOptions[SKIP] = { text: "Skip", tooltip: 'Skip', icon: "<span class='glyphicon glyphicon-step-forward'></span>", value: SKIP, onClick: $scope.skipUnskipEvent, sort: 3 };
-            $scope.eventTableOptions[UNSKIP] = { text: "Schedule back", tooltip: 'Schedule back', icon: "<span class='glyphicon glyphicon-step-backward'></span>", value: UNSKIP, onClick: $scope.skipUnskipEvent, sort: 4 };
-            //$scope.eventTableOptions[NOTE] = {text: "Notes", tooltip: 'Show notes', icon: "<span class='glyphicon glyphicon-list-alt'></span>", value: NOTE, onClick: $scope.notesModal, sort: 5};    
+            $scope.eventTableOptions[COMPLETE] = {
+                text: "Complete",
+                tooltip: 'Complete',
+                icon: "<span class='glyphicon glyphicon-check'></span>",
+                value: COMPLETE,
+                onClick: $scope.completeIncompleteEventFromTable,
+                sort: 0
+            };
+            $scope.eventTableOptions[INCOMPLETE] = {
+                text: "Reopen",
+                tooltip: 'Reopen',
+                icon: "<span class='glyphicon glyphicon-pencil'></span>",
+                value: INCOMPLETE,
+                onClick: $scope.completeIncompleteEventFromTable,
+                sort: 1
+            };
+            //$scope.eventTableOptions[VALIDATE] = {text: "Validate", tooltip: 'Validate', icon: "<span class='glyphicon glyphicon-cog'></span>", value: VALIDATE, onClick: $scope.validateEvent, sort: 6};
+            $scope.eventTableOptions[DELETE] = {
+                text: "Delete",
+                tooltip: 'Delete',
+                icon: "<span class='glyphicon glyphicon-floppy-remove'></span>",
+                value: DELETE,
+                onClick: $scope.deleteEvent,
+                sort: 2
+            };
+            $scope.eventTableOptions[SKIP] = {
+                text: "Skip",
+                tooltip: 'Skip',
+                icon: "<span class='glyphicon glyphicon-step-forward'></span>",
+                value: SKIP,
+                onClick: $scope.skipUnskipEvent,
+                sort: 3
+            };
+            $scope.eventTableOptions[UNSKIP] = {
+                text: "Schedule back",
+                tooltip: 'Schedule back',
+                icon: "<span class='glyphicon glyphicon-step-backward'></span>",
+                value: UNSKIP,
+                onClick: $scope.skipUnskipEvent,
+                sort: 4
+            };
+            //$scope.eventTableOptions[NOTE] = {text: "Notes", tooltip: 'Show notes', icon: "<span class='glyphicon glyphicon-list-alt'></span>", value: NOTE, onClick: $scope.notesModal, sort: 5};
 
             $scope.eventRow.validatedEventDate = $scope.eventRow.eventDate;
             updateEventTableOptions();
@@ -20042,13 +20483,13 @@ function addNinListener() {
                         $scope.eventTableOptions[COMPLETE].show = false;
                         $scope.eventTableOptions[SKIP].show = false;
                         $scope.eventTableOptions[DELETE].show = false;
-                        //$scope.eventTableOptions[VALIDATE].show = false;                
+                        //$scope.eventTableOptions[VALIDATE].show = false;
                         $scope.defaultOption = $scope.eventTableOptions[INCOMPLETE];
                         break;
                     case $scope.EVENTSTATUSSKIPPEDLABEL:
                         $scope.eventTableOptions[COMPLETE].show = false;
                         $scope.eventTableOptions[INCOMPLETE].show = false;
-                        //$scope.eventTableOptions[VALIDATE].show = false;                
+                        //$scope.eventTableOptions[VALIDATE].show = false;
                         $scope.eventTableOptions[SKIP].show = false;
 
                         $scope.eventTableOptions[UNSKIP].show = true;
@@ -20082,9 +20523,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 28 */
-/***/ (function (module, exports) {
+    }),
+    /* 28 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20144,9 +20585,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 29 */
-/***/ (function (module, exports) {
+    }),
+    /* 29 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20226,9 +20667,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 30 */
-/***/ (function (module, exports) {
+    }),
+    /* 30 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20247,7 +20688,7 @@ function addNinListener() {
             $scope.isNewEvent = eventCreationAction === $scope.eventCreationActions.add;
             $scope.isScheduleEvent = eventCreationAction === $scope.eventCreationActions.schedule || eventCreationAction === $scope.eventCreationActions.referral;
             $scope.isReferralEvent = eventCreationAction === $scope.eventCreationActions.referral;
-            $scope.model = { selectedStage: stage, dueDateInvalid: false, eventDateInvalid: false };
+            $scope.model = {selectedStage: stage, dueDateInvalid: false, eventDateInvalid: false};
             $scope.stageSpecifiedOnModalOpen = angular.isObject(stage) ? true : false;
             $scope.suggestedStage = stage;
             $scope.selectedProgram = program;
@@ -20260,11 +20701,11 @@ function addNinListener() {
             $scope.today = DateUtils.getToday();
 
             if ($scope.isScheduleEvent) {
-                $scope.stages = $filter('filter')(stages, { hideDueDate: false });
+                $scope.stages = $filter('filter')(stages, {hideDueDate: false});
             }
 
             if ($scope.isScheduleEvent) {
-                $scope.stages = $filter('filter')(stages, { periodType: 'undefined' });
+                $scope.stages = $filter('filter')(stages, {periodType: 'undefined'});
             }
 
             var dummyEvent = {};
@@ -20273,8 +20714,14 @@ function addNinListener() {
 
                 dummyEvent = EventUtils.createDummyEvent(eventsByStage[stage.id], tei, program, stage, orgUnit, $scope.selectedEnrollment);
 
-                $scope.newEvent = { programStage: stage };
-                $scope.dhis2Event = { eventDate: $scope.isScheduleEvent ? '' : DateUtils.getToday(), dueDate: dummyEvent.dueDate, executionDateLabel: dummyEvent.executionDateLabel, name: dummyEvent.name, invalid: true };
+                $scope.newEvent = {programStage: stage};
+                $scope.dhis2Event = {
+                    eventDate: $scope.isScheduleEvent ? '' : DateUtils.getToday(),
+                    dueDate: dummyEvent.dueDate,
+                    executionDateLabel: dummyEvent.executionDateLabel,
+                    name: dummyEvent.name,
+                    invalid: true
+                };
 
                 if ($scope.model.selectedStage.periodType) {
                     $scope.dhis2Event.eventDate = dummyEvent.dueDate;
@@ -20383,7 +20830,8 @@ function addNinListener() {
                     //If the caller wants to create right away, go ahead and save.
                     if (autoCreate) {
                         $scope.save();
-                    };
+                    }
+                    ;
                 }
             });
 
@@ -20413,7 +20861,7 @@ function addNinListener() {
 
                 $scope.orgUnitError = false;
 
-                var newEvents = { events: [] };
+                var newEvents = {events: []};
                 var newEvent = {
                     trackedEntityInstance: dummyEvent.trackedEntityInstance,
                     program: dummyEvent.program,
@@ -20455,7 +20903,7 @@ function addNinListener() {
                 DHIS2EventFactory.create(newEvents).then(function (response) {
                     if (response && response.response && response.response.importSummaries[0].status === 'SUCCESS') {
                         newEvent.event = response.response.importSummaries[0].reference;
-                        $modalInstance.close({ dummyEvent: dummyEvent, ev: newEvent });
+                        $modalInstance.close({dummyEvent: dummyEvent, ev: newEvent});
                     } else {
                         $scope.eventCreationForm.submitted = false;
                     }
@@ -20534,7 +20982,7 @@ function addNinListener() {
 
                     TEIService.changeTeiProgramOwner($scope.tei.trackedEntityInstance, $scope.selectedProgram.id, dummyEvent.orgUnit).then(function (response) {
                         $scope.save();
-                        $rootScope.$broadcast('ownerUpdated', { programExists: true });
+                        $rootScope.$broadcast('ownerUpdated', {programExists: true});
                     });
                 });
             };
@@ -20560,9 +21008,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 31 */
-/***/ (function (module, exports) {
+    }),
+    /* 31 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20576,7 +21024,11 @@ function addNinListener() {
             $scope.selectedCategories = selectedCategories;
             $scope.selectedTeiId = selectedTeiId;
             $scope.applyOptions = function () {
-                var attributeCategory = { cc: $scope.selectedProgram.categoryCombo.id, default: $scope.selectedProgram.categoryCombo.isDefault, cp: "" };
+                var attributeCategory = {
+                    cc: $scope.selectedProgram.categoryCombo.id,
+                    default: $scope.selectedProgram.categoryCombo.isDefault,
+                    cp: ""
+                };
                 if (!$scope.selectedProgram.categoryCombo.isDefault) {
                     if ($scope.selectedOptions.length !== $scope.selectedCategories.length) {
                         NotificationService.showNotifcationDialog($translate.instant("error"), $translate.instant("fill_all_category_options"));
@@ -20605,9 +21057,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 32 */
-/***/ (function (module, exports) {
+    }),
+    /* 32 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20651,7 +21103,7 @@ function addNinListener() {
             var getEvents = function getEvents() {
                 var eventList = angular.copy(CurrentSelection.getSelectedTeiEvents());
                 if ($scope.selectedProgram && $scope.selectedProgram.id) {
-                    eventList = $filter('filter')(eventList, { program: $scope.selectedProgram.id });
+                    eventList = $filter('filter')(eventList, {program: $scope.selectedProgram.id});
                 }
 
                 setEvents(eventList);
@@ -20675,7 +21127,7 @@ function addNinListener() {
                         ev.name = $scope.programStageNames[ev.programStage].displayName;
                         ev.programName = $scope.programNames[ev.program].displayName;
                         if (!$scope.report[ev.program].enrollments) {
-                            $scope.report[ev.program] = { enrollments: {} };
+                            $scope.report[ev.program] = {enrollments: {}};
                         }
                         ev.statusColor = EventUtils.getEventStatusColor(ev);
 
@@ -20726,7 +21178,7 @@ function addNinListener() {
                 //today as report date
                 $scope.today = DateUtils.getToday();
 
-                //process tei attributes, this is to have consistent display so that the tei 
+                //process tei attributes, this is to have consistent display so that the tei
                 //contains program attributes whether it has value or not
                 TEIService.processAttributes($scope.selectedTei, $scope.selectedProgram, $scope.enrollmentsByProgram[pr.id]).then(function (tei) {
                     $scope.tei = tei;
@@ -20804,9 +21256,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 33 */
-/***/ (function (module, exports) {
+    }),
+    /* 33 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20816,9 +21268,9 @@ function addNinListener() {
         trackerCapture.controller('ProgramSummaryController', ["$scope", "DateUtils", "EventUtils", "TEIGridService", "AttributesFactory", "ProgramFactory", "CurrentSelection", "MetaDataFactory", "EventReportService", function ($scope, DateUtils, EventUtils, TEIGridService, AttributesFactory, ProgramFactory, CurrentSelection, MetaDataFactory, EventReportService) {
             $scope.today = DateUtils.getToday();
 
-            $scope.ouModes = [{ name: 'SELECTED' }, { name: 'CHILDREN' }, { name: 'DESCENDANTS' }, { name: 'ACCESSIBLE' }];
+            $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];
             $scope.selectedOuMode = $scope.ouModes[0];
-            $scope.pager = { pageSize: reportEntriesLimit + 1, page: 1 };
+            $scope.pager = {pageSize: reportEntriesLimit + 1, page: 1};
             $scope.report = {};
             $scope.model = {};
 
@@ -20969,9 +21421,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 34 */
-/***/ (function (module, exports) {
+    }),
+    /* 34 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -20981,7 +21433,7 @@ function addNinListener() {
         trackerCapture.controller('ProgramStatisticsController', ["$scope", "DateUtils", "EnrollmentService", "ProgramFactory", "DHIS2EventFactory", function ($scope, DateUtils, EnrollmentService, ProgramFactory, DHIS2EventFactory) {
             $scope.today = DateUtils.getToday();
 
-            $scope.ouModes = [{ name: 'SELECTED' }, { name: 'CHILDREN' }, { name: 'DESCENDANTS' }, { name: 'ACCESSIBLE' }];
+            $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];
             $scope.selectedOuMode = $scope.ouModes[0];
             $scope.report = {};
             $scope.maxOptionSize = 100;
@@ -20991,12 +21443,13 @@ function addNinListener() {
             $scope.printMode = false;
 
             //Paging
-            $scope.pager = { pageSize: 50, page: 1, toolBarDisplay: 5 };
+            $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};
 
             function resetParams() {
                 $scope.reportStarted = false;
                 $scope.dataReady = false;
             }
+
             //watch for selection of org unit from tree
             $scope.$watch('selectedOrgUnit', function () {
                 resetParams();
@@ -21057,7 +21510,7 @@ function addNinListener() {
                 $scope.dataReady = false;
                 $scope.reportStarted = true;
 
-                $scope.enrollments = { active: 0, completed: 0, cancelled: 0 };
+                $scope.enrollments = {active: 0, completed: 0, cancelled: 0};
                 $scope.enrollmentList = [];
                 EnrollmentService.getByStartAndEndDate($scope.model.selectedProgram.id, $scope.selectedOrgUnit.id, $scope.selectedOuMode.name, DateUtils.formatFromUserToApi($scope.report.startDate), DateUtils.formatFromUserToApi($scope.report.endDate), reportEntriesLimit + 1).then(function (data) {
 
@@ -21075,13 +21528,16 @@ function addNinListener() {
                             }
                         });
 
-                        $scope.enrollmentStat = [{ key: 'Completed', y: $scope.enrollments.completed }, { key: 'Active', y: $scope.enrollments.active }, { key: 'Cancelled', y: $scope.enrollments.cancelled }];
+                        $scope.enrollmentStat = [{key: 'Completed', y: $scope.enrollments.completed}, {
+                            key: 'Active',
+                            y: $scope.enrollments.active
+                        }, {key: 'Cancelled', y: $scope.enrollments.cancelled}];
 
                         DHIS2EventFactory.getByOrgUnitAndProgram($scope.selectedOrgUnit.id, $scope.selectedOuMode.name, $scope.model.selectedProgram.id, DateUtils.formatFromUserToApi($scope.report.startDate), DateUtils.formatFromUserToApi($scope.report.endDate), reportEntriesLimit + 1).then(function (data) {
 
                             if (data) {
                                 $scope.eventsReceived = data.length;
-                                $scope.dhis2Events = { completed: 0, active: 0, skipped: 0, overdue: 0, ontime: 0 };
+                                $scope.dhis2Events = {completed: 0, active: 0, skipped: 0, overdue: 0, ontime: 0};
                                 $scope.totalEvents = 0;
                                 angular.forEach(data, function (ev) {
 
@@ -21103,7 +21559,13 @@ function addNinListener() {
                                         }
                                     }
                                 });
-                                $scope.eventStat = [{ key: 'Completed', y: $scope.dhis2Events.completed }, { key: 'Active', y: $scope.dhis2Events.active }, { key: 'Skipped', y: $scope.dhis2Events.skipped }, { key: 'Ontime', y: $scope.dhis2Events.overdue }, { key: 'Overdue', y: $scope.dhis2Events.ontime }];
+                                $scope.eventStat = [{key: 'Completed', y: $scope.dhis2Events.completed}, {
+                                    key: 'Active',
+                                    y: $scope.dhis2Events.active
+                                }, {key: 'Skipped', y: $scope.dhis2Events.skipped}, {
+                                    key: 'Ontime',
+                                    y: $scope.dhis2Events.overdue
+                                }, {key: 'Overdue', y: $scope.dhis2Events.ontime}];
                             }
                         });
                     }
@@ -21115,9 +21577,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 35 */
-/***/ (function (module, exports) {
+    }),
+    /* 35 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -21159,7 +21621,7 @@ function addNinListener() {
             }
 
             //Paging
-            $scope.pager = { pageSize: 50, page: 1, toolBarDisplay: 5 };
+            $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};
 
             //watch for selection of org unit from tree
             $scope.$watch('selectedOrgUnit', function () {
@@ -21236,7 +21698,14 @@ function addNinListener() {
                             }
                             //sort overdue events by their due dates - this is default
                             if (!$scope.sortColumn.id) {
-                                $scope.sortGrid({ id: 'dueDate', displayName: $translate.instant('due_date'), valueType: 'DATE', displayInListNoProgram: false, showFilter: false, show: true });
+                                $scope.sortGrid({
+                                    id: 'dueDate',
+                                    displayName: $translate.instant('due_date'),
+                                    valueType: 'DATE',
+                                    displayInListNoProgram: false,
+                                    showFilter: false,
+                                    show: true
+                                });
                                 $scope.reverse = false;
                             }
                         }
@@ -21263,8 +21732,24 @@ function addNinListener() {
                     AttributesFactory.getByProgram($scope.model.selectedProgram).then(function (atts) {
                         var grid = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode, true);
                         $scope.gridColumns = [];
-                        $scope.gridColumns.push({ displayName: $translate.instant('due_date'), id: 'dueDate', valueType: 'DATE', displayInListNoProgram: false, showFilter: false, show: true, eventCol: true });
-                        $scope.gridColumns.push({ displayName: $translate.instant('event_name'), id: 'eventName', valueType: 'TEXT', displayInListNoProgram: false, showFilter: false, show: true, eventCol: true });
+                        $scope.gridColumns.push({
+                            displayName: $translate.instant('due_date'),
+                            id: 'dueDate',
+                            valueType: 'DATE',
+                            displayInListNoProgram: false,
+                            showFilter: false,
+                            show: true,
+                            eventCol: true
+                        });
+                        $scope.gridColumns.push({
+                            displayName: $translate.instant('event_name'),
+                            id: 'eventName',
+                            valueType: 'TEXT',
+                            displayInListNoProgram: false,
+                            showFilter: false,
+                            show: true,
+                            eventCol: true
+                        });
                         $scope.gridColumns = $scope.gridColumns.concat(grid.columns);
 
                         $scope.filterTypes['eventName'] = 'TEXT';
@@ -21303,7 +21788,8 @@ function addNinListener() {
 
                 modalInstance.result.then(function (gridColumns) {
                     $scope.gridColumns = gridColumns;
-                }, function () { });
+                }, function () {
+                });
             };
 
             //sortGrid
@@ -21385,9 +21871,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 36 */
-/***/ (function (module, exports) {
+    }),
+    /* 36 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -21427,7 +21913,7 @@ function addNinListener() {
             }
 
             //Paging
-            $scope.pager = { pageSize: 50, page: 1, toolBarDisplay: 5 };
+            $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};
 
             //watch for selection of org unit from tree
             $scope.$watch('selectedOrgUnit', function () {
@@ -21498,7 +21984,14 @@ function addNinListener() {
 
                         //sort upcoming events by their due dates - this is default
                         if (!$scope.sortColumn.id) {
-                            $scope.sortGrid({ id: 'dueDate', displayName: $translate.instant('due_date'), valueType: 'DATE', displayInListNoProgram: false, showFilter: false, show: true });
+                            $scope.sortGrid({
+                                id: 'dueDate',
+                                displayName: $translate.instant('due_date'),
+                                valueType: 'DATE',
+                                displayInListNoProgram: false,
+                                showFilter: false,
+                                show: true
+                            });
                             $scope.reverse = false;
                         }
                     }
@@ -21516,7 +22009,8 @@ function addNinListener() {
                     $scope.sortColumn = {};
                     $scope.filterTypes = {};
                     $scope.filterText = {};
-                    $scope.reverse = false;;
+                    $scope.reverse = false;
+                    ;
 
                     angular.forEach($scope.model.selectedProgram.programStages, function (stage) {
                         $scope.programStages[stage.id] = stage;
@@ -21526,8 +22020,24 @@ function addNinListener() {
                         var grid = TEIGridService.generateGridColumns(atts, $scope.selectedOuMode, true);
 
                         $scope.gridColumns = [];
-                        $scope.gridColumns.push({ displayName: $translate.instant('due_date'), id: 'dueDate', valueType: 'DATE', displayInListNoProgram: false, showFilter: false, show: true, eventCol: true });
-                        $scope.gridColumns.push({ displayName: $translate.instant('event_name'), id: 'eventName', valueType: 'TEXT', displayInListNoProgram: false, showFilter: false, show: true, eventCol: true });
+                        $scope.gridColumns.push({
+                            displayName: $translate.instant('due_date'),
+                            id: 'dueDate',
+                            valueType: 'DATE',
+                            displayInListNoProgram: false,
+                            showFilter: false,
+                            show: true,
+                            eventCol: true
+                        });
+                        $scope.gridColumns.push({
+                            displayName: $translate.instant('event_name'),
+                            id: 'eventName',
+                            valueType: 'TEXT',
+                            displayInListNoProgram: false,
+                            showFilter: false,
+                            show: true,
+                            eventCol: true
+                        });
                         $scope.gridColumns = $scope.gridColumns.concat(grid.columns);
 
                         $scope.filterTypes['eventName'] = 'TEXT';
@@ -21566,7 +22076,8 @@ function addNinListener() {
 
                 modalInstance.result.then(function (gridColumns) {
                     $scope.gridColumns = gridColumns;
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.sortGrid = function (gridHeader) {
@@ -21625,11 +22136,23 @@ function addNinListener() {
                 return TEIGridService.getData($scope.upcomingEvents, $scope.gridColumns);
             };
 
-            $scope.dates = [{ "name": $translate.instant('events_today'), "numOfDays": 1 }, { "name": $translate.instant('events_in_one_week'), "numOfDays": 7 }, { "name": $translate.instant('events_in_two_weeks'), "numOfDays": 14 }, { "name": $translate.instant('events_in_one_month'), "numOfDays": 30 }, { "name": $translate.instant('choose_the_dates') }];
+            $scope.dates = [{
+                "name": $translate.instant('events_today'),
+                "numOfDays": 1
+            }, {
+                "name": $translate.instant('events_in_one_week'),
+                "numOfDays": 7
+            }, {
+                "name": $translate.instant('events_in_two_weeks'),
+                "numOfDays": 14
+            }, {
+                "name": $translate.instant('events_in_one_month'),
+                "numOfDays": 30
+            }, {"name": $translate.instant('choose_the_dates')}];
 
             $scope.selectedDate = $scope.dates[0];
 
-            $scope.datePicker = { "visible": false };
+            $scope.datePicker = {"visible": false};
 
             $scope.$watch('selectedDate', function () {
                 var numOfDays = $scope.selectedDate.numOfDays;
@@ -21683,9 +22206,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 37 */
-/***/ (function (module, exports) {
+    }),
+    /* 37 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -21704,16 +22227,22 @@ function addNinListener() {
                     $scope.selectedOrgUnit = orgUnit;
                     $scope.selections = [];
 
-                    $scope.selections.push({ title: 'org_unit', value: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.displayName : 'not_selected' });
-                    $scope.selections.push({ title: 'program', value: $scope.selectedProgram ? $scope.selectedProgram.displayName : 'not_selected' });
+                    $scope.selections.push({
+                        title: 'org_unit',
+                        value: $scope.selectedOrgUnit ? $scope.selectedOrgUnit.displayName : 'not_selected'
+                    });
+                    $scope.selections.push({
+                        title: 'program',
+                        value: $scope.selectedProgram ? $scope.selectedProgram.displayName : 'not_selected'
+                    });
                 });
             });
         }]);
 
         /***/
-}),
-/* 38 */
-/***/ (function (module, exports) {
+    }),
+    /* 38 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -21730,7 +22259,7 @@ function addNinListener() {
                 _allPrograms = result.programs;
             });
 
-            //listen for the selected entity       
+            //listen for the selected entity
             $scope.$on('dashboardWidgets', function (event, args) {
                 $scope.relationshipTypes = [];
                 $scope.relationships = [];
@@ -21855,7 +22384,7 @@ function addNinListener() {
             };
 
             $scope.showDashboard = function (teiId, program) {
-                $location.path('/dashboard').search({ tei: teiId, program: program, ou: $scope.selectedOrgUnit.id });
+                $location.path('/dashboard').search({tei: teiId, program: program, ou: $scope.selectedOrgUnit.id});
             };
 
             $scope.showEventInCaptureApp = function (eventId) {
@@ -21871,7 +22400,7 @@ function addNinListener() {
                 var relationshipType = {};
 
                 TEService.getAll().then(function (teiTypes) {
-                    //Loop through all relationships.      
+                    //Loop through all relationships.
                     angular.forEach($scope.selectedTei.relationships, function (rel) {
                         if (rel.to && rel.to.trackedEntityInstance && rel.to.trackedEntityInstance.trackedEntityInstance !== $scope.selectedTei.trackedEntityInstance) {
                             var teiId = rel.to.trackedEntityInstance.trackedEntityInstance;
@@ -21901,10 +22430,17 @@ function addNinListener() {
                                 relationshipProgram = relationshipType.toConstraint.program;
 
                                 if (!relationshipProgram && $scope.selectedProgram) {
-                                    relationshipProgram = { id: $scope.selectedProgram.id };
+                                    relationshipProgram = {id: $scope.selectedProgram.id};
                                 }
 
-                                var relative = { trackedEntityInstance: teiId, relName: relName, relId: rel.relationship, attributes: getRelativeAttributes(tei.attributes), relationshipProgramConstraint: relationshipProgram, relationshipType: relationshipType };
+                                var relative = {
+                                    trackedEntityInstance: teiId,
+                                    relName: relName,
+                                    relId: rel.relationship,
+                                    attributes: getRelativeAttributes(tei.attributes),
+                                    relationshipProgramConstraint: relationshipProgram,
+                                    relationshipType: relationshipType
+                                };
                                 $scope.relatedTeis.push(relative);
                             });
                         } else if (rel.from && rel.bidirectional && rel.from.trackedEntityInstance && rel.from.trackedEntityInstance.trackedEntityInstance !== $scope.selectedTei.trackedEntityInstance) {
@@ -21935,10 +22471,17 @@ function addNinListener() {
                                 relationshipProgram = relationshipType.fromConstraint.program;
 
                                 if (!relationshipProgram && $scope.selectedProgram) {
-                                    relationshipProgram = { id: $scope.selectedProgram.id };
+                                    relationshipProgram = {id: $scope.selectedProgram.id};
                                 }
 
-                                var relative = { trackedEntityInstance: teiId, relName: relName, relId: rel.relationship, attributes: getRelativeAttributes(tei.attributes), relationshipProgramConstraint: relationshipProgram, relationshipType: relationshipType };
+                                var relative = {
+                                    trackedEntityInstance: teiId,
+                                    relName: relName,
+                                    relId: rel.relationship,
+                                    attributes: getRelativeAttributes(tei.attributes),
+                                    relationshipProgramConstraint: relationshipProgram,
+                                    relationshipType: relationshipType
+                                };
                                 $scope.relatedTeis.push(relative);
                             });
                         } else if (rel.from && rel.bidirectional && rel.from.event && rel.from.event.event) {
@@ -21954,7 +22497,7 @@ function addNinListener() {
                                 relationshipProgram = relationshipType.fromConstraint.program;
 
                                 if (!relationshipProgram && $scope.selectedProgram) {
-                                    relationshipProgram = { id: $scope.selectedProgram.id };
+                                    relationshipProgram = {id: $scope.selectedProgram.id};
                                 }
 
                                 var convertedEventDate = DateUtils.formatFromApiToUser(event.eventDate);
@@ -21979,7 +22522,18 @@ function addNinListener() {
                 });
 
                 var selections = CurrentSelection.get();
-                CurrentSelection.set({ tei: $scope.selectedTei, te: $scope.trackedEntityType, prs: selections.prs, pr: $scope.selectedProgram, prNames: selections.prNames, prStNames: selections.prStNames, enrollments: selections.enrollments, selectedEnrollment: $scope.selectedEnrollment, optionSets: selections.optionSets, orgUnit: selections.orgUnit });
+                CurrentSelection.set({
+                    tei: $scope.selectedTei,
+                    te: $scope.trackedEntityType,
+                    prs: selections.prs,
+                    pr: $scope.selectedProgram,
+                    prNames: selections.prNames,
+                    prStNames: selections.prStNames,
+                    enrollments: selections.enrollments,
+                    selectedEnrollment: $scope.selectedEnrollment,
+                    optionSets: selections.optionSets,
+                    orgUnit: selections.orgUnit
+                });
             };
 
             var getRelativeAttributes = function getRelativeAttributes(teiAttributes) {
@@ -22006,9 +22560,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 39 */
-/***/ (function (module, exports) {
+    }),
+    /* 39 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -22019,8 +22573,8 @@ function addNinListener() {
             var selection = CurrentSelection.get();
 
             $scope.base = {};
-            $scope.selectedConstraints = { currentTei: null, related: null };
-            $scope.tempSelectedConstraints = { currentTei: null, related: null };
+            $scope.selectedConstraints = {currentTei: null, related: null};
+            $scope.tempSelectedConstraints = {currentTei: null, related: null};
 
             $scope.attributesById = [];
             AttributesFactory.getAll().then(function (atts) {
@@ -22165,15 +22719,15 @@ function addNinListener() {
 
             //Selections
             $scope.selectedTeiForDisplay = angular.copy($scope.mainTei);
-            $scope.ouModes = [{ name: 'SELECTED' }, { name: 'CHILDREN' }, { name: 'DESCENDANTS' }, { name: 'ACCESSIBLE' }];
+            $scope.ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];
             $scope.selectedOuMode = $scope.ouModes[0];
 
             //Paging
-            $scope.pager = { pageSize: 50, page: 1, toolBarDisplay: 5 };
+            $scope.pager = {pageSize: 50, page: 1, toolBarDisplay: 5};
 
             //Searching
             $scope.showAdvancedSearchDiv = false;
-            $scope.searchText = { value: null };
+            $scope.searchText = {value: null};
             $scope.emptySearchText = false;
             $scope.searchFilterExists = false;
             $scope.defaultOperators = OperatorFactory.defaultOperators;
@@ -22181,9 +22735,9 @@ function addNinListener() {
             $scope.selectedTrackedEntity = null;
 
             $scope.trackedEntityList = null;
-            $scope.enrollment = { programStartDate: '', programEndDate: '', operator: $scope.defaultOperators[0] };
+            $scope.enrollment = {programStartDate: '', programEndDate: '', operator: $scope.defaultOperators[0]};
 
-            $scope.searchMode = { listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED' };
+            $scope.searchMode = {listAll: 'LIST_ALL', freeText: 'FREE_TEXT', attributeBased: 'ATTRIBUTE_BASED'};
             $scope.selectedSearchMode = $scope.searchMode.listAll;
 
             if ($scope.addingRelationship) {
@@ -22276,7 +22830,7 @@ function addNinListener() {
 
                 $scope.queryUrl = null;
                 $scope.programUrl = null;
-                $scope.attributeUrl = { url: null, hasValue: false };
+                $scope.attributeUrl = {url: null, hasValue: false};
                 $scope.sortColumn = {};
             }
 
@@ -22448,8 +23002,13 @@ function addNinListener() {
                 var columns = attributes ? angular.copy(attributes) : [];
 
                 //also add extra columns which are not part of attributes (orgunit for example)
-                columns.push({ id: 'orgUnitName', name: 'Organisation unit', type: 'TEXT', displayInListNoProgram: false });
-                columns.push({ id: 'created', name: 'Registration date', type: 'TEXT', displayInListNoProgram: false });
+                columns.push({
+                    id: 'orgUnitName',
+                    name: 'Organisation unit',
+                    type: 'TEXT',
+                    displayInListNoProgram: false
+                });
+                columns.push({id: 'created', name: 'Registration date', type: 'TEXT', displayInListNoProgram: false});
 
                 //generate grid column for the selected program/attributes
                 angular.forEach(columns, function (column) {
@@ -22462,7 +23021,7 @@ function addNinListener() {
                     }
 
                     if (column.type === 'date') {
-                        $scope.filterText[column.id] = { start: '', end: '' };
+                        $scope.filterText[column.id] = {start: '', end: ''};
                     }
                 });
                 return columns;
@@ -22515,7 +23074,7 @@ function addNinListener() {
                 if ($scope.addingRelationship) {
                     if ($scope.mainTei && $scope.teiForRelationship && $scope.relationship.selected) {
 
-                        var relationship = { from: { trackedEntityInstance: {} }, to: { trackedEntityInstance: {} } };
+                        var relationship = {from: {trackedEntityInstance: {}}, to: {trackedEntityInstance: {}}};
 
                         relationship.relationshipType = $scope.relationship.selected.id;
 
@@ -22596,7 +23155,7 @@ function addNinListener() {
             };
         }]).controller('TEIRegistrationController', ["$rootScope", "$scope", "$timeout", "$translate", "AttributesFactory", "MetaDataFactory", "TrackerRulesFactory", "CustomFormService", "TEService", "EnrollmentService", "NotificationService", "CurrentSelection", "DateUtils", "EventUtils", "DHIS2EventFactory", "RegistrationService", "SessionStorageService", "TrackerRulesExecutionService", "TEIGridService", "AttributeUtils", function ($rootScope, $scope, $timeout, $translate, AttributesFactory, MetaDataFactory, TrackerRulesFactory, CustomFormService, TEService, EnrollmentService, NotificationService, CurrentSelection, DateUtils, EventUtils, DHIS2EventFactory, RegistrationService, SessionStorageService, TrackerRulesExecutionService, TEIGridService, AttributeUtils) {
             $scope.selectedOrgUnit = SessionStorageService.get('SELECTED_OU');
-            $scope.enrollment = { enrollmentDate: '', incidentDate: '' };
+            $scope.enrollment = {enrollmentDate: '', incidentDate: ''};
             $scope.today = DateUtils.getToday();
             $scope.trackedEntityForm = null;
             $scope.customRegistrationForm = null;
@@ -22606,7 +23165,7 @@ function addNinListener() {
             $scope.hiddenFields = {};
             $scope.assignedFields = {};
             $scope.editingDisabled = false;
-            $scope.model = { autoGeneratedAttFailed: false };
+            $scope.model = {autoGeneratedAttFailed: false};
 
             var selections = CurrentSelection.get();
             $scope.selectedOrgUnit = selections.orgUnit;
@@ -22658,7 +23217,7 @@ function addNinListener() {
             };
 
             var getRules = function getRules() {
-                $scope.allProgramRules = { constants: [], programIndicators: {}, programVariables: [], programRules: [] };
+                $scope.allProgramRules = {constants: [], programIndicators: {}, programVariables: [], programRules: []};
                 if (angular.isObject($scope.base.selectedProgramForRelative) && $scope.base.selectedProgramForRelative.id) {
                     TrackerRulesFactory.getRules($scope.base.selectedProgramForRelative.id).then(function (rules) {
                         $scope.allProgramRules = rules;
@@ -22725,7 +23284,7 @@ function addNinListener() {
                 return $scope.trackedEntityTypes && $scope.trackedEntityTypes.selected && $scope.trackedEntityTypes.selected.access.data.write;
             };
 
-            $scope.trackedEntityTypes = { available: [] };
+            $scope.trackedEntityTypes = {available: []};
             TEService.getAll().then(function (entities) {
                 $scope.trackedEntityTypes.available = entities;
                 $scope.trackedEntityTypes.selected = $scope.trackedEntityTypes.available[0];
@@ -22822,18 +23381,18 @@ function addNinListener() {
                     $scope.tei.orgUnitName = $scope.selectedOrgUnit.displayName;
                     $scope.tei.created = DateUtils.formatFromApiToUser(new Date());
 
-                    CurrentSelection.setRelationshipInfo({ tei: $scope.tei });
+                    CurrentSelection.setRelationshipInfo({tei: $scope.tei});
 
                     if ($scope.addingRelationship) {
                         $timeout(function () {
-                            $rootScope.$broadcast('relationship', { result: 'SUCCESS' });
+                            $rootScope.$broadcast('relationship', {result: 'SUCCESS'});
                         }, 100);
                     }
                 }
             };
 
             $scope.executeRules = function () {
-                var flag = { debug: true, verbose: false };
+                var flag = {debug: true, verbose: false};
 
                 //repopulate attributes with updated values
                 $scope.selectedTei.attributes = [];
@@ -22858,8 +23417,8 @@ function addNinListener() {
 
             //check if field is hidden
             $scope.isHidden = function (id) {
-                //In case the field contains a value, we cant hide it. 
-                //If we hid a field with a value, it would falsely seem the user was aware that the value was entered in the UI.        
+                //In case the field contains a value, we cant hide it.
+                //If we hid a field with a value, it would falsely seem the user was aware that the value was entered in the UI.
                 return $scope.selectedTei[id] ? false : $scope.hiddenFields[id];
             };
 
@@ -22887,9 +23446,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 40 */
-/***/ (function (module, exports) {
+    }),
+    /* 40 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -22908,7 +23467,7 @@ function addNinListener() {
                 $scope.widget.getTopBarFields = function () {
                     var fields = [];
                     angular.forEach($scope.allAttributes, function (attr) {
-                        fields.push({ name: attr.displayName, id: attr.id });
+                        fields.push({name: attr.displayName, id: attr.id});
                     });
                     return fields;
                 };
@@ -22965,14 +23524,18 @@ function addNinListener() {
                 });
 
                 //display only those attributes that belong to the selected program
-                //if no program, display attributesInNoProgram     
+                //if no program, display attributesInNoProgram
                 if ($scope.selectedTei) {
                     angular.forEach($scope.selectedTei.attributes, function (att) {
                         $scope.selectedTei[att.attribute] = att.value;
                     });
                 }
                 $timeout(function () {
-                    $rootScope.$broadcast('registrationWidget', { registrationMode: 'PROFILE', selectedTei: $scope.selectedTei, enrollment: $scope.selectedEnrollment });
+                    $rootScope.$broadcast('registrationWidget', {
+                        registrationMode: 'PROFILE',
+                        selectedTei: $scope.selectedTei,
+                        enrollment: $scope.selectedEnrollment
+                    });
                 });
             };
 
@@ -22986,15 +23549,19 @@ function addNinListener() {
                 $scope.selectedTei = $scope.teiOriginal;
                 $scope.editingDisabled = !$scope.editingDisabled;
                 $timeout(function () {
-                    $rootScope.$broadcast('registrationWidget', { registrationMode: 'PROFILE', selectedTei: $scope.selectedTei, enrollment: $scope.selectedEnrollment });
+                    $rootScope.$broadcast('registrationWidget', {
+                        registrationMode: 'PROFILE',
+                        selectedTei: $scope.selectedTei,
+                        enrollment: $scope.selectedEnrollment
+                    });
                 }, 600);
             };
         }]);
 
         /***/
-}),
-/* 41 */
-/***/ (function (module, exports) {
+    }),
+    /* 41 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -23042,7 +23609,12 @@ function addNinListener() {
                     return;
                 }
 
-                var newNote = { value: $scope.note.value, storedDate: DateUtils.formatFromUserToApi(today), displayDate: today, storedBy: storedBy };
+                var newNote = {
+                    value: $scope.note.value,
+                    storedDate: DateUtils.formatFromUserToApi(today),
+                    displayDate: today,
+                    storedBy: storedBy
+                };
 
                 $scope.updateNoteWithRealName(newNote);
 
@@ -23057,7 +23629,7 @@ function addNinListener() {
                 if (e.incidentDate) {
                     e.incidentDate = DateUtils.formatFromUserToApi(e.incidentDate);
                 }
-                e.notes = [{ value: newNote.value }];
+                e.notes = [{value: newNote.value}];
                 EnrollmentService.updateForNote(e).then(function () {
                     $scope.clear();
                 });
@@ -23073,9 +23645,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 42 */
-/***/ (function (module, exports) {
+    }),
+    /* 42 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -23111,7 +23683,7 @@ function addNinListener() {
                         if (rule.programRuleActions) {
                             angular.forEach(rule.programRuleActions, function (action) {
                                 if (action.location && action.location === $scope.widgetTitle && (action.programRuleActionType === 'DISPLAYTEXT' || action.programRuleActionType === 'DISPLAYKEYVALUEPAIR')) {
-                                    fields.push({ id: action.id, name: action.content });
+                                    fields.push({id: action.id, name: action.content});
                                 }
                             });
                         }
@@ -23136,9 +23708,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 43 */
-/***/ (function (module, exports) {
+    }),
+    /* 43 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -23152,7 +23724,12 @@ function addNinListener() {
             $scope.message = {};
             $scope.showMessagingDiv = false;
             $scope.showNotesDiv = true;
-            $scope.model = { messageTypes: ["sms", "email"], selectedMessageType: "sms", smsMessage: "", emailMessage: "" };
+            $scope.model = {
+                messageTypes: ["sms", "email"],
+                selectedMessageType: "sms",
+                smsMessage: "",
+                emailMessage: ""
+            };
             $scope.$on('dashboardWidgets', function () {
                 $scope.selectedEnrollment = null;
                 $scope.selections = CurrentSelection.get();
@@ -23235,9 +23812,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 44 */
-/***/ (function (module, exports) {
+    }),
+    /* 44 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -23258,7 +23835,10 @@ function addNinListener() {
                     shouldReset: false,
                     disabled: true,
                     onPostLoad: function onPostLoad() {
-                        $rootScope.$broadcast('registrationWidget', { registrationMode: 'REGISTRATION', generateAttributes: true });
+                        $rootScope.$broadcast('registrationWidget', {
+                            registrationMode: 'REGISTRATION',
+                            generateAttributes: true
+                        });
                     }
                 },
                 lists: {
@@ -23469,12 +24049,12 @@ function addNinListener() {
                 }
 
                 if ($scope.selectedProgram) {
-                    $location.path('/').search({ program: $scope.selectedProgram.id });
+                    $location.path('/').search({program: $scope.selectedProgram.id});
                 }
 
                 loadCanRegister();
                 if (view.name.toLowerCase() === 'register') {
-                    checkRegisterFormInView();
+                    checkRegisterFormInView($scope.saveDatavalue);
                 }
 
             };
@@ -23517,24 +24097,34 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 45 */
-/***/ (function (module, exports) {
+    }),
+    /* 45 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
-        var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+        var _extends = Object.assign || function (target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
 
         var trackerCapture = angular.module('trackerCapture');
 
         trackerCapture.controller('ListsController', ["$rootScope", "$scope", "$modal", "$location", "$filter", "$timeout", "$q", "Paginator", "MetaDataFactory", "DateUtils", "OrgUnitFactory", "ProgramFactory", "AttributesFactory", "EntityQueryFactory", "CurrentSelection", "TEIGridService", "TEIService", "UserDataStoreService", "ProgramWorkingListService", "OperatorFactory", function ($rootScope, $scope, $modal, $location, $filter, $timeout, $q, Paginator, MetaDataFactory, DateUtils, OrgUnitFactory, ProgramFactory, AttributesFactory, EntityQueryFactory, CurrentSelection, TEIGridService, TEIService, UserDataStoreService, ProgramWorkingListService, OperatorFactory) {
-            var ouModes = [{ name: 'SELECTED' }, { name: 'CHILDREN' }, { name: 'DESCENDANTS' }, { name: 'ACCESSIBLE' }];
+            var ouModes = [{name: 'SELECTED'}, {name: 'CHILDREN'}, {name: 'DESCENDANTS'}, {name: 'ACCESSIBLE'}];
             var userGridColumns = null;
-            var defaultCustomWorkingListValues = { ouMode: ouModes[0], programStatus: "" };
+            var defaultCustomWorkingListValues = {ouMode: ouModes[0], programStatus: ""};
             var gridColumnsContainer = "trackerCaptureGridColumns";
 
-            $scope.workingListTypes = { NORMAL: "NORMAL", CUSTOM: "CUSTOM" };
-            $scope.trackedEntityListTypes = { WORKINGLIST: "WORKINGLIST", CUSTOM: "CUSTOM" };
+            $scope.workingListTypes = {NORMAL: "NORMAL", CUSTOM: "CUSTOM"};
+            $scope.trackedEntityListTypes = {WORKINGLIST: "WORKINGLIST", CUSTOM: "CUSTOM"};
             $scope.listExportFormats = ["XML", "JSON", "CSV"];
             $scope.customWorkingListValues = defaultCustomWorkingListValues;
             $scope.defaultOperators = OperatorFactory.defaultOperators;
@@ -23578,7 +24168,7 @@ function addNinListener() {
             var loadGridColumns = function loadGridColumns() {
                 if ($scope.base.selectedProgram) {
                     return UserDataStoreService.get(gridColumnsContainer, $scope.base.selectedProgram.id).then(function (savedGridColumns) {
-                        var gridColumnConfig = { defaultRange: { start: 3, end: 7 } };
+                        var gridColumnConfig = {defaultRange: {start: 3, end: 7}};
                         $scope.gridColumns = TEIGridService.makeGridColumns($scope.programAttributes, gridColumnConfig, savedGridColumns);
                         /*
                         $scope.gridColumns = [];
@@ -23683,7 +24273,7 @@ function addNinListener() {
                     $scope.currentTrackedEntityList.config.cachedSorting = null;
                 }
                 $scope.showCustomWorkingListInline = false;
-                $scope.currentTrackedEntityList = { type: type, config: config, data: data };
+                $scope.currentTrackedEntityList = {type: type, config: config, data: data};
                 if (!$scope.currentTrackedEntityList.sortColumn) {
                     $scope.currentTrackedEntityList.sortColumn = {
                         id: 'created',
@@ -23713,7 +24303,7 @@ function addNinListener() {
                 var customConfig = {
                     queryUrl: "",
                     programUrl: "",
-                    attributeUrl: { url: null, hasValue: false },
+                    attributeUrl: {url: null, hasValue: false},
                     ouMode: $scope.customWorkingListValues.ouMode,
                     orgUnit: $scope.selectedOrgUnit
                 };
@@ -23786,14 +24376,14 @@ function addNinListener() {
             /**
              * TeiList
              * Sort by grid column
-             * @param {*} gridHeader 
+             * @param {*} gridHeader
              */
             $scope.sortGrid = function (gridHeader) {
                 var sortColumn = $scope.currentTrackedEntityList.sortColumn;
                 if (sortColumn && sortColumn.id === gridHeader.id) {
                     sortColumn.direction = sortColumn.direction === 'asc' ? 'desc' : 'asc';
                 } else {
-                    $scope.currentTrackedEntityList.sortColumn = { id: gridHeader.id, direction: 'asc' };
+                    $scope.currentTrackedEntityList.sortColumn = {id: gridHeader.id, direction: 'asc'};
                 }
                 fetchTeis();
             };
@@ -23826,7 +24416,8 @@ function addNinListener() {
                         userGridColumns[gc.id] = gc;
                     });
                     return UserDataStoreService.set(userGridColumns, gridColumnsContainer, $scope.base.selectedProgram.id);
-                }, function () { });
+                }, function () {
+                });
             };
 
             $scope.getExportList = function (format) {
@@ -23865,7 +24456,7 @@ function addNinListener() {
                         var a = document.createElement('a');
                         var blob, url;
                         a.style = "display: none";
-                        blob = new Blob(['' + data], { type: "octet/stream", endings: 'native' });
+                        blob = new Blob(['' + data], {type: "octet/stream", endings: 'native'});
                         url = window.URL.createObjectURL(blob);
                         a.href = url;
                         a.download = fileName;
@@ -23920,13 +24511,23 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 46 */
-/***/ (function (module, exports) {
+    }),
+    /* 46 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
-        var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+        var _extends = Object.assign || function (target) {
+            for (var i = 1; i < arguments.length; i++) {
+                var source = arguments[i];
+                for (var key in source) {
+                    if (Object.prototype.hasOwnProperty.call(source, key)) {
+                        target[key] = source[key];
+                    }
+                }
+            }
+            return target;
+        };
 
         var trackerCapture = angular.module('trackerCapture');
 
@@ -24042,14 +24643,14 @@ function addNinListener() {
                         }
                     }
                     var def = $q.defer();
-                    def.resolve({ result: res, callingScope: searchScopes.PROGRAM, resultScope: searchScopes.PROGRAM });
+                    def.resolve({result: res, callingScope: searchScopes.PROGRAM, resultScope: searchScopes.PROGRAM});
                     return def.promise;
                 });
             };
 
             var tetScopeSearch = function tetScopeSearch(tetSearchGroup) {
                 return SearchGroupService.search(programSearchGroup, $scope.base.selectedProgramForSearch, $scope.trackedEntityTypes.selected, $scope.selectedOrgUnit, searchScopes.TET).then(function (res) {
-                    return { result: res, callingScope: searchScopes.TET, resultScope: searchScopes.TET };
+                    return {result: res, callingScope: searchScopes.TET, resultScope: searchScopes.TET};
                 });
             };
 
@@ -24078,9 +24679,9 @@ function addNinListener() {
                     var promise;
                     if (currentSearchScope === searchScopes.PROGRAM) {
                         var tetSearchGroup = SearchGroupService.findValidTetSearchGroup(searchGroup, $scope.tetSearchConfig, $scope.base.attributesById);
-                        promise = SearchGroupService.programScopeSearch(searchGroup, tetSearchGroup, $scope.base.selectedProgramForSearch, $scope.trackedEntityTypes.selected, $scope.selectedOrgUnit, { skipTotalPages: true }, undefined, showOnlyDisplayInListAttributes);
+                        promise = SearchGroupService.programScopeSearch(searchGroup, tetSearchGroup, $scope.base.selectedProgramForSearch, $scope.trackedEntityTypes.selected, $scope.selectedOrgUnit, {skipTotalPages: true}, undefined, showOnlyDisplayInListAttributes);
                     } else {
-                        promise = SearchGroupService.tetScopeSearch(searchGroup, $scope.trackedEntityTypes.selected, $scope.selectedOrgUnit, { skipTotalPages: true }, undefined, showOnlyDisplayInListAttributes);
+                        promise = SearchGroupService.tetScopeSearch(searchGroup, $scope.trackedEntityTypes.selected, $scope.selectedOrgUnit, {skipTotalPages: true}, undefined, showOnlyDisplayInListAttributes);
                     }
 
                     return promise.then(function (res) {
@@ -24236,7 +24837,7 @@ function addNinListener() {
                         $scope.translateWithOULevelName = internalService.translateWithOULevelName;
 
                         $scope.openRegistration = function (tei) {
-                            $modalInstance.close({ action: "OPENREGISTRATION" });
+                            $modalInstance.close({action: "OPENREGISTRATION"});
                         };
 
                         $scope.markPotentialDuplicate = function (tei) {
@@ -24274,7 +24875,7 @@ function addNinListener() {
                         $scope.openTei = function (tei) {
                             if (internalService.base.selectedProgramForSearch && internalService.base.selectedProgramForSearch.id) {
                                 TEIService.getWithProgramData(tei.id, internalService.base.selectedProgramForSearch.id, internalService.base.optionSets, internalService.base.attributesById).then(function (resultTei) {
-                                    $modalInstance.close({ action: "OPENTEI", tei: tei, fromAudit: true });
+                                    $modalInstance.close({action: "OPENTEI", tei: tei, fromAudit: true});
                                 }, function (error) {
                                     if (error && !error.auditDismissed && error.data && error.data.message) {
                                         var headerText = $translate.instant('open_tei_error');
@@ -24283,11 +24884,11 @@ function addNinListener() {
                                     }
                                 });
                             } else {
-                                $modalInstance.close({ action: "OPENTEI", tei: tei, fromAudit: false });
+                                $modalInstance.close({action: "OPENTEI", tei: tei, fromAudit: false});
                             }
                         };
                         $scope.cancel = function () {
-                            $modalInstance.close({ action: "CANCEL" });
+                            $modalInstance.close({action: "CANCEL"});
                         };
 
                         $scope.refetchData = function (pager, sortColumn) {
@@ -24354,12 +24955,12 @@ function addNinListener() {
             $scope.setSelectedOrgUnit = function (orgUnit, searchGroup) {
                 if (searchGroup.orgUnit && searchGroup.orgUnit.id === orgUnit.id) {
                     searchGroup.orgUnit = null;
-                    searchGroup.ouMode = { name: "ACCESSIBLE" };
+                    searchGroup.ouMode = {name: "ACCESSIBLE"};
                     return;
                 }
                 searchGroup.orgUnit = orgUnit;
                 if (searchGroup.ouMode && searchGroup.ouMode.name === "ACCESSIBLE") {
-                    searchGroup.ouMode = { name: "SELECTED" };
+                    searchGroup.ouMode = {name: "SELECTED"};
                 }
             };
 
@@ -24393,9 +24994,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 47 */
-/***/ (function (module, exports) {
+    }),
+    /* 47 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -24437,7 +25038,7 @@ function addNinListener() {
                     },
                     templateUrl: "components/topbar/topbar-settings.html",
                     controller: ["$scope", "$modalInstance", "$rootScope", "topBarSettings", "feedbackFieldSelection", "indicatorsFieldSelection", "attributesFieldSelection", function controller($scope, $modalInstance, $rootScope, topBarSettings, feedbackFieldSelection, indicatorsFieldSelection, attributesFieldSelection) {
-                        $scope.topBarSettings = topBarSettings ? topBarSettings : { selectedFields: {} };
+                        $scope.topBarSettings = topBarSettings ? topBarSettings : {selectedFields: {}};
                         $scope.feedbackFieldSelection = feedbackFieldSelection;
                         $scope.indicatorsFieldSelection = indicatorsFieldSelection;
                         $scope.attributesFieldSelection = attributesFieldSelection;
@@ -24530,7 +25131,11 @@ function addNinListener() {
                 if (ruleBoundData.textInEffect) {
                     for (var key in ruleBoundData.displayTextEffects) {
                         if (ruleBoundData.displayTextEffects.hasOwnProperty(key) && ruleBoundData.displayTextEffects[key].ineffect) {
-                            values[key] = { id: key, name: ruleBoundData.displayTextEffects[key].content, value: ruleBoundData.displayTextEffects[key].data };
+                            values[key] = {
+                                id: key,
+                                name: ruleBoundData.displayTextEffects[key].content,
+                                value: ruleBoundData.displayTextEffects[key].data
+                            };
                         }
                     }
                 }
@@ -24542,7 +25147,11 @@ function addNinListener() {
                 if (ruleBoundData.keyDataInEffect) {
                     for (var key in ruleBoundData.displayKeyDataEffects) {
                         if (ruleBoundData.displayKeyDataEffects.hasOwnProperty(key) && ruleBoundData.displayKeyDataEffects[key].ineffect) {
-                            values[key] = { id: key, name: ruleBoundData.displayKeyDataEffects[key].content, value: ruleBoundData.displayKeyDataEffects[key].data };
+                            values[key] = {
+                                id: key,
+                                name: ruleBoundData.displayKeyDataEffects[key].content,
+                                value: ruleBoundData.displayKeyDataEffects[key].data
+                            };
                         }
                     }
                 }
@@ -24562,7 +25171,12 @@ function addNinListener() {
                 var attributeFields = {};
                 angular.forEach(programAttributes, function (attr) {
                     attributeFields[attr.id] = attr.displayName;
-                    if (tei && tei[attr.id]) values[attr.id] = { id: attr.id, name: attr.displayName, type: attr.valueType, value: tei[attr.id] };
+                    if (tei && tei[attr.id]) values[attr.id] = {
+                        id: attr.id,
+                        name: attr.displayName,
+                        type: attr.valueType,
+                        value: tei[attr.id]
+                    };
                 });
                 attributesValues = values;
                 setValues();
@@ -24606,9 +25220,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 48 */
-/***/ (function (module, exports) {
+    }),
+    /* 48 */
+    /***/ (function (module, exports) {
 
         'use strict';
 
@@ -24621,7 +25235,7 @@ function addNinListener() {
             $scope.description = $translate.instant('this') + ' ' + trackedEntityTypeName.toLowerCase() + ' ' + $translate.instant('belongs_to_another_organisation_unit') + '. ' + $translate.instant('please_fill_in_a_reason_for_accessing') + '. ' + $translate.instant('your_action_is_being_monitored') + '.';
 
             $scope.addAuditMessage = function () {
-                $modalInstance.close({ auditMessage: $scope.auditMessage });
+                $modalInstance.close({auditMessage: $scope.auditMessage});
             };
 
             $scope.cancel = function () {
@@ -24634,7 +25248,8 @@ function addNinListener() {
                         if (auditCancelledSettings.postAuditCancelled) {
                             return $q.when(auditCancelledSettings.postAuditCancelled());
                         }
-                    }, function () { });
+                    }, function () {
+                    });
                 }
                 $modalInstance.dismiss(data);
                 if (auditCancelledSettings && auditCancelledSettings.postAuditCancelled) {
@@ -24645,9 +25260,9 @@ function addNinListener() {
         }]);
 
         /***/
-}),
-/* 49 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 49 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         /* @preserve
         * Leaflet 1.3.1, a JS library for interactive maps. http://leafletjs.com
@@ -24670,7 +25285,9 @@ function addNinListener() {
             */
 
             var freeze = Object.freeze;
-            Object.freeze = function (obj) { return obj; };
+            Object.freeze = function (obj) {
+                return obj;
+            };
 
             // @function extend(dest: Object, src?: Object): Object
             // Merges the properties of the `src` object (or multiple objects) into `dest` object and returns the latter. Has an `L.extend` shortcut.
@@ -24689,7 +25306,9 @@ function addNinListener() {
             // @function create(proto: Object, properties?: Object): Object
             // Compatibility polyfill for [Object.create](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Object/create)
             var create = Object.create || (function () {
-                function F() { }
+                function F() {
+                }
+
                 return function (proto) {
                     F.prototype = proto;
                     return new F();
@@ -24774,7 +25393,9 @@ function addNinListener() {
 
             // @function falseFn(): Function
             // Returns a function which always returns `false`.
-            function falseFn() { return false; }
+            function falseFn() {
+                return false;
+            }
 
             // @function formatNum(num: Number, digits?: Number): Number
             // Returns the number `num` rounded to `digits` decimals, or to 6 decimals by default.
@@ -24851,7 +25472,9 @@ function addNinListener() {
             // Compatibility polyfill for [Array.prototype.indexOf](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array/indexOf)
             function indexOf(array, el) {
                 for (var i = 0; i < array.length; i++) {
-                    if (array[i] === el) { return i; }
+                    if (array[i] === el) {
+                        return i;
+                    }
                 }
                 return -1;
             }
@@ -24881,7 +25504,9 @@ function addNinListener() {
 
             var requestFn = window.requestAnimationFrame || getPrefixed('RequestAnimationFrame') || timeoutDefer;
             var cancelFn = window.cancelAnimationFrame || getPrefixed('CancelAnimationFrame') ||
-                getPrefixed('CancelRequestAnimationFrame') || function (id) { window.clearTimeout(id); };
+                getPrefixed('CancelRequestAnimationFrame') || function (id) {
+                    window.clearTimeout(id);
+                };
 
             // @function requestAnimFrame(fn: Function, context?: Object, immediate?: Boolean): Number
             // Schedules `fn` to be executed when the browser repaints. `fn` is bound to
@@ -24939,7 +25564,8 @@ function addNinListener() {
 
             // Thanks to John Resig and Dean Edwards for inspiration!
 
-            function Class() { }
+            function Class() {
+            }
 
             Class.extend = function (props) {
 
@@ -24997,7 +25623,9 @@ function addNinListener() {
                 // add method for calling all hooks
                 proto.callInitHooks = function () {
 
-                    if (this._initHooksCalled) { return; }
+                    if (this._initHooksCalled) {
+                        return;
+                    }
 
                     if (parentProto.callInitHooks) {
                         parentProto.callInitHooks.call(this);
@@ -25043,7 +25671,9 @@ function addNinListener() {
             };
 
             function checkDeprecatedMixinEvents(includes) {
-                if (typeof L === 'undefined' || !L || !L.Mixin) { return; }
+                if (typeof L === 'undefined' || !L || !L.Mixin) {
+                    return;
+                }
 
                 includes = isArray(includes) ? includes : [includes];
 
@@ -25159,7 +25789,7 @@ function addNinListener() {
                         // Less memory footprint.
                         context = undefined;
                     }
-                    var newListener = { fn: fn, ctx: context },
+                    var newListener = {fn: fn, ctx: context},
                         listeners = typeListeners;
 
                     // check if fn already there
@@ -25177,7 +25807,9 @@ function addNinListener() {
                         i,
                         len;
 
-                    if (!this._events) { return; }
+                    if (!this._events) {
+                        return;
+                    }
 
                     listeners = this._events[type];
 
@@ -25204,7 +25836,9 @@ function addNinListener() {
                         // find fn and remove it
                         for (i = 0, len = listeners.length; i < len; i++) {
                             var l = listeners[i];
-                            if (l.ctx !== context) { continue; }
+                            if (l.ctx !== context) {
+                                continue;
+                            }
                             if (l.fn === fn) {
 
                                 // set the removed listener to noop so that's not called if remove happens in fire
@@ -25227,7 +25861,9 @@ function addNinListener() {
                 // object — the first argument of the listener function will contain its
                 // properties. The event can optionally be propagated to event parents.
                 fire: function (type, data, propagate) {
-                    if (!this.listens(type, propagate)) { return this; }
+                    if (!this.listens(type, propagate)) {
+                        return this;
+                    }
 
                     var event = extend({}, data, {
                         type: type,
@@ -25261,12 +25897,16 @@ function addNinListener() {
                 // Returns `true` if a particular event type has any listeners attached to it.
                 listens: function (type, propagate) {
                     var listeners = this._events && this._events[type];
-                    if (listeners && listeners.length) { return true; }
+                    if (listeners && listeners.length) {
+                        return true;
+                    }
 
                     if (propagate) {
                         // also check parents for listeners if event propagates
                         for (var id in this._eventParents) {
-                            if (this._eventParents[id].listens(type, propagate)) { return true; }
+                            if (this._eventParents[id].listens(type, propagate)) {
+                                return true;
+                            }
                         }
                     }
                     return false;
@@ -25596,7 +26236,9 @@ function addNinListener() {
             */
 
             function Bounds(a, b) {
-                if (!a) { return; }
+                if (!a) {
+                    return;
+                }
 
                 var points = b ? [a, b] : a;
 
@@ -25773,7 +26415,9 @@ function addNinListener() {
             */
 
             function LatLngBounds(corner1, corner2) { // (LatLng, LatLng) or (LatLng[])
-                if (!corner1) { return; }
+                if (!corner1) {
+                    return;
+                }
 
                 var latlngs = corner2 ? [corner1, corner2] : corner1;
 
@@ -25803,7 +26447,9 @@ function addNinListener() {
                         sw2 = obj._southWest;
                         ne2 = obj._northEast;
 
-                        if (!sw2 || !ne2) { return this; }
+                        if (!sw2 || !ne2) {
+                            return this;
+                        }
 
                     } else {
                         return obj ? this.extend(toLatLng(obj) || toLatLngBounds(obj)) : this;
@@ -25962,7 +26608,9 @@ function addNinListener() {
                 // @method equals(otherBounds: LatLngBounds, maxMargin?: Number): Boolean
                 // Returns `true` if the rectangle is equivalent (within a small margin of error) to the given bounds. The margin of error can be overridden by setting `maxMargin` to a small number.
                 equals: function (bounds, maxMargin) {
-                    if (!bounds) { return false; }
+                    if (!bounds) {
+                        return false;
+                    }
 
                     bounds = toLatLngBounds(bounds);
 
@@ -26041,7 +26689,9 @@ function addNinListener() {
                 // @method equals(otherLatLng: LatLng, maxMargin?: Number): Boolean
                 // Returns `true` if the given `LatLng` point is at the same position (within a small margin of error). The margin of error can be overridden by setting `maxMargin` to a small number.
                 equals: function (obj, maxMargin) {
-                    if (!obj) { return false; }
+                    if (!obj) {
+                        return false;
+                    }
 
                     obj = toLatLng(obj);
 
@@ -26087,7 +26737,6 @@ function addNinListener() {
                     return new LatLng(this.lat, this.lng, this.alt);
                 }
             };
-
 
 
             // @factory L.latLng(latitude: Number, longitude: Number, altitude?: Number): LatLng
@@ -26195,7 +26844,9 @@ function addNinListener() {
                 // @method getProjectedBounds(zoom: Number): Bounds
                 // Returns the projection's bounds scaled and transformed for the provided `zoom`.
                 getProjectedBounds: function (zoom) {
-                    if (this.infinite) { return null; }
+                    if (this.infinite) {
+                        return null;
+                    }
 
                     var b = this.projection.bounds,
                         s = this.scale(zoom),
@@ -26755,7 +27406,9 @@ function addNinListener() {
             function _addPointerMove(obj, handler, id) {
                 var onMove = function (e) {
                     // don't fire touch moves when mouse isn't down
-                    if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) { return; }
+                    if ((e.pointerType === e.MSPOINTER_TYPE_MOUSE || e.pointerType === 'mouse') && e.buttons === 0) {
+                        return;
+                    }
 
                     _handlePointer(e, handler);
                 };
@@ -26792,13 +27445,17 @@ function addNinListener() {
                     var count;
 
                     if (pointer) {
-                        if ((!edge) || e.pointerType === 'mouse') { return; }
+                        if ((!edge) || e.pointerType === 'mouse') {
+                            return;
+                        }
                         count = _pointersCount;
                     } else {
                         count = e.touches.length;
                     }
 
-                    if (count > 1) { return; }
+                    if (count > 1) {
+                        return;
+                    }
 
                     var now = Date.now(),
                         delta = now - (last || now);
@@ -26811,7 +27468,9 @@ function addNinListener() {
                 function onTouchEnd(e) {
                     if (doubleTap && !touch$$1.cancelBubble) {
                         if (pointer) {
-                            if ((!edge) || e.pointerType === 'mouse') { return; }
+                            if ((!edge) || e.pointerType === 'mouse') {
+                                return;
+                            }
                             // work around .type being readonly with MSPointer* events
                             var newTouch = {},
                                 prop, i;
@@ -26926,7 +27585,9 @@ function addNinListener() {
             function addOne(obj, type, fn, context) {
                 var id = type + stamp(fn) + (context ? '_' + stamp(context) : '');
 
-                if (obj[eventsKey] && obj[eventsKey][id]) { return this; }
+                if (obj[eventsKey] && obj[eventsKey][id]) {
+                    return this;
+                }
 
                 var handler = function (e) {
                     return fn.call(context || obj, e || window.event);
@@ -26980,7 +27641,9 @@ function addNinListener() {
                 var id = type + stamp(fn) + (context ? '_' + stamp(context) : ''),
                     handler = obj[eventsKey] && obj[eventsKey][id];
 
-                if (!handler) { return this; }
+                if (!handler) {
+                    return this;
+                }
 
                 if (pointer && type.indexOf('touch') === 0) {
                     removePointerListener(obj, type, id);
@@ -27125,7 +27788,9 @@ function addNinListener() {
 
                 var related = e.relatedTarget;
 
-                if (!related) { return true; }
+                if (!related) {
+                    return true;
+                }
 
                 try {
                     while (related && (related !== el)) {
@@ -27157,8 +27822,6 @@ function addNinListener() {
 
                 handler(e);
             }
-
-
 
 
             var DomEvent = (Object.freeze || Object)({
@@ -27348,7 +28011,9 @@ function addNinListener() {
                 } catch (e) {
                     // don't set opacity to 1 if we haven't already set an opacity,
                     // it isn't needed and breaks transparent pngs.
-                    if (value === 1) { return; }
+                    if (value === 1) {
+                        return;
+                    }
                 }
 
                 value = Math.round(value * 100);
@@ -27478,7 +28143,9 @@ function addNinListener() {
                 while (element.tabIndex === -1) {
                     element = element.parentNode;
                 }
-                if (!element.style) { return; }
+                if (!element.style) {
+                    return;
+                }
                 restoreOutline();
                 _outlineElement = element;
                 _outlineStyle = element.style.outline;
@@ -27489,7 +28156,9 @@ function addNinListener() {
             // @function restoreOutline()
             // Cancels the effects of a previous [`L.DomUtil.preventOutline`]().
             function restoreOutline() {
-                if (!_outlineElement) { return; }
+                if (!_outlineElement) {
+                    return;
+                }
                 _outlineElement.style.outline = _outlineStyle;
                 _outlineElement = undefined;
                 _outlineStyle = undefined;
@@ -27572,7 +28241,9 @@ function addNinListener() {
                 // @method stop()
                 // Stops the animation (if currently running).
                 stop: function () {
-                    if (!this._inProgress) { return; }
+                    if (!this._inProgress) {
+                        return;
+                    }
 
                     this._step(true);
                     this._complete();
@@ -27755,7 +28426,7 @@ function addNinListener() {
                     }
 
                     if (options.center && options.zoom !== undefined) {
-                        this.setView(toLatLng(options.center), options.zoom, { reset: true });
+                        this.setView(toLatLng(options.center), options.zoom, {reset: true});
                     }
 
                     this._handlers = [];
@@ -27796,8 +28467,8 @@ function addNinListener() {
                     if (this._loaded && !options.reset && options !== true) {
 
                         if (options.animate !== undefined) {
-                            options.zoom = extend({ animate: options.animate }, options.zoom);
-                            options.pan = extend({ animate: options.animate, duration: options.duration }, options.pan);
+                            options.zoom = extend({animate: options.animate}, options.zoom);
+                            options.pan = extend({animate: options.animate, duration: options.duration}, options.pan);
                         }
 
                         // try animating pan or zoom
@@ -27825,7 +28496,7 @@ function addNinListener() {
                         this._zoom = zoom;
                         return this;
                     }
-                    return this.setView(this.getCenter(), zoom, { zoom: options });
+                    return this.setView(this.getCenter(), zoom, {zoom: options});
                 },
 
                 // @method zoomIn(delta?: Number, options?: Zoom options): this
@@ -27856,7 +28527,7 @@ function addNinListener() {
                         centerOffset = containerPoint.subtract(viewHalf).multiplyBy(1 - 1 / scale),
                         newCenter = this.containerPointToLatLng(viewHalf.add(centerOffset));
 
-                    return this.setView(newCenter, zoom, { zoom: options });
+                    return this.setView(newCenter, zoom, {zoom: options});
                 },
 
                 _getBoundsCenterZoom: function (bounds, options) {
@@ -27915,7 +28586,7 @@ function addNinListener() {
                 // @method panTo(latlng: LatLng, options?: Pan options): this
                 // Pans the map to a given center.
                 panTo: function (center, options) { // (LatLng)
-                    return this.setView(center, this._zoom, { pan: options });
+                    return this.setView(center, this._zoom, {pan: options});
                 },
 
                 // @method panBy(offset: Point, options?: Pan options): this
@@ -28003,16 +28674,31 @@ function addNinListener() {
                         return log;
                     }
 
-                    function sinh(n) { return (Math.exp(n) - Math.exp(-n)) / 2; }
-                    function cosh(n) { return (Math.exp(n) + Math.exp(-n)) / 2; }
-                    function tanh(n) { return sinh(n) / cosh(n); }
+                    function sinh(n) {
+                        return (Math.exp(n) - Math.exp(-n)) / 2;
+                    }
+
+                    function cosh(n) {
+                        return (Math.exp(n) + Math.exp(-n)) / 2;
+                    }
+
+                    function tanh(n) {
+                        return sinh(n) / cosh(n);
+                    }
 
                     var r0 = r(0);
 
-                    function w(s) { return w0 * (cosh(r0) / cosh(r0 + rho * s)); }
-                    function u(s) { return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2; }
+                    function w(s) {
+                        return w0 * (cosh(r0) / cosh(r0 + rho * s));
+                    }
 
-                    function easeOut(t) { return 1 - Math.pow(1 - t, 1.5); }
+                    function u(s) {
+                        return w0 * (cosh(r0) * tanh(r0 + rho * s) - sinh(r0)) / rho2;
+                    }
+
+                    function easeOut(t) {
+                        return 1 - Math.pow(1 - t, 1.5);
+                    }
 
                     var start = Date.now(),
                         S = (r(1) - r0) / rho,
@@ -28028,7 +28714,7 @@ function addNinListener() {
                             this._move(
                                 this.unproject(from.add(to.subtract(from).multiplyBy(u(s) / u1)), startZoom),
                                 this.getScaleZoom(w0 / w(s), startZoom),
-                                { flyTo: true });
+                                {flyTo: true});
 
                         } else {
                             this
@@ -28135,12 +28821,14 @@ function addNinListener() {
                 // call it after you've changed the map size dynamically, also animating
                 // pan by default.
                 invalidateSize: function (options) {
-                    if (!this._loaded) { return this; }
+                    if (!this._loaded) {
+                        return this;
+                    }
 
                     options = extend({
                         animate: false,
                         pan: true
-                    }, options === true ? { animate: true } : options);
+                    }, options === true ? {animate: true} : options);
 
                     var oldSize = this.getSize();
                     this._sizeChanged = true;
@@ -28151,7 +28839,9 @@ function addNinListener() {
                         newCenter = newSize.divideBy(2).round(),
                         offset = oldCenter.subtract(newCenter);
 
-                    if (!offset.x && !offset.y) { return this; }
+                    if (!offset.x && !offset.y) {
+                        return this;
+                    }
 
                     if (options.animate && options.pan) {
                         this.panBy(offset);
@@ -28299,7 +28989,9 @@ function addNinListener() {
                 // @method addHandler(name: String, HandlerClass: Function): this
                 // Adds a new `Handler` to the map, given its name and constructor function.
                 addHandler: function (name, HandlerClass) {
-                    if (!HandlerClass) { return this; }
+                    if (!HandlerClass) {
+                        return this;
+                    }
 
                     var handler = this[name] = new HandlerClass(this);
 
@@ -28893,7 +29585,9 @@ function addNinListener() {
                 _onResize: function () {
                     cancelAnimFrame(this._resizeRequest);
                     this._resizeRequest = requestAnimFrame(
-                        function () { this.invalidateSize({ debounceMoveend: true }); }, this);
+                        function () {
+                            this.invalidateSize({debounceMoveend: true});
+                        }, this);
                 },
 
                 _onScroll: function () {
@@ -28925,11 +29619,17 @@ function addNinListener() {
                             break;
                         }
                         if (target && target.listens(type, true)) {
-                            if (isHover && !isExternalTarget(src, e)) { break; }
+                            if (isHover && !isExternalTarget(src, e)) {
+                                break;
+                            }
                             targets.push(target);
-                            if (isHover) { break; }
+                            if (isHover) {
+                                break;
+                            }
                         }
-                        if (src === this._container) { break; }
+                        if (src === this._container) {
+                            break;
+                        }
                         src = src.parentNode;
                     }
                     if (!targets.length && !dragging && !isHover && isExternalTarget(src, e)) {
@@ -28939,7 +29639,9 @@ function addNinListener() {
                 },
 
                 _handleDOMEvent: function (e) {
-                    if (!this._loaded || skipped(e)) { return; }
+                    if (!this._loaded || skipped(e)) {
+                        return;
+                    }
 
                     var type = e.type;
 
@@ -28966,12 +29668,16 @@ function addNinListener() {
                         this._fireDOMEvent(synth, synth.type, targets);
                     }
 
-                    if (e._stopped) { return; }
+                    if (e._stopped) {
+                        return;
+                    }
 
                     // Find the layer the event is propagating from and its parents.
                     targets = (targets || []).concat(this._findEventTargets(e, type));
 
-                    if (!targets.length) { return; }
+                    if (!targets.length) {
+                        return;
+                    }
 
                     var target = targets[0];
                     if (type === 'contextmenu' && target.listens(type, true)) {
@@ -28993,7 +29699,9 @@ function addNinListener() {
                     for (var i = 0; i < targets.length; i++) {
                         targets[i].fire(type, data, true);
                         if (data.originalEvent._stopped ||
-                            (targets[i].options.bubblingMouseEvents === false && indexOf(this._mouseEvents, type) !== -1)) { return; }
+                            (targets[i].options.bubblingMouseEvents === false && indexOf(this._mouseEvents, type) !== -1)) {
+                            return;
+                        }
                     }
                 },
 
@@ -29016,7 +29724,7 @@ function addNinListener() {
                 // if it's already initialized, optionally passing a function context.
                 whenReady: function (callback, context) {
                     if (this._loaded) {
-                        callback.call(context || this, { target: this });
+                        callback.call(context || this, {target: this});
                     } else {
                         this.on('load', callback, context);
                     }
@@ -29075,7 +29783,9 @@ function addNinListener() {
                 // adjust center for view to get inside bounds
                 _limitCenter: function (center, zoom, bounds) {
 
-                    if (!bounds) { return center; }
+                    if (!bounds) {
+                        return center;
+                    }
 
                     var centerPoint = this.project(center, zoom),
                         viewHalf = this.getSize().divideBy(2),
@@ -29094,7 +29804,9 @@ function addNinListener() {
 
                 // adjust offset for view to get inside bounds
                 _limitOffset: function (offset, bounds) {
-                    if (!bounds) { return offset; }
+                    if (!bounds) {
+                        return offset;
+                    }
 
                     var viewBounds = this.getPixelBounds(),
                         newBounds = new Bounds(viewBounds.min.add(offset), viewBounds.max.add(offset));
@@ -29105,9 +29817,9 @@ function addNinListener() {
                 // returns offset needed for pxBounds to get inside maxBounds at a specified zoom
                 _getBoundsOffset: function (pxBounds, maxBounds, zoom) {
                     var projectedMaxBounds = toBounds(
-                        this.project(maxBounds.getNorthEast(), zoom),
-                        this.project(maxBounds.getSouthWest(), zoom)
-                    ),
+                            this.project(maxBounds.getNorthEast(), zoom),
+                            this.project(maxBounds.getSouthWest(), zoom)
+                        ),
                         minOffset = projectedMaxBounds.min.subtract(pxBounds.min),
                         maxOffset = projectedMaxBounds.max.subtract(pxBounds.max),
 
@@ -29147,7 +29859,9 @@ function addNinListener() {
                     var offset = this._getCenterOffset(center)._trunc();
 
                     // don't animate too far unless animate: true specified in options
-                    if ((options && options.animate) !== true && !this.getSize().contains(offset)) { return false; }
+                    if ((options && options.animate) !== true && !this.getSize().contains(offset)) {
+                        return false;
+                    }
 
                     this.panBy(offset, options);
 
@@ -29197,20 +29911,26 @@ function addNinListener() {
 
                 _tryAnimatedZoom: function (center, zoom, options) {
 
-                    if (this._animatingZoom) { return true; }
+                    if (this._animatingZoom) {
+                        return true;
+                    }
 
                     options = options || {};
 
                     // don't animate if disabled, not supported or zoom difference is too large
                     if (!this._zoomAnimated || options.animate === false || this._nothingToAnimate() ||
-                        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) { return false; }
+                        Math.abs(zoom - this._zoom) > this.options.zoomAnimationThreshold) {
+                        return false;
+                    }
 
                     // offset is the pixel coords of the zoom origin relative to the current center
                     var scale = this.getZoomScale(zoom),
                         offset = this._getCenterOffset(center)._divideBy(1 - 1 / scale);
 
                     // don't animate if the zoom origin isn't within one screen from the current center, unless forced
-                    if (options.animate !== true && !this.getSize().contains(offset)) { return false; }
+                    if (options.animate !== true && !this.getSize().contains(offset)) {
+                        return false;
+                    }
 
                     requestAnimFrame(function () {
                         this
@@ -29222,7 +29942,9 @@ function addNinListener() {
                 },
 
                 _animateZoom: function (center, zoom, startAnim, noUpdate) {
-                    if (!this._mapPane) { return; }
+                    if (!this._mapPane) {
+                        return;
+                    }
 
                     if (startAnim) {
                         this._animatingZoom = true;
@@ -29247,7 +29969,9 @@ function addNinListener() {
                 },
 
                 _onZoomTransitionEnd: function () {
-                    if (!this._animatingZoom) { return; }
+                    if (!this._animatingZoom) {
+                        return;
+                    }
 
                     if (this._mapPane) {
                         removeClass(this._mapPane, 'leaflet-zoom-anim');
@@ -29691,7 +30415,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (!this._container) { return this; }
+                    if (!this._container) {
+                        return this;
+                    }
 
                     empty(this._baseLayersList);
                     empty(this._overlaysList);
@@ -30184,7 +30910,9 @@ function addNinListener() {
                 // @method addAttribution(text: String): this
                 // Adds an attribution text (e.g. `'Vector data &copy; Mapbox'`).
                 addAttribution: function (text) {
-                    if (!text) { return this; }
+                    if (!text) {
+                        return this;
+                    }
 
                     if (!this._attributions[text]) {
                         this._attributions[text] = 0;
@@ -30199,7 +30927,9 @@ function addNinListener() {
                 // @method removeAttribution(text: String): this
                 // Removes an attribution text.
                 removeAttribution: function (text) {
-                    if (!text) { return this; }
+                    if (!text) {
+                        return this;
+                    }
 
                     if (this._attributions[text]) {
                         this._attributions[text]--;
@@ -30210,7 +30940,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     var attribs = [];
 
@@ -30281,7 +31013,9 @@ function addNinListener() {
                 // @method enable(): this
                 // Enables the handler
                 enable: function () {
-                    if (this._enabled) { return this; }
+                    if (this._enabled) {
+                        return this;
+                    }
 
                     this._enabled = true;
                     this.addHooks();
@@ -30291,7 +31025,9 @@ function addNinListener() {
                 // @method disable(): this
                 // Disables the handler
                 disable: function () {
-                    if (!this._enabled) { return this; }
+                    if (!this._enabled) {
+                        return this;
+                    }
 
                     this._enabled = false;
                     this.removeHooks();
@@ -30320,7 +31056,7 @@ function addNinListener() {
                 return this;
             };
 
-            var Mixin = { Events: Events };
+            var Mixin = {Events: Events};
 
             /*
             * @class Draggable
@@ -30377,7 +31113,9 @@ function addNinListener() {
                 // @method enable()
                 // Enables the dragging ability
                 enable: function () {
-                    if (this._enabled) { return; }
+                    if (this._enabled) {
+                        return;
+                    }
 
                     on(this._dragStartTarget, START, this._onDown, this);
 
@@ -30387,7 +31125,9 @@ function addNinListener() {
                 // @method disable()
                 // Disables the dragging ability
                 disable: function () {
-                    if (!this._enabled) { return; }
+                    if (!this._enabled) {
+                        return;
+                    }
 
                     // If we're currently dragging this draggable,
                     // disabling it counts as first ending the drag.
@@ -30407,13 +31147,19 @@ function addNinListener() {
                     // touch events, see #4315.
                     // Also ignore the event if disabled; this happens in IE11
                     // under some circumstances, see #3666.
-                    if (e._simulated || !this._enabled) { return; }
+                    if (e._simulated || !this._enabled) {
+                        return;
+                    }
 
                     this._moved = false;
 
-                    if (hasClass(this._element, 'leaflet-zoom-anim')) { return; }
+                    if (hasClass(this._element, 'leaflet-zoom-anim')) {
+                        return;
+                    }
 
-                    if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) { return; }
+                    if (Draggable._dragging || e.shiftKey || ((e.which !== 1) && (e.button !== 1) && !e.touches)) {
+                        return;
+                    }
                     Draggable._dragging = this;  // Prevent dragging multiple objects at once.
 
                     if (this._preventOutline) {
@@ -30423,7 +31169,9 @@ function addNinListener() {
                     disableImageDrag();
                     disableTextSelection();
 
-                    if (this._moving) { return; }
+                    if (this._moving) {
+                        return;
+                    }
 
                     // @event down: Event
                     // Fired when a drag is about to start.
@@ -30443,7 +31191,9 @@ function addNinListener() {
                     // touch events, see #4315.
                     // Also ignore the event if disabled; this happens in IE11
                     // under some circumstances, see #3666.
-                    if (e._simulated || !this._enabled) { return; }
+                    if (e._simulated || !this._enabled) {
+                        return;
+                    }
 
                     if (e.touches && e.touches.length > 1) {
                         this._moved = true;
@@ -30454,8 +31204,12 @@ function addNinListener() {
                         newPoint = new Point(first.clientX, first.clientY),
                         offset = newPoint.subtract(this._startPoint);
 
-                    if (!offset.x && !offset.y) { return; }
-                    if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) { return; }
+                    if (!offset.x && !offset.y) {
+                        return;
+                    }
+                    if (Math.abs(offset.x) + Math.abs(offset.y) < this.options.clickTolerance) {
+                        return;
+                    }
 
                     preventDefault(e);
 
@@ -30487,7 +31241,7 @@ function addNinListener() {
                 },
 
                 _updatePosition: function () {
-                    var e = { originalEvent: this._lastEvent };
+                    var e = {originalEvent: this._lastEvent};
 
                     // @event predrag: Event
                     // Fired continuously during dragging *before* each corresponding
@@ -30506,7 +31260,9 @@ function addNinListener() {
                     // touch events, see #4315.
                     // Also ignore the event if disabled; this happens in IE11
                     // under some circumstances, see #3666.
-                    if (e._simulated || !this._enabled) { return; }
+                    if (e._simulated || !this._enabled) {
+                        return;
+                    }
                     this.finishDrag();
                 },
 
@@ -30927,28 +31683,26 @@ function addNinListener() {
 
             /*
             * @class Projection
-            
+
             * An object with methods for projecting geographical coordinates of the world onto
             * a flat surface (and back). See [Map projection](http://en.wikipedia.org/wiki/Map_projection).
-            
+
             * @property bounds: Bounds
             * The bounds (specified in CRS units) where the projection is valid
-            
+
             * @method project(latlng: LatLng): Point
             * Projects geographical coordinates into a 2D point.
             * Only accepts actual `L.LatLng` instances, not arrays.
-            
+
             * @method unproject(point: Point): LatLng
             * The inverse of `project`. Projects a 2D point into a geographical location.
             * Only accepts actual `L.Point` instances, not arrays.
-            
+
             * Note that the projection instances do not inherit from Leafet's `Class` object,
             * and can't be instantiated. Also, new classes can't inherit from them,
             * and methods can't be added to them with the `include` function.
-            
+
             */
-
-
 
 
             var index = (Object.freeze || Object)({
@@ -31123,7 +31877,9 @@ function addNinListener() {
                     var map = e.target;
 
                     // check in case layer gets added and then removed before the map is ready
-                    if (!map.hasLayer(this)) { return; }
+                    if (!map.hasLayer(this)) {
+                        return;
+                    }
 
                     this._map = map;
                     this._zoomAnimated = map._zoomAnimated;
@@ -31143,7 +31899,7 @@ function addNinListener() {
                     }
 
                     this.fire('add');
-                    map.fire('layeradd', { layer: this });
+                    map.fire('layeradd', {layer: this});
                 }
             });
 
@@ -31189,7 +31945,9 @@ function addNinListener() {
                     }
 
                     var id = stamp(layer);
-                    if (this._layers[id]) { return this; }
+                    if (this._layers[id]) {
+                        return this;
+                    }
                     this._layers[id] = layer;
 
                     layer._mapToAdd = this;
@@ -31208,7 +31966,9 @@ function addNinListener() {
                 removeLayer: function (layer) {
                     var id = stamp(layer);
 
-                    if (!this._layers[id]) { return this; }
+                    if (!this._layers[id]) {
+                        return this;
+                    }
 
                     if (this._loaded) {
                         layer.onRemove(this);
@@ -31221,7 +31981,7 @@ function addNinListener() {
                     delete this._layers[id];
 
                     if (this._loaded) {
-                        this.fire('layerremove', { layer: layer });
+                        this.fire('layerremove', {layer: layer});
                         layer.fire('remove');
                     }
 
@@ -31497,7 +32257,7 @@ function addNinListener() {
 
                     // @event layeradd: LayerEvent
                     // Fired when a layer is added to this `FeatureGroup`
-                    return this.fire('layeradd', { layer: layer });
+                    return this.fire('layeradd', {layer: layer});
                 },
 
                 removeLayer: function (layer) {
@@ -31514,7 +32274,7 @@ function addNinListener() {
 
                     // @event layerremove: LayerEvent
                     // Fired when a layer is removed from this `FeatureGroup`
-                    return this.fire('layerremove', { layer: layer });
+                    return this.fire('layerremove', {layer: layer});
                 },
 
                 // @method setStyle(style: Path options): this
@@ -31844,7 +32604,7 @@ function addNinListener() {
                             (Math.min(panBounds.min.y, iconPos.y) - panBounds.min.y) / (bounds.min.y - panBounds.min.y)
                         ).multiplyBy(speed);
 
-                        map.panBy(movement, { animate: false });
+                        map.panBy(movement, {animate: false});
 
                         this._draggable._newPos._add(movement);
                         this._draggable._startPos._add(movement);
@@ -32054,7 +32814,7 @@ function addNinListener() {
 
                     // @event move: Event
                     // Fired when the marker is moved via [`setLatLng`](#marker-setlatlng) or by [dragging](#marker-dragging). Old and new coordinates are included in event arguments as `oldLatLng`, `latlng`.
-                    return this.fire('move', { oldLatLng: oldLatLng, latlng: this._latlng });
+                    return this.fire('move', {oldLatLng: oldLatLng, latlng: this._latlng});
                 },
 
                 // @method setZIndexOffset(offset: Number): this
@@ -32208,7 +32968,9 @@ function addNinListener() {
 
                 _initInteraction: function () {
 
-                    if (!this.options.interactive) { return; }
+                    if (!this.options.interactive) {
+                        return;
+                    }
 
                     addClass(this._icon, 'leaflet-interactive');
 
@@ -32449,7 +33211,7 @@ function addNinListener() {
                 setLatLng: function (latlng) {
                     this._latlng = toLatLng(latlng);
                     this.redraw();
-                    return this.fire('move', { latlng: this._latlng });
+                    return this.fire('move', {latlng: this._latlng});
                 },
 
                 // @method getLatLng(): LatLng
@@ -32539,12 +33301,14 @@ function addNinListener() {
                 initialize: function (latlng, options, legacyOptions) {
                     if (typeof options === 'number') {
                         // Backwards compatibility with 0.7.x factory (latlng, radius, options?)
-                        options = extend({}, legacyOptions, { radius: options });
+                        options = extend({}, legacyOptions, {radius: options});
                     }
                     setOptions(this, options);
                     this._latlng = toLatLng(latlng);
 
-                    if (isNaN(this.options.radius)) { throw new Error('Circle radius cannot be NaN'); }
+                    if (isNaN(this.options.radius)) {
+                        throw new Error('Circle radius cannot be NaN');
+                    }
 
                     // @section
                     // @aka Circle options
@@ -32743,7 +33507,9 @@ function addNinListener() {
                         points = this._rings[0],
                         len = points.length;
 
-                    if (!len) { return null; }
+                    if (!len) {
+                        return null;
+                    }
 
                     // polyline centroid algorithm; only uses the first ring if there are multiple
 
@@ -32874,7 +33640,9 @@ function addNinListener() {
                         for (j = 0, len2 = points.length; j < len2 - 1; j++) {
                             segment = clipSegment(points[j], points[j + 1], bounds, j, true);
 
-                            if (!segment) { continue; }
+                            if (!segment) {
+                                continue;
+                            }
 
                             parts[k] = parts[k] || [];
                             parts[k].push(segment[0]);
@@ -32899,7 +33667,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     this._clipPoints();
                     this._simplifyPoints();
@@ -32915,14 +33685,18 @@ function addNinListener() {
                     var i, j, k, len, len2, part,
                         w = this._clickTolerance();
 
-                    if (!this._pxBounds || !this._pxBounds.contains(p)) { return false; }
+                    if (!this._pxBounds || !this._pxBounds.contains(p)) {
+                        return false;
+                    }
 
                     // hit detection for polylines
                     for (i = 0, len = this._parts.length; i < len; i++) {
                         part = this._parts[i];
 
                         for (j = 0, len2 = part.length, k = len2 - 1; j < len2; k = j++) {
-                            if (!closed && (j === 0)) { continue; }
+                            if (!closed && (j === 0)) {
+                                continue;
+                            }
 
                             if (pointToSegmentDistance(p, part[k], part[j]) <= w) {
                                 return true;
@@ -33011,7 +33785,9 @@ function addNinListener() {
                         points = this._rings[0],
                         len = points.length;
 
-                    if (!len) { return null; }
+                    if (!len) {
+                        return null;
+                    }
 
                     // polygon centroid algorithm; only uses the first ring if there are multiple
 
@@ -33095,7 +33871,9 @@ function addNinListener() {
                     var inside = false,
                         part, p1, p2, i, j, k, len, len2;
 
-                    if (!this._pxBounds.contains(p)) { return false; }
+                    if (!this._pxBounds.contains(p)) {
+                        return false;
+                    }
 
                     // ray casting algorithm for detecting if point is in polygon
                     for (i = 0, len = this._parts.length; i < len; i++) {
@@ -33222,7 +34000,9 @@ function addNinListener() {
 
                     var options = this.options;
 
-                    if (options.filter && !options.filter(geojson)) { return this; }
+                    if (options.filter && !options.filter(geojson)) {
+                        return this;
+                    }
 
                     var layer = geometryToLayer(geojson, options);
                     if (!layer) {
@@ -33383,7 +34163,7 @@ function addNinListener() {
 
             function getFeature(layer, newGeometry) {
                 return layer.feature ?
-                    extend({}, layer.feature, { geometry: newGeometry }) :
+                    extend({}, layer.feature, {geometry: newGeometry}) :
                     asFeature(newGeometry);
             }
 
@@ -33710,8 +34490,12 @@ function addNinListener() {
                     var img = this._image = wasElementSupplied ? this._url : create$1('img');
 
                     addClass(img, 'leaflet-image-layer');
-                    if (this._zoomAnimated) { addClass(img, 'leaflet-zoom-animated'); }
-                    if (this.options.className) { addClass(img, this.options.className); }
+                    if (this._zoomAnimated) {
+                        addClass(img, 'leaflet-zoom-animated');
+                    }
+                    if (this.options.className) {
+                        addClass(img, this.options.className);
+                    }
 
                     img.onselectstart = falseFn;
                     img.onmousemove = falseFn;
@@ -33826,7 +34610,9 @@ function addNinListener() {
                     var vid = this._image = wasElementSupplied ? this._url : create$1('video');
 
                     addClass(vid, 'leaflet-image-layer');
-                    if (this._zoomAnimated) { addClass(vid, 'leaflet-zoom-animated'); }
+                    if (this._zoomAnimated) {
+                        addClass(vid, 'leaflet-zoom-animated');
+                    }
 
                     vid.onselectstart = falseFn;
                     vid.onmousemove = falseFn;
@@ -33846,7 +34632,9 @@ function addNinListener() {
                         return;
                     }
 
-                    if (!isArray(this._url)) { this._url = [this._url]; }
+                    if (!isArray(this._url)) {
+                        this._url = [this._url];
+                    }
 
                     vid.autoplay = !!this.options.autoplay;
                     vid.loop = !!this.options.loop;
@@ -33976,7 +34764,9 @@ function addNinListener() {
                 // @method update: null
                 // Updates the popup content, layout and position. Useful for updating the popup after something inside changed, e.g. image loaded.
                 update: function () {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     this._container.style.visibility = 'hidden';
 
@@ -34026,7 +34816,9 @@ function addNinListener() {
                 },
 
                 _updateContent: function () {
-                    if (!this._content) { return; }
+                    if (!this._content) {
+                        return;
+                    }
 
                     var node = this._contentNode;
                     var content = (typeof this._content === 'function') ? this._content(this._source || this) : this._content;
@@ -34043,7 +34835,9 @@ function addNinListener() {
                 },
 
                 _updatePosition: function () {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     var pos = this._map.latLngToLayerPoint(this._latlng),
                         offset = toPoint(this.options.offset),
@@ -34177,14 +34971,14 @@ function addNinListener() {
                     // @section Popup events
                     // @event popupopen: PopupEvent
                     // Fired when a popup is opened in the map
-                    map.fire('popupopen', { popup: this });
+                    map.fire('popupopen', {popup: this});
 
                     if (this._source) {
                         // @namespace Layer
                         // @section Popup events
                         // @event popupopen: PopupEvent
                         // Fired when a popup bound to this layer is opened
-                        this._source.fire('popupopen', { popup: this }, true);
+                        this._source.fire('popupopen', {popup: this}, true);
                         // For non-path layers, we toggle the popup when clicking
                         // again the layer, so prevent the map to reopen it.
                         if (!(this._source instanceof Path)) {
@@ -34200,14 +34994,14 @@ function addNinListener() {
                     // @section Popup events
                     // @event popupclose: PopupEvent
                     // Fired when a popup in the map is closed
-                    map.fire('popupclose', { popup: this });
+                    map.fire('popupclose', {popup: this});
 
                     if (this._source) {
                         // @namespace Layer
                         // @section Popup events
                         // @event popupclose: PopupEvent
                         // Fired when a popup bound to this layer is closed
-                        this._source.fire('popupclose', { popup: this }, true);
+                        this._source.fire('popupclose', {popup: this}, true);
                         if (!(this._source instanceof Path)) {
                             this._source.off('preclick', stopPropagation);
                         }
@@ -34296,7 +35090,9 @@ function addNinListener() {
                 },
 
                 _adjustPan: function () {
-                    if (!this.options.autoPan || (this._map._panAnim && this._map._panAnim._inProgress)) { return; }
+                    if (!this.options.autoPan || (this._map._panAnim && this._map._panAnim._inProgress)) {
+                        return;
+                    }
 
                     var map = this._map,
                         marginBottom = parseInt(getStyle(this._container, 'marginBottom'), 10) || 0,
@@ -34659,14 +35455,14 @@ function addNinListener() {
                     // @section Tooltip events
                     // @event tooltipopen: TooltipEvent
                     // Fired when a tooltip is opened in the map.
-                    map.fire('tooltipopen', { tooltip: this });
+                    map.fire('tooltipopen', {tooltip: this});
 
                     if (this._source) {
                         // @namespace Layer
                         // @section Tooltip events
                         // @event tooltipopen: TooltipEvent
                         // Fired when a tooltip bound to this layer is opened.
-                        this._source.fire('tooltipopen', { tooltip: this }, true);
+                        this._source.fire('tooltipopen', {tooltip: this}, true);
                     }
                 },
 
@@ -34677,14 +35473,14 @@ function addNinListener() {
                     // @section Tooltip events
                     // @event tooltipclose: TooltipEvent
                     // Fired when a tooltip in the map is closed.
-                    map.fire('tooltipclose', { tooltip: this });
+                    map.fire('tooltipclose', {tooltip: this});
 
                     if (this._source) {
                         // @namespace Layer
                         // @section Tooltip events
                         // @event tooltipclose: TooltipEvent
                         // Fired when a tooltip bound to this layer is closed.
-                        this._source.fire('tooltipclose', { tooltip: this }, true);
+                        this._source.fire('tooltipclose', {tooltip: this}, true);
                     }
                 },
 
@@ -34711,9 +35507,11 @@ function addNinListener() {
                     this._contentNode = this._container = create$1('div', className);
                 },
 
-                _updateLayout: function () { },
+                _updateLayout: function () {
+                },
 
-                _adjustPan: function () { },
+                _adjustPan: function () {
+                },
 
                 _setPosition: function (pos) {
                     var map = this._map,
@@ -34871,7 +35669,9 @@ function addNinListener() {
                 },
 
                 _initTooltipInteractions: function (remove$$1) {
-                    if (!remove$$1 && this._tooltipHandlersAdded) { return; }
+                    if (!remove$$1 && this._tooltipHandlersAdded) {
+                        return;
+                    }
                     var onOff = remove$$1 ? 'off' : 'on',
                         events = {
                             remove: this.closeTooltip,
@@ -35366,10 +36166,14 @@ function addNinListener() {
                 },
 
                 _updateOpacity: function () {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     // IE doesn't inherit filter opacity properly, so we're forced to set it on tiles
-                    if (ielt9) { return; }
+                    if (ielt9) {
+                        return;
+                    }
 
                     setOpacity(this._container, this.options.opacity);
 
@@ -35379,7 +36183,9 @@ function addNinListener() {
 
                     for (var key in this._tiles) {
                         var tile = this._tiles[key];
-                        if (!tile.current || !tile.loaded) { continue; }
+                        if (!tile.current || !tile.loaded) {
+                            continue;
+                        }
 
                         var fade = Math.min(1, (now - tile.loaded) / 200);
 
@@ -35396,7 +36202,9 @@ function addNinListener() {
                         }
                     }
 
-                    if (willPrune && !this._noPrune) { this._pruneTiles(); }
+                    if (willPrune && !this._noPrune) {
+                        this._pruneTiles();
+                    }
 
                     if (nextFrame) {
                         cancelAnimFrame(this._fadeFrame);
@@ -35407,7 +36215,9 @@ function addNinListener() {
                 _onOpaqueTile: falseFn,
 
                 _initContainer: function () {
-                    if (this._container) { return; }
+                    if (this._container) {
+                        return;
+                    }
 
                     this._container = create$1('div', 'leaflet-layer ' + (this.options.className || ''));
                     this._updateZIndex();
@@ -35424,7 +36234,9 @@ function addNinListener() {
                     var zoom = this._tileZoom,
                         maxZoom = this.options.maxZoom;
 
-                    if (zoom === undefined) { return undefined; }
+                    if (zoom === undefined) {
+                        return undefined;
+                    }
 
                     for (var z in this._levels) {
                         if (this._levels[z].el.children.length || z === zoom) {
@@ -35681,7 +36493,9 @@ function addNinListener() {
                 },
 
                 _onMoveEnd: function () {
-                    if (!this._map || this._map._animatingZoom) { return; }
+                    if (!this._map || this._map._animatingZoom) {
+                        return;
+                    }
 
                     this._update();
                 },
@@ -35699,11 +36513,17 @@ function addNinListener() {
                 // Private method to load tiles in the grid's active zoom level according to map bounds
                 _update: function (center) {
                     var map = this._map;
-                    if (!map) { return; }
+                    if (!map) {
+                        return;
+                    }
                     var zoom = this._clampZoom(map.getZoom());
 
-                    if (center === undefined) { center = map.getCenter(); }
-                    if (this._tileZoom === undefined) { return; }	// if out of minzoom/maxzoom
+                    if (center === undefined) {
+                        center = map.getCenter();
+                    }
+                    if (this._tileZoom === undefined) {
+                        return;
+                    }	// if out of minzoom/maxzoom
 
                     var pixelBounds = this._getTiledPixelBounds(center),
                         tileRange = this._pxBoundsToTileRange(pixelBounds),
@@ -35717,7 +36537,9 @@ function addNinListener() {
                     if (!(isFinite(tileRange.min.x) &&
                         isFinite(tileRange.min.y) &&
                         isFinite(tileRange.max.x) &&
-                        isFinite(tileRange.max.y))) { throw new Error('Attempted to load an infinite number of tiles'); }
+                        isFinite(tileRange.max.y))) {
+                        throw new Error('Attempted to load an infinite number of tiles');
+                    }
 
                     for (var key in this._tiles) {
                         var c = this._tiles[key].coords;
@@ -35728,7 +36550,10 @@ function addNinListener() {
 
                     // _update just loads more tiles. If the tile zoom level differs too much
                     // from the map's, let _setView reset levels and prune old tiles.
-                    if (Math.abs(zoom - this._tileZoom) > 1) { this._setView(center, zoom); return; }
+                    if (Math.abs(zoom - this._tileZoom) > 1) {
+                        this._setView(center, zoom);
+                        return;
+                    }
 
                     // create a queue of coordinates to load tiles from
                     for (var j = tileRange.min.y; j <= tileRange.max.y; j++) {
@@ -35736,7 +36561,9 @@ function addNinListener() {
                             var coords = new Point(i, j);
                             coords.z = this._tileZoom;
 
-                            if (!this._isValidTile(coords)) { continue; }
+                            if (!this._isValidTile(coords)) {
+                                continue;
+                            }
 
                             var tile = this._tiles[this._tileCoordsToKey(coords)];
                             if (tile) {
@@ -35779,10 +36606,14 @@ function addNinListener() {
                         // don't load tile if it's out of bounds and not wrapped
                         var bounds = this._globalTileRange;
                         if ((!crs.wrapLng && (coords.x < bounds.min.x || coords.x > bounds.max.x)) ||
-                            (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) { return false; }
+                            (!crs.wrapLat && (coords.y < bounds.min.y || coords.y > bounds.max.y))) {
+                            return false;
+                        }
                     }
 
-                    if (!this.options.bounds) { return true; }
+                    if (!this.options.bounds) {
+                        return true;
+                    }
 
                     // don't load tile if it doesn't intersect the bounds in options
                     var tileBounds = this._tileCoordsToBounds(coords);
@@ -35828,7 +36659,9 @@ function addNinListener() {
 
                 _removeTile: function (key) {
                     var tile = this._tiles[key];
-                    if (!tile) { return; }
+                    if (!tile) {
+                        return;
+                    }
 
                     // Cancels any pending http requests associated with the tile
                     // unless we're on Android's stock browser,
@@ -35904,7 +36737,9 @@ function addNinListener() {
                 },
 
                 _tileReady: function (coords, err, tile) {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     if (err) {
                         // @event tileerror: TileErrorEvent
@@ -35919,7 +36754,9 @@ function addNinListener() {
                     var key = this._tileCoordsToKey(coords);
 
                     tile = this._tiles[key];
-                    if (!tile) { return; }
+                    if (!tile) {
+                        return;
+                    }
 
                     tile.loaded = +new Date();
                     if (this._map._fadeAnimated) {
@@ -35979,7 +36816,9 @@ function addNinListener() {
 
                 _noTilesToLoad: function () {
                     for (var key in this._tiles) {
-                        if (!this._tiles[key].loaded) { return false; }
+                        if (!this._tiles[key].loaded) {
+                            return false;
+                        }
                     }
                     return true;
                 }
@@ -36568,7 +37407,9 @@ function addNinListener() {
                 },
 
                 _updatePaths: function () {
-                    if (this._postponeUpdatePaths) { return; }
+                    if (this._postponeUpdatePaths) {
+                        return;
+                    }
 
                     var layer;
                     this._redrawBounds = null;
@@ -36580,7 +37421,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (this._map._animatingZoom && this._bounds) { return; }
+                    if (this._map._animatingZoom && this._bounds) {
+                        return;
+                    }
 
                     this._drawnLayers = {};
 
@@ -36628,7 +37471,9 @@ function addNinListener() {
                         prev: this._drawLast,
                         next: null
                     };
-                    if (this._drawLast) { this._drawLast.next = order; }
+                    if (this._drawLast) {
+                        this._drawLast.next = order;
+                    }
                     this._drawLast = order;
                     this._drawFirst = this._drawFirst || this._drawLast;
                 },
@@ -36689,7 +37534,9 @@ function addNinListener() {
                 },
 
                 _requestRedraw: function (layer) {
-                    if (!this._map) { return; }
+                    if (!this._map) {
+                        return;
+                    }
 
                     this._extendRedrawBounds(layer);
                     this._redrawRequest = this._redrawRequest || requestAnimFrame(this._redraw, this);
@@ -36753,14 +37600,18 @@ function addNinListener() {
                 },
 
                 _updatePoly: function (layer, closed) {
-                    if (!this._drawing) { return; }
+                    if (!this._drawing) {
+                        return;
+                    }
 
                     var i, j, len2, p,
                         parts = layer._parts,
                         len = parts.length,
                         ctx = this._ctx;
 
-                    if (!len) { return; }
+                    if (!len) {
+                        return;
+                    }
 
                     this._drawnLayers[layer._leaflet_id] = layer;
 
@@ -36783,7 +37634,9 @@ function addNinListener() {
 
                 _updateCircle: function (layer) {
 
-                    if (!this._drawing || layer._empty()) { return; }
+                    if (!this._drawing || layer._empty()) {
+                        return;
+                    }
 
                     var p = layer._point,
                         ctx = this._ctx,
@@ -36848,7 +37701,9 @@ function addNinListener() {
                 },
 
                 _onMouseMove: function (e) {
-                    if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) { return; }
+                    if (!this._map || this._map.dragging.moving() || this._map._animatingZoom) {
+                        return;
+                    }
 
                     var point = this._map.mouseEventToLayerPoint(e);
                     this._handleMouseHover(e, point);
@@ -36993,7 +37848,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (this._map._animatingZoom) { return; }
+                    if (this._map._animatingZoom) {
+                        return;
+                    }
                     Renderer.prototype._update.call(this);
                     this.fire('update');
                 },
@@ -37169,7 +38026,9 @@ function addNinListener() {
                 },
 
                 _update: function () {
-                    if (this._map._animatingZoom && this._bounds) { return; }
+                    if (this._map._animatingZoom && this._bounds) {
+                        return;
+                    }
 
                     Renderer.prototype._update.call(this);
 
@@ -37212,7 +38071,9 @@ function addNinListener() {
                 },
 
                 _addPath: function (layer) {
-                    if (!this._rootGroup) { this._initContainer(); }
+                    if (!this._rootGroup) {
+                        this._initContainer();
+                    }
                     this._rootGroup.appendChild(layer._path);
                     layer.addInteractiveTarget(layer._path);
                 },
@@ -37232,7 +38093,9 @@ function addNinListener() {
                     var path = layer._path,
                         options = layer.options;
 
-                    if (!path) { return; }
+                    if (!path) {
+                        return;
+                    }
 
                     if (options.stroke) {
                         path.setAttribute('stroke', options.color);
@@ -37340,7 +38203,7 @@ function addNinListener() {
 
                     var renderer = this._paneRenderers[name];
                     if (renderer === undefined) {
-                        renderer = (SVG && svg$1({ pane: name })) || (Canvas && canvas$1({ pane: name }));
+                        renderer = (SVG && svg$1({pane: name})) || (Canvas && canvas$1({pane: name}));
                         this._paneRenderers[name] = renderer;
                     }
                     return renderer;
@@ -37466,7 +38329,9 @@ function addNinListener() {
                 },
 
                 _onMouseDown: function (e) {
-                    if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) { return false; }
+                    if (!e.shiftKey || ((e.which !== 1) && (e.button !== 1))) {
+                        return false;
+                    }
 
                     // Clear the deferred resetState if it hasn't executed yet, otherwise it
                     // will interrupt the interaction and orphan a box element in the container.
@@ -37525,11 +38390,15 @@ function addNinListener() {
                 },
 
                 _onMouseUp: function (e) {
-                    if ((e.which !== 1) && (e.button !== 1)) { return; }
+                    if ((e.which !== 1) && (e.button !== 1)) {
+                        return;
+                    }
 
                     this._finish();
 
-                    if (!this._moved) { return; }
+                    if (!this._moved) {
+                        return;
+                    }
                     // Postpone to next JS tick so internal click event handling
                     // still see it as "moved".
                     this._clearDeferredResetState();
@@ -37541,7 +38410,7 @@ function addNinListener() {
 
                     this._map
                         .fitBounds(bounds)
-                        .fire('boxzoomend', { boxZoomBounds: bounds });
+                        .fire('boxzoomend', {boxZoomBounds: bounds});
                 },
 
                 _onKeyDown: function (e) {
@@ -37759,15 +38628,25 @@ function addNinListener() {
                 },
 
                 _onPreDragLimit: function () {
-                    if (!this._viscosity || !this._offsetLimit) { return; }
+                    if (!this._viscosity || !this._offsetLimit) {
+                        return;
+                    }
 
                     var offset = this._draggable._newPos.subtract(this._draggable._startPos);
 
                     var limit = this._offsetLimit;
-                    if (offset.x < limit.min.x) { offset.x = this._viscousLimit(offset.x, limit.min.x); }
-                    if (offset.y < limit.min.y) { offset.y = this._viscousLimit(offset.y, limit.min.y); }
-                    if (offset.x > limit.max.x) { offset.x = this._viscousLimit(offset.x, limit.max.x); }
-                    if (offset.y > limit.max.y) { offset.y = this._viscousLimit(offset.y, limit.max.y); }
+                    if (offset.x < limit.min.x) {
+                        offset.x = this._viscousLimit(offset.x, limit.min.x);
+                    }
+                    if (offset.y < limit.min.y) {
+                        offset.y = this._viscousLimit(offset.y, limit.min.y);
+                    }
+                    if (offset.x > limit.max.x) {
+                        offset.x = this._viscousLimit(offset.x, limit.max.x);
+                    }
+                    if (offset.y > limit.max.y) {
+                        offset.y = this._viscousLimit(offset.y, limit.max.y);
+                    }
 
                     this._draggable._newPos = this._draggable._startPos.add(offset);
                 },
@@ -37908,7 +38787,9 @@ function addNinListener() {
                 },
 
                 _onMouseDown: function () {
-                    if (this._focused) { return; }
+                    if (this._focused) {
+                        return;
+                    }
 
                     var body = document.body,
                         docEl = document.documentElement,
@@ -37971,7 +38852,9 @@ function addNinListener() {
                 },
 
                 _onKeyDown: function (e) {
-                    if (e.altKey || e.ctrlKey || e.metaKey) { return; }
+                    if (e.altKey || e.ctrlKey || e.metaKey) {
+                        return;
+                    }
 
                     var key = e.keyCode,
                         map = this._map,
@@ -37979,7 +38862,9 @@ function addNinListener() {
 
                     if (key in this._panKeys) {
 
-                        if (map._panAnim && map._panAnim._inProgress) { return; }
+                        if (map._panAnim && map._panAnim._inProgress) {
+                            return;
+                        }
 
                         offset = this._panKeys[key];
                         if (e.shiftKey) {
@@ -38084,7 +38969,9 @@ function addNinListener() {
                     this._delta = 0;
                     this._startTime = null;
 
-                    if (!delta) { return; }
+                    if (!delta) {
+                        return;
+                    }
 
                     if (map.options.scrollWheelZoom === 'center') {
                         map.setZoom(zoom + delta);
@@ -38128,7 +39015,9 @@ function addNinListener() {
                 },
 
                 _onDown: function (e) {
-                    if (!e.touches) { return; }
+                    if (!e.touches) {
+                        return;
+                    }
 
                     preventDefault(e);
 
@@ -38261,7 +39150,9 @@ function addNinListener() {
 
                 _onTouchStart: function (e) {
                     var map = this._map;
-                    if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) { return; }
+                    if (!e.touches || e.touches.length !== 2 || map._animatingZoom || this._zooming) {
+                        return;
+                    }
 
                     var p1 = map.mouseEventToContainerPoint(e.touches[0]),
                         p2 = map.mouseEventToContainerPoint(e.touches[1]);
@@ -38287,7 +39178,9 @@ function addNinListener() {
                 },
 
                 _onTouchMove: function (e) {
-                    if (!e.touches || e.touches.length !== 2 || !this._zooming) { return; }
+                    if (!e.touches || e.touches.length !== 2 || !this._zooming) {
+                        return;
+                    }
 
                     var map = this._map,
                         p1 = map.mouseEventToContainerPoint(e.touches[0]),
@@ -38304,11 +39197,15 @@ function addNinListener() {
 
                     if (map.options.touchZoom === 'center') {
                         this._center = this._startLatLng;
-                        if (scale === 1) { return; }
+                        if (scale === 1) {
+                            return;
+                        }
                     } else {
                         // Get delta from pinch to center, so centerLatLng is delta applied to initial pinchLatLng
                         var delta = p1._add(p2)._divideBy(2)._subtract(this._centerPoint);
-                        if (scale === 1 && delta.x === 0 && delta.y === 0) { return; }
+                        if (scale === 1 && delta.x === 0 && delta.y === 0) {
+                            return;
+                        }
                         this._center = map.unproject(map.project(this._pinchStartLatLng, this._zoom).subtract(delta), this._zoom);
                     }
 
@@ -38319,7 +39216,7 @@ function addNinListener() {
 
                     cancelAnimFrame(this._animRequest);
 
-                    var moveFn = bind(map._move, map, this._center, this._zoom, { pinch: true, round: false });
+                    var moveFn = bind(map._move, map, this._center, this._zoom, {pinch: true, round: false});
                     this._animRequest = requestAnimFrame(moveFn, this, true);
 
                     preventDefault(e);
@@ -38362,6 +39259,7 @@ function addNinListener() {
             // misc
 
             var oldL = window.L;
+
             function noConflict() {
                 window.L = oldL;
                 return this;
@@ -38455,21 +39353,305 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 50 */
-/***/ (function (module, exports) {
+    }),
+    /* 50 */
+    /***/ (function (module, exports) {
 
-        function _toConsumableArray(e) { if (Array.isArray(e)) { for (var t = 0, n = new Array(e.length); t < e.length; t++)n[t] = e[t]; return n } return Array.from(e) } function _extends() { return (_extends = Object.assign || function (e) { for (var t = 1; t < arguments.length; t++) { var n = arguments[t]; for (var r in n) Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r]) } return e }).apply(this, arguments) } function _defineProperty(e, t, n) { return t in e ? Object.defineProperty(e, t, { value: n, enumerable: !0, configurable: !0, writable: !0 }) : e[t] = n, e } function _sliceIterator(e, t) { var n = [], r = !0, o = !1, a = void 0; try { for (var s, i = e[Symbol.iterator](); !(r = (s = i.next()).done) && (n.push(s.value), !t || n.length !== t); r = !0); } catch (e) { o = !0, a = e } finally { try { r || null == i.return || i.return() } finally { if (o) throw a } } return n } function _slicedToArray(e, t) { if (Array.isArray(e)) return e; if (Symbol.iterator in Object(e)) return _sliceIterator(e, t); throw new TypeError("Invalid attempt to destructure non-iterable instance") } !function (Y, U) { var X = U.element.prototype.closest; if (!X) { var r = ["matches", "matchesSelector", "webkitMatches", "webkitMatchesSelector", "msMatches", "msMatchesSelector", "mozMatches", "mozMatchesSelector"].reduce(function (e, t) { var n; return null !== (n = e) && void 0 !== n ? n : t in document.documentElement ? t : null }, null); X = function (e) { for (var t, n = this[0].parentNode; n !== document.documentElement && null != n && !n[r](e);)n = n.parentNode; return (null === (t = n) || void 0 === t ? void 0 : t[r](e)) ? U.element(n) : U.element() } } function G() { var e, t, n, r; return "pageYOffset" in Y ? { scrollTop: Y.pageYOffset, scrollLeft: Y.pageXOffset } : { scrollTop: null !== (e = null !== (t = document.documentElement.scrollTop) && void 0 !== t ? t : document.body.scrollTop) && void 0 !== e ? e : 0, scrollLeft: null !== (n = null !== (r = document.documentElement.scrollLeft) && void 0 !== r ? r : document.body.scrollLeft) && void 0 !== n ? n : 0 } } function K(e, t) { return e === Y ? "clientWidth" === t ? Y.innerWidth : Y.innerHeight : e[t] } function c(e, t) { var n, r; n = t, r = "".concat(e, " attribute is deprecated. Pass the options object to vs-repeat attribute instead https://github.com/kamilkp/angular-vs-repeat#options"), console.warn("vs-repeat deprecation: ".concat(r), n[0]) } var Q = { latch: !1, container: null, scrollParent: null, size: null, offsetBefore: 0, offsetAfter: 0, scrolledToBeginning: U.noop, scrolledToEnd: U.noop, scrolledToBeginningOffset: 0, scrolledToEndOffset: 0, scrollMargin: 0, horizontal: !1, autoresize: !1, hunked: !1, hunkSize: 0 }, e = U.module("vs-repeat", []).directive("vsRepeat", ["$compile", "$parse", function (F, J) { return { restrict: "A", scope: !0, compile: function (t, n) { var e = "vsRepeatContainer" in n ? U.element(t[0].querySelector(n.vsRepeatContainer)) : t, r = e.children(), o = r.eq(0), L = o[0].outerHTML, q = "$vs_collection";["vsSize", "vsScrollParent", "vsSizeProperty", "vsHorizontal", "vsOffsetBefore", "vsOffsetAfter", "vsScrolledToEndOffset", "vsScrolledToBeginningOffset", "vsExcess", "vsScrollMargin"].forEach(function (e) { e in n && c(e, t) }); var a = _slicedToArray(function (e) { for (var t = ["ng-repeat", "data-ng-repeat", "ng-repeat-start", "data-ng-repeat-start"], n = 0; n < t.length; n++) { var r = t[n]; if (e.attr(r)) return [r, e.attr(r), 0 <= r.indexOf("-start")] } throw new Error("angular-vs-repeat: no ng-repeat directive on a child element") }(o), 3), H = a[0], s = a[1], W = a[2], i = _slicedToArray(/^\s*(\S+)\s+in\s+([\S\s]+?)(track\s+by\s+\S+)?$/.exec(s), 4), j = i[1], N = i[2], D = i[3]; if (W) for (var l = 0, d = r.eq(l); null == d.attr("ng-repeat-end") && null == d.attr("data-ng-repeat-end");)l++, d = r.eq(l), L += d[0].outerHTML; return e.empty(), { pre: function (g, m, e) { var t; function n(e) { if ("number" == typeof e.size) e.getSize = function () { return e.size }; else { var t = J(String(e.size)); e.getSize = function (e) { return t(g, _defineProperty({}, j, e)) } } } g.vsRepeat = { options: _extends({}, Q, null !== (t = g.$eval(e.vsRepeat)) && void 0 !== t ? t : {}) }; var R = g.vsRepeat.options; n(R); var x, z = U.isDefined(e.vsRepeatContainer) ? U.element(m[0].querySelector(e.vsRepeatContainer)) : m, r = U.element(L), o = r[0].tagName.toLowerCase(), y = [], $ = U.element("<" + o + ' class="vs-repeat-before-content"></' + o + ">"), b = U.element("<" + o + ' class="vs-repeat-after-content"></' + o + ">"), I = null === R.size, w = R.scrollParent ? "window" === R.scrollParent ? U.element(Y) : X.call(z, R.scrollParent) : z, S = R.horizontal ? "clientWidth" : "clientHeight", a = R.horizontal ? "offsetWidth" : "offsetHeight", T = R.horizontal ? "scrollWidth" : "scrollHeight", A = R.horizontal ? "scrollLeft" : "scrollTop"; if ((g.vsRepeat.totalSize = 0) === w.length) throw "Specified scroll parent selector did not match any element"; if (g.vsRepeat.$scrollParent = w, g.vsRepeat.sizesCumulative = [], R.debug) { var s = "window" === R.scrollParent ? U.element(document.body) : w, i = U.element('<div class="vs-repeat-debug-element"></div>'); i.css("position", "window" === R.scrollParent ? "fixed" : "absolute"), s.append(i), g.$on("$destroy", function () { i.remove() }) } var C, O, M, _, l, d = K(w[0], S) || 50; function c() { !y || y.length < 1 ? (g[q] = [], x = 0, g.vsRepeat.sizesCumulative = [0]) : (x = y.length, R.size ? u() : p()), h() } function u() { var n = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : null, e = y.map(function (e) { var t; return null !== (t = n) && void 0 !== t ? t : R.getSize(e) }), t = 0; g.vsRepeat.sizesCumulative = [0].concat(_toConsumableArray(e.map(function (e) { return t += e }))) } function p() { I ? g.$$postDigest(function () { if (z[0].offsetHeight || z[0].offsetWidth) { for (var e = z.children(), t = 0, n = !1, r = !1; t < e.length;) { if (null != e[t].attributes[H] || r) { if (n || (d = 0), n = !0, e[t][a] && (d += e[t][a]), !W) break; if (null != e[t].attributes["ng-repeat-end"] || null != e[t].attributes["data-ng-repeat-end"]) break; r = !0 } t++ } n && (u(d), h(), I = !1, g.$root && !g.$root.$$phase && g.$digest()) } else var o = g.$watch(function () { (z[0].offsetHeight || z[0].offsetWidth) && (o(), p()) }) }) : u(d) } function B(n) { var r = R.horizontal ? "width" : "height"; return ["", "min-", "max-"].reduce(function (e, t) { return e["".concat(t).concat(r)] = n, e }, {}) } function v() { var e = w[0][A]; k() && (g.$digest(), R._ensureScrollIntegrity && (w[0][A] = e)) } function f() { R.autoresize && (I = !0, p(), g.$root && !g.$root.$$phase && g.$digest()), k() && g.$digest() } function h() { var e; O = C = void 0, M = x, _ = 0, e = g.vsRepeat.sizesCumulative[x], g.vsRepeat.totalSize = R.offsetBefore + e + R.offsetAfter, k(), g.$emit("vsRepeatReinitialized", g.vsRepeat.startIndex, g.vsRepeat.endIndex) } function E() { var e = K(w[0], S); e !== l && (h(), g.$root && !g.$root.$$phase && g.$digest()), l = e } function P(e, t) { var n = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : 0, r = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : e.length - 1, o = 4 < arguments.length && void 0 !== arguments[4] ? arguments[4] : 1; if (e[n] === t) return [n, n, o]; if (e[r] === t) return [r, r, o]; if (1 < r - n) { var a = Math.floor((n + r) / 2); return e[a] > t ? P(e, t, n, a, o + 1) : P(e, t, a, r, o + 1) } return [t > e[r] ? r : n, t < e[n] ? n : r, o] } function k() { var e, t, n = (e = w[0], t = A, e === Y ? G()[t] : e[t]), r = K(w[0], S); R.debug && (r /= 2); var o, a, s, i = z[0] === w[0] ? 0 : (o = z[0], a = w[0], s = R.horizontal, o.getBoundingClientRect()[s ? "left" : "top"] - (a === Y ? 0 : a.getBoundingClientRect()[s ? "left" : "top"]) + (a === Y ? G() : a)[s ? "scrollLeft" : "scrollTop"]), l = g.vsRepeat.startIndex, d = g.vsRepeat.endIndex; if (I && !R.size) l = 0, d = 1; else { g.$$postDigest(function () { Y.requestAnimationFrame(function () { var e = g.vsRepeat.sizesCumulative[x], n = Y.getComputedStyle(z[0]), t = R.horizontal ? ["paddingLeft", "paddingRight"] : ["paddingTop", "paddingBottom"], r = z[0][T] - t.reduce(function (e, t) { return e + Number(n[t].slice(0, -2)) }, 0); z[0][T] && e !== r && console.warn("vsRepeat: size mismatch. Expected size " + e + "px whereas actual size is " + r + "px. Fix vsSize on element:", m[0]) }) }); var c = n - R.offsetBefore - i; l = _slicedToArray(P(g.vsRepeat.sizesCumulative, c - R.scrollMargin), 1)[0], l = Math.max(l, 0), d = _slicedToArray(P(g.vsRepeat.sizesCumulative, c + R.scrollMargin + r, l), 2)[1], d = Math.min(d, x) } M = Math.min(l, M), _ = Math.max(d, _), g.vsRepeat.startIndex = R.latch ? M : l, g.vsRepeat.endIndex = R.latch ? _ : d, _ < g.vsRepeat.startIndex && (g.vsRepeat.startIndex = _); var u = !1; if (null == C ? u = !0 : null == O && (u = !0), u || (R.hunked ? Math.abs(g.vsRepeat.startIndex - C) >= R.hunkSize || 0 === g.vsRepeat.startIndex && 0 !== C ? u = !0 : (Math.abs(g.vsRepeat.endIndex - O) >= R.hunkSize || g.vsRepeat.endIndex === x && O !== x) && (u = !0) : u = g.vsRepeat.startIndex !== C || g.vsRepeat.endIndex !== O), u) { var p; g[q] = y.slice(g.vsRepeat.startIndex, g.vsRepeat.endIndex), g.$emit("vsRepeatInnerCollectionUpdated", g.vsRepeat.startIndex, g.vsRepeat.endIndex, C, O), R.scrolledToEnd && (p = y.length - R.scrolledToEndOffset, (g.vsRepeat.endIndex >= p && O < p || y.length && g.vsRepeat.endIndex === y.length) && g.$eval(R.scrolledToEnd)), R.scrolledToBeginning && (p = R.scrolledToBeginningOffset, g.vsRepeat.startIndex <= p && C > g.vsRepeat.startIndex && g.$eval(R.scrolledToBeginning)), C = g.vsRepeat.startIndex, O = g.vsRepeat.endIndex; var v = g.vsRepeat.sizesCumulative[g.vsRepeat.startIndex] + R.offsetBefore, f = g.vsRepeat.sizesCumulative[g.vsRepeat.startIndex + g[q].length] + R.offsetBefore, h = g.vsRepeat.totalSize; $.css(B(v + "px")), b.css(B(h - f + "px")) } return u } R.horizontal ? ($.css("height", "100%"), b.css("height", "100%")) : ($.css("width", "100%"), b.css("width", "100%")), e.vsRepeatOptions && g.$watchCollection(e.vsRepeatOptions, function (e) { var t = _extends({}, R, e); JSON.stringify(t) !== JSON.stringify(R) && (Object.assign(R, e), n(R), h()) }), g.$watchCollection(N, function () { var e = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : []; y = e, c() }), r.eq(0).attr(H, j + " in " + q + (D ? " " + D : "")), r.addClass("vs-repeat-repeated-element"), z.append($), z.append(r), F(r)(g), z.append(b), g.vsRepeat.startIndex = 0, g.vsRepeat.endIndex = 0, w.on("scroll", v), U.element(Y).on("resize", f), g.$on("$destroy", function () { U.element(Y).off("resize", f), w.off("scroll", v) }), g.$on("vsRepeatTrigger", c), g.$on("vsRepeatResize", function () { I = !0, p() }), g.$on("vsRenderAll", function () { R.latch && (g.vsRepeat.endIndex !== x ? setTimeout(function () { var e = x; _ = Math.max(e, _), g.vsRepeat.endIndex = R.latch ? _ : e, g[q] = y.slice(g.vsRepeat.startIndex, g.vsRepeat.endIndex), O = g.vsRepeat.endIndex, $.css(B(0)), b.css(B(0)), g.$emit("vsRenderAllDone"), g.$root && !g.$root.$$phase && g.$digest() }) : g.$emit("vsRenderAllDone")) }), g.$watch(function () { "function" == typeof Y.requestAnimationFrame ? Y.requestAnimationFrame(E) : E() }) } } } } }]); U.element(document.head).append('<style id="angular-vs-repeat-style">\n\t  \t.vs-repeat-debug-element {\n        top: 50%;\n        left: 0;\n        right: 0;\n        height: 1px;\n        background: red;\n        z-index: 99999999;\n        box-shadow: 0 0 20px red;\n      }\n\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n      }\n\n      .vs-repeat-before-content,\n      .vs-repeat-after-content {\n        border: none !important;\n        padding: 0 !important;\n      }\n    </style>'), "undefined" != typeof module && module.exports && (module.exports = e.name) }(window, window.angular);
+        function _toConsumableArray(e) {
+            if (Array.isArray(e)) {
+                for (var t = 0, n = new Array(e.length); t < e.length; t++) n[t] = e[t];
+                return n
+            }
+            return Array.from(e)
+        }
+
+        function _extends() {
+            return (_extends = Object.assign || function (e) {
+                for (var t = 1; t < arguments.length; t++) {
+                    var n = arguments[t];
+                    for (var r in n) Object.prototype.hasOwnProperty.call(n, r) && (e[r] = n[r])
+                }
+                return e
+            }).apply(this, arguments)
+        }
+
+        function _defineProperty(e, t, n) {
+            return t in e ? Object.defineProperty(e, t, {
+                value: n,
+                enumerable: !0,
+                configurable: !0,
+                writable: !0
+            }) : e[t] = n, e
+        }
+
+        function _sliceIterator(e, t) {
+            var n = [], r = !0, o = !1, a = void 0;
+            try {
+                for (var s, i = e[Symbol.iterator](); !(r = (s = i.next()).done) && (n.push(s.value), !t || n.length !== t); r = !0) ;
+            } catch (e) {
+                o = !0, a = e
+            } finally {
+                try {
+                    r || null == i.return || i.return()
+                } finally {
+                    if (o) throw a
+                }
+            }
+            return n
+        }
+
+        function _slicedToArray(e, t) {
+            if (Array.isArray(e)) return e;
+            if (Symbol.iterator in Object(e)) return _sliceIterator(e, t);
+            throw new TypeError("Invalid attempt to destructure non-iterable instance")
+        }
+
+        !function (Y, U) {
+            var X = U.element.prototype.closest;
+            if (!X) {
+                var r = ["matches", "matchesSelector", "webkitMatches", "webkitMatchesSelector", "msMatches", "msMatchesSelector", "mozMatches", "mozMatchesSelector"].reduce(function (e, t) {
+                    var n;
+                    return null !== (n = e) && void 0 !== n ? n : t in document.documentElement ? t : null
+                }, null);
+                X = function (e) {
+                    for (var t, n = this[0].parentNode; n !== document.documentElement && null != n && !n[r](e);) n = n.parentNode;
+                    return (null === (t = n) || void 0 === t ? void 0 : t[r](e)) ? U.element(n) : U.element()
+                }
+            }
+
+            function G() {
+                var e, t, n, r;
+                return "pageYOffset" in Y ? {
+                    scrollTop: Y.pageYOffset,
+                    scrollLeft: Y.pageXOffset
+                } : {
+                    scrollTop: null !== (e = null !== (t = document.documentElement.scrollTop) && void 0 !== t ? t : document.body.scrollTop) && void 0 !== e ? e : 0,
+                    scrollLeft: null !== (n = null !== (r = document.documentElement.scrollLeft) && void 0 !== r ? r : document.body.scrollLeft) && void 0 !== n ? n : 0
+                }
+            }
+
+            function K(e, t) {
+                return e === Y ? "clientWidth" === t ? Y.innerWidth : Y.innerHeight : e[t]
+            }
+
+            function c(e, t) {
+                var n, r;
+                n = t, r = "".concat(e, " attribute is deprecated. Pass the options object to vs-repeat attribute instead https://github.com/kamilkp/angular-vs-repeat#options"), console.warn("vs-repeat deprecation: ".concat(r), n[0])
+            }
+
+            var Q = {
+                latch: !1,
+                container: null,
+                scrollParent: null,
+                size: null,
+                offsetBefore: 0,
+                offsetAfter: 0,
+                scrolledToBeginning: U.noop,
+                scrolledToEnd: U.noop,
+                scrolledToBeginningOffset: 0,
+                scrolledToEndOffset: 0,
+                scrollMargin: 0,
+                horizontal: !1,
+                autoresize: !1,
+                hunked: !1,
+                hunkSize: 0
+            }, e = U.module("vs-repeat", []).directive("vsRepeat", ["$compile", "$parse", function (F, J) {
+                return {
+                    restrict: "A", scope: !0, compile: function (t, n) {
+                        var e = "vsRepeatContainer" in n ? U.element(t[0].querySelector(n.vsRepeatContainer)) : t,
+                            r = e.children(), o = r.eq(0), L = o[0].outerHTML, q = "$vs_collection";
+                        ["vsSize", "vsScrollParent", "vsSizeProperty", "vsHorizontal", "vsOffsetBefore", "vsOffsetAfter", "vsScrolledToEndOffset", "vsScrolledToBeginningOffset", "vsExcess", "vsScrollMargin"].forEach(function (e) {
+                            e in n && c(e, t)
+                        });
+                        var a = _slicedToArray(function (e) {
+                                for (var t = ["ng-repeat", "data-ng-repeat", "ng-repeat-start", "data-ng-repeat-start"], n = 0; n < t.length; n++) {
+                                    var r = t[n];
+                                    if (e.attr(r)) return [r, e.attr(r), 0 <= r.indexOf("-start")]
+                                }
+                                throw new Error("angular-vs-repeat: no ng-repeat directive on a child element")
+                            }(o), 3), H = a[0], s = a[1], W = a[2],
+                            i = _slicedToArray(/^\s*(\S+)\s+in\s+([\S\s]+?)(track\s+by\s+\S+)?$/.exec(s), 4), j = i[1],
+                            N = i[2], D = i[3];
+                        if (W) for (var l = 0, d = r.eq(l); null == d.attr("ng-repeat-end") && null == d.attr("data-ng-repeat-end");) l++, d = r.eq(l), L += d[0].outerHTML;
+                        return e.empty(), {
+                            pre: function (g, m, e) {
+                                var t;
+
+                                function n(e) {
+                                    if ("number" == typeof e.size) e.getSize = function () {
+                                        return e.size
+                                    }; else {
+                                        var t = J(String(e.size));
+                                        e.getSize = function (e) {
+                                            return t(g, _defineProperty({}, j, e))
+                                        }
+                                    }
+                                }
+
+                                g.vsRepeat = {options: _extends({}, Q, null !== (t = g.$eval(e.vsRepeat)) && void 0 !== t ? t : {})};
+                                var R = g.vsRepeat.options;
+                                n(R);
+                                var x,
+                                    z = U.isDefined(e.vsRepeatContainer) ? U.element(m[0].querySelector(e.vsRepeatContainer)) : m,
+                                    r = U.element(L), o = r[0].tagName.toLowerCase(), y = [],
+                                    $ = U.element("<" + o + ' class="vs-repeat-before-content"></' + o + ">"),
+                                    b = U.element("<" + o + ' class="vs-repeat-after-content"></' + o + ">"),
+                                    I = null === R.size,
+                                    w = R.scrollParent ? "window" === R.scrollParent ? U.element(Y) : X.call(z, R.scrollParent) : z,
+                                    S = R.horizontal ? "clientWidth" : "clientHeight",
+                                    a = R.horizontal ? "offsetWidth" : "offsetHeight",
+                                    T = R.horizontal ? "scrollWidth" : "scrollHeight",
+                                    A = R.horizontal ? "scrollLeft" : "scrollTop";
+                                if ((g.vsRepeat.totalSize = 0) === w.length) throw "Specified scroll parent selector did not match any element";
+                                if (g.vsRepeat.$scrollParent = w, g.vsRepeat.sizesCumulative = [], R.debug) {
+                                    var s = "window" === R.scrollParent ? U.element(document.body) : w,
+                                        i = U.element('<div class="vs-repeat-debug-element"></div>');
+                                    i.css("position", "window" === R.scrollParent ? "fixed" : "absolute"), s.append(i), g.$on("$destroy", function () {
+                                        i.remove()
+                                    })
+                                }
+                                var C, O, M, _, l, d = K(w[0], S) || 50;
+
+                                function c() {
+                                    !y || y.length < 1 ? (g[q] = [], x = 0, g.vsRepeat.sizesCumulative = [0]) : (x = y.length, R.size ? u() : p()), h()
+                                }
+
+                                function u() {
+                                    var n = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : null,
+                                        e = y.map(function (e) {
+                                            var t;
+                                            return null !== (t = n) && void 0 !== t ? t : R.getSize(e)
+                                        }), t = 0;
+                                    g.vsRepeat.sizesCumulative = [0].concat(_toConsumableArray(e.map(function (e) {
+                                        return t += e
+                                    })))
+                                }
+
+                                function p() {
+                                    I ? g.$$postDigest(function () {
+                                        if (z[0].offsetHeight || z[0].offsetWidth) {
+                                            for (var e = z.children(), t = 0, n = !1, r = !1; t < e.length;) {
+                                                if (null != e[t].attributes[H] || r) {
+                                                    if (n || (d = 0), n = !0, e[t][a] && (d += e[t][a]), !W) break;
+                                                    if (null != e[t].attributes["ng-repeat-end"] || null != e[t].attributes["data-ng-repeat-end"]) break;
+                                                    r = !0
+                                                }
+                                                t++
+                                            }
+                                            n && (u(d), h(), I = !1, g.$root && !g.$root.$$phase && g.$digest())
+                                        } else var o = g.$watch(function () {
+                                            (z[0].offsetHeight || z[0].offsetWidth) && (o(), p())
+                                        })
+                                    }) : u(d)
+                                }
+
+                                function B(n) {
+                                    var r = R.horizontal ? "width" : "height";
+                                    return ["", "min-", "max-"].reduce(function (e, t) {
+                                        return e["".concat(t).concat(r)] = n, e
+                                    }, {})
+                                }
+
+                                function v() {
+                                    var e = w[0][A];
+                                    k() && (g.$digest(), R._ensureScrollIntegrity && (w[0][A] = e))
+                                }
+
+                                function f() {
+                                    R.autoresize && (I = !0, p(), g.$root && !g.$root.$$phase && g.$digest()), k() && g.$digest()
+                                }
+
+                                function h() {
+                                    var e;
+                                    O = C = void 0, M = x, _ = 0, e = g.vsRepeat.sizesCumulative[x], g.vsRepeat.totalSize = R.offsetBefore + e + R.offsetAfter, k(), g.$emit("vsRepeatReinitialized", g.vsRepeat.startIndex, g.vsRepeat.endIndex)
+                                }
+
+                                function E() {
+                                    var e = K(w[0], S);
+                                    e !== l && (h(), g.$root && !g.$root.$$phase && g.$digest()), l = e
+                                }
+
+                                function P(e, t) {
+                                    var n = 2 < arguments.length && void 0 !== arguments[2] ? arguments[2] : 0,
+                                        r = 3 < arguments.length && void 0 !== arguments[3] ? arguments[3] : e.length - 1,
+                                        o = 4 < arguments.length && void 0 !== arguments[4] ? arguments[4] : 1;
+                                    if (e[n] === t) return [n, n, o];
+                                    if (e[r] === t) return [r, r, o];
+                                    if (1 < r - n) {
+                                        var a = Math.floor((n + r) / 2);
+                                        return e[a] > t ? P(e, t, n, a, o + 1) : P(e, t, a, r, o + 1)
+                                    }
+                                    return [t > e[r] ? r : n, t < e[n] ? n : r, o]
+                                }
+
+                                function k() {
+                                    var e, t, n = (e = w[0], t = A, e === Y ? G()[t] : e[t]), r = K(w[0], S);
+                                    R.debug && (r /= 2);
+                                    var o, a, s,
+                                        i = z[0] === w[0] ? 0 : (o = z[0], a = w[0], s = R.horizontal, o.getBoundingClientRect()[s ? "left" : "top"] - (a === Y ? 0 : a.getBoundingClientRect()[s ? "left" : "top"]) + (a === Y ? G() : a)[s ? "scrollLeft" : "scrollTop"]),
+                                        l = g.vsRepeat.startIndex, d = g.vsRepeat.endIndex;
+                                    if (I && !R.size) l = 0, d = 1; else {
+                                        g.$$postDigest(function () {
+                                            Y.requestAnimationFrame(function () {
+                                                var e = g.vsRepeat.sizesCumulative[x], n = Y.getComputedStyle(z[0]),
+                                                    t = R.horizontal ? ["paddingLeft", "paddingRight"] : ["paddingTop", "paddingBottom"],
+                                                    r = z[0][T] - t.reduce(function (e, t) {
+                                                        return e + Number(n[t].slice(0, -2))
+                                                    }, 0);
+                                                z[0][T] && e !== r && console.warn("vsRepeat: size mismatch. Expected size " + e + "px whereas actual size is " + r + "px. Fix vsSize on element:", m[0])
+                                            })
+                                        });
+                                        var c = n - R.offsetBefore - i;
+                                        l = _slicedToArray(P(g.vsRepeat.sizesCumulative, c - R.scrollMargin), 1)[0], l = Math.max(l, 0), d = _slicedToArray(P(g.vsRepeat.sizesCumulative, c + R.scrollMargin + r, l), 2)[1], d = Math.min(d, x)
+                                    }
+                                    M = Math.min(l, M), _ = Math.max(d, _), g.vsRepeat.startIndex = R.latch ? M : l, g.vsRepeat.endIndex = R.latch ? _ : d, _ < g.vsRepeat.startIndex && (g.vsRepeat.startIndex = _);
+                                    var u = !1;
+                                    if (null == C ? u = !0 : null == O && (u = !0), u || (R.hunked ? Math.abs(g.vsRepeat.startIndex - C) >= R.hunkSize || 0 === g.vsRepeat.startIndex && 0 !== C ? u = !0 : (Math.abs(g.vsRepeat.endIndex - O) >= R.hunkSize || g.vsRepeat.endIndex === x && O !== x) && (u = !0) : u = g.vsRepeat.startIndex !== C || g.vsRepeat.endIndex !== O), u) {
+                                        var p;
+                                        g[q] = y.slice(g.vsRepeat.startIndex, g.vsRepeat.endIndex), g.$emit("vsRepeatInnerCollectionUpdated", g.vsRepeat.startIndex, g.vsRepeat.endIndex, C, O), R.scrolledToEnd && (p = y.length - R.scrolledToEndOffset, (g.vsRepeat.endIndex >= p && O < p || y.length && g.vsRepeat.endIndex === y.length) && g.$eval(R.scrolledToEnd)), R.scrolledToBeginning && (p = R.scrolledToBeginningOffset, g.vsRepeat.startIndex <= p && C > g.vsRepeat.startIndex && g.$eval(R.scrolledToBeginning)), C = g.vsRepeat.startIndex, O = g.vsRepeat.endIndex;
+                                        var v = g.vsRepeat.sizesCumulative[g.vsRepeat.startIndex] + R.offsetBefore,
+                                            f = g.vsRepeat.sizesCumulative[g.vsRepeat.startIndex + g[q].length] + R.offsetBefore,
+                                            h = g.vsRepeat.totalSize;
+                                        $.css(B(v + "px")), b.css(B(h - f + "px"))
+                                    }
+                                    return u
+                                }
+
+                                R.horizontal ? ($.css("height", "100%"), b.css("height", "100%")) : ($.css("width", "100%"), b.css("width", "100%")), e.vsRepeatOptions && g.$watchCollection(e.vsRepeatOptions, function (e) {
+                                    var t = _extends({}, R, e);
+                                    JSON.stringify(t) !== JSON.stringify(R) && (Object.assign(R, e), n(R), h())
+                                }), g.$watchCollection(N, function () {
+                                    var e = 0 < arguments.length && void 0 !== arguments[0] ? arguments[0] : [];
+                                    y = e, c()
+                                }), r.eq(0).attr(H, j + " in " + q + (D ? " " + D : "")), r.addClass("vs-repeat-repeated-element"), z.append($), z.append(r), F(r)(g), z.append(b), g.vsRepeat.startIndex = 0, g.vsRepeat.endIndex = 0, w.on("scroll", v), U.element(Y).on("resize", f), g.$on("$destroy", function () {
+                                    U.element(Y).off("resize", f), w.off("scroll", v)
+                                }), g.$on("vsRepeatTrigger", c), g.$on("vsRepeatResize", function () {
+                                    I = !0, p()
+                                }), g.$on("vsRenderAll", function () {
+                                    R.latch && (g.vsRepeat.endIndex !== x ? setTimeout(function () {
+                                        var e = x;
+                                        _ = Math.max(e, _), g.vsRepeat.endIndex = R.latch ? _ : e, g[q] = y.slice(g.vsRepeat.startIndex, g.vsRepeat.endIndex), O = g.vsRepeat.endIndex, $.css(B(0)), b.css(B(0)), g.$emit("vsRenderAllDone"), g.$root && !g.$root.$$phase && g.$digest()
+                                    }) : g.$emit("vsRenderAllDone"))
+                                }), g.$watch(function () {
+                                    "function" == typeof Y.requestAnimationFrame ? Y.requestAnimationFrame(E) : E()
+                                })
+                            }
+                        }
+                    }
+                }
+            }]);
+            U.element(document.head).append('<style id="angular-vs-repeat-style">\n\t  \t.vs-repeat-debug-element {\n        top: 50%;\n        left: 0;\n        right: 0;\n        height: 1px;\n        background: red;\n        z-index: 99999999;\n        box-shadow: 0 0 20px red;\n      }\n\n      .vs-repeat-debug-element + .vs-repeat-debug-element {\n        display: none;\n      }\n\n      .vs-repeat-before-content,\n      .vs-repeat-after-content {\n        border: none !important;\n        padding: 0 !important;\n      }\n    </style>'), "undefined" != typeof module && module.exports && (module.exports = e.name)
+        }(window, window.angular);
 
         /***/
-}),
-/* 51 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 51 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*
    Leaflet.contextmenu, a context menu for Leaflet.
    (c) 2015, Adam Ratcliffe, GeoSmart Maps Limited
-      
+
        @preserve
 */
 
@@ -38815,7 +39997,7 @@ function addNinListener() {
                         var map = this._map,
                             layerPoint = map.containerPointToLayerPoint(pt),
                             latlng = map.layerPointToLatLng(layerPoint),
-                            event = L.extend(data || {}, { contextmenu: this });
+                            event = L.extend(data || {}, {contextmenu: this});
 
                         this._showLocation = {
                             latlng: latlng,
@@ -38844,7 +40026,7 @@ function addNinListener() {
                     if (this._visible) {
                         this._visible = false;
                         this._container.style.display = 'none';
-                        this._map.fire('contextmenu.hide', { contextmenu: this });
+                        this._map.fire('contextmenu.hide', {contextmenu: this});
                     }
                 },
 
@@ -38904,7 +40086,7 @@ function addNinListener() {
                 _onKeyDown: function (e) {
                     var key = e.keyCode;
 
-                    // If ESC pressed and context menu is visible hide it 
+                    // If ESC pressed and context menu is visible hide it
                     if (key === 27) {
                         this._hide();
                     }
@@ -38969,7 +40151,7 @@ function addNinListener() {
                         data, pt, i, l;
 
                     if (this._map.contextmenu) {
-                        data = L.extend({ relatedTarget: this }, e)
+                        data = L.extend({relatedTarget: this}, e)
 
                         pt = this._map.mouseEventToContainerPoint(e.originalEvent);
 
@@ -39034,9 +40216,9 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 52 */
-/***/ (function (module, exports) {
+    }),
+    /* 52 */
+    /***/ (function (module, exports) {
 
         /*
         * Google layer using Google Maps API
@@ -39159,15 +40341,21 @@ function addNinListener() {
 
                 var _this = this;
                 this._reposition = google.maps.event.addListenerOnce(map, 'center_changed',
-                    function () { _this.onReposition(); });
+                    function () {
+                        _this.onReposition();
+                    });
                 this._google = map;
 
                 google.maps.event.addListenerOnce(map, 'idle',
-                    function () { _this._checkZoomLevels(); });
+                    function () {
+                        _this._checkZoomLevels();
+                    });
                 google.maps.event.addListenerOnce(map, 'tilesloaded',
-                    function () { _this.fire('load'); });
+                    function () {
+                        _this.fire('load');
+                    });
                 //Reporting that map-object was initialized.
-                this.fire('MapObjectInitialized', { mapObject: map });
+                this.fire('MapObjectInitialized', {mapObject: map});
             },
 
             _checkZoomLevels: function () {
@@ -39241,9 +40429,9 @@ function addNinListener() {
         };
 
         /***/
-}),
-/* 53 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 53 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         // style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -39264,13 +40452,15 @@ function addNinListener() {
                 });
             }
             // When the module is disposed, remove the <style> tags
-            module.hot.dispose(function () { update(); });
+            module.hot.dispose(function () {
+                update();
+            });
         }
 
         /***/
-}),
-/* 54 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 54 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         exports = module.exports = __webpack_require__(12)();
         // imports
@@ -39283,26 +40473,67 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 55 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 55 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "a987f06fc5d9aaa4e9dfa3df0b37ee22.png";
 
         /***/
-}),
-/* 56 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 56 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "7bec7f6885833b0b60a0426f027d8f16.gif";
 
         /***/
-}),
-/* 57 */
-/***/ (function (module, exports) {
+    }),
+    /* 57 */
+    /***/ (function (module, exports) {
 
-        (function (f) { if (typeof exports === "object" && typeof module !== "undefined") { module.exports = f() } else if (typeof define === "function" && define.amd) { define([], f) } else { var g; if (typeof window !== "undefined") { g = window } else if (typeof global !== "undefined") { g = global } else if (typeof self !== "undefined") { g = self } else { g = this } g.leafletControlGeocoder = f() } })(function () {
-            var define, module, exports; return (function e(t, n, r) { function s(o, u) { if (!n[o]) { if (!t[o]) { var a = typeof require == "function" && require; if (!u && a) return a(o, !0); if (i) return i(o, !0); var f = new Error("Cannot find module '" + o + "'"); throw f.code = "MODULE_NOT_FOUND", f } var l = n[o] = { exports: {} }; t[o][0].call(l.exports, function (e) { var n = t[o][1][e]; return s(n ? n : e) }, l, l.exports, e, t, n, r) } return n[o].exports } var i = typeof require == "function" && require; for (var o = 0; o < r.length; o++)s(r[o]); return s })({
+        (function (f) {
+            if (typeof exports === "object" && typeof module !== "undefined") {
+                module.exports = f()
+            } else if (typeof define === "function" && define.amd) {
+                define([], f)
+            } else {
+                var g;
+                if (typeof window !== "undefined") {
+                    g = window
+                } else if (typeof global !== "undefined") {
+                    g = global
+                } else if (typeof self !== "undefined") {
+                    g = self
+                } else {
+                    g = this
+                }
+                g.leafletControlGeocoder = f()
+            }
+        })(function () {
+            var define, module, exports;
+            return (function e(t, n, r) {
+                function s(o, u) {
+                    if (!n[o]) {
+                        if (!t[o]) {
+                            var a = typeof require == "function" && require;
+                            if (!u && a) return a(o, !0);
+                            if (i) return i(o, !0);
+                            var f = new Error("Cannot find module '" + o + "'");
+                            throw f.code = "MODULE_NOT_FOUND", f
+                        }
+                        var l = n[o] = {exports: {}};
+                        t[o][0].call(l.exports, function (e) {
+                            var n = t[o][1][e];
+                            return s(n ? n : e)
+                        }, l, l.exports, e, t, n, r)
+                    }
+                    return n[o].exports
+                }
+
+                var i = typeof require == "function" && require;
+                for (var o = 0; o < r.length; o++) s(r[o]);
+                return s
+            })({
                 1: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
@@ -39377,15 +40608,13 @@ function addNinListener() {
                                                     this._toggle();
                                                 }
                                             }, this);
-                                        }
-                                        else if (L.Browser.touch && this.options.expand === 'touch') {
+                                        } else if (L.Browser.touch && this.options.expand === 'touch') {
                                             L.DomEvent.addListener(container, 'touchstart mousedown', function (e) {
                                                 this._toggle();
                                                 e.preventDefault(); // mobile: clicking focuses the icon, so UI expands and immediately collapses
                                                 e.stopPropagation();
                                             }, this);
-                                        }
-                                        else {
+                                        } else {
                                             L.DomEvent.addListener(container, 'mouseover', this._expand, this);
                                             L.DomEvent.addListener(container, 'mouseout', this._collapse, this);
                                             this._map.on('movestart', this._collapse, this);
@@ -39396,8 +40625,7 @@ function addNinListener() {
                                             L.DomEvent.addListener(container, 'touchstart', function (e) {
                                                 this._geocode(e);
                                             }, this);
-                                        }
-                                        else {
+                                        } else {
                                             L.DomEvent.addListener(container, 'click', function (e) {
                                                 this._geocode(e);
                                             }, this);
@@ -39455,7 +40683,7 @@ function addNinListener() {
                                 _geocode: function (suggest) {
                                     var requestCount = ++this._requestCount,
                                         mode = suggest ? 'suggest' : 'geocode',
-                                        eventData = { input: this._input.value };
+                                        eventData = {input: this._input.value};
 
                                     this._lastGeocode = this._input.value;
                                     if (!suggest) {
@@ -39473,7 +40701,7 @@ function addNinListener() {
                                 },
 
                                 _geocodeResultSelected: function (result) {
-                                    this.fire('markgeocode', { geocode: result });
+                                    this.fire('markgeocode', {geocode: result});
                                 },
 
                                 _toggle: function () {
@@ -39610,7 +40838,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "./geocoders/nominatim": 9 }], 2: [function (_dereq_, module, exports) {
+                }, {"./geocoders/nominatim": 9}], 2: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -39697,7 +40925,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 3: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 3: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -39754,7 +40982,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 4: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 4: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -39847,7 +41075,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 5: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 5: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -39921,7 +41149,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 6: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 6: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -39958,8 +41186,7 @@ function addNinListener() {
                                                 latLng = L.latLng(loc.center.reverse());
                                                 if (loc.hasOwnProperty('bbox')) {
                                                     latLngBounds = L.latLngBounds(L.latLng(loc.bbox.slice(0, 2).reverse()), L.latLng(loc.bbox.slice(2, 4).reverse()));
-                                                }
-                                                else {
+                                                } else {
                                                     latLngBounds = L.latLngBounds(latLng, latLng);
                                                 }
                                                 results[i] = {
@@ -39990,8 +41217,7 @@ function addNinListener() {
                                                 latLng = L.latLng(loc.center.reverse());
                                                 if (loc.hasOwnProperty('bbox')) {
                                                     latLngBounds = L.latLngBounds(L.latLng(loc.bbox.slice(0, 2).reverse()), L.latLng(loc.bbox.slice(2, 4).reverse()));
-                                                }
-                                                else {
+                                                } else {
                                                     latLngBounds = L.latLngBounds(latLng, latLng);
                                                 }
                                                 results[i] = {
@@ -40014,7 +41240,7 @@ function addNinListener() {
 
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 7: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 7: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -40103,7 +41329,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 8: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 8: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -40192,7 +41418,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 9: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 9: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -40230,11 +41456,11 @@ function addNinListener() {
 
                                 geocode: function (query, cb, context) {
                                     Util.jsonp(this.options.serviceUrl + 'search', L.extend({
-                                        q: query,
-                                        limit: 5,
-                                        format: 'json',
-                                        addressdetails: 1
-                                    }, this.options.geocodingQueryParams),
+                                            q: query,
+                                            limit: 5,
+                                            format: 'json',
+                                            addressdetails: 1
+                                        }, this.options.geocodingQueryParams),
                                         function (data) {
                                             var results = [];
                                             for (var i = data.length - 1; i >= 0; i--) {
@@ -40290,7 +41516,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 10: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 10: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -40396,7 +41622,7 @@ function addNinListener() {
 
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 11: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 11: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Util = _dereq_('../util');
@@ -40462,7 +41688,7 @@ function addNinListener() {
                         };
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "../util": 13 }], 12: [function (_dereq_, module, exports) {
+                }, {"../util": 13}], 12: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             Control = _dereq_('./control'),
@@ -40506,7 +41732,19 @@ function addNinListener() {
                         });
 
                     }).call(this, typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-                }, { "./control": 1, "./geocoders/arcgis": 2, "./geocoders/bing": 3, "./geocoders/google": 4, "./geocoders/here": 5, "./geocoders/mapbox": 6, "./geocoders/mapquest": 7, "./geocoders/mapzen": 8, "./geocoders/nominatim": 9, "./geocoders/photon": 10, "./geocoders/what3words": 11 }], 13: [function (_dereq_, module, exports) {
+                }, {
+                    "./control": 1,
+                    "./geocoders/arcgis": 2,
+                    "./geocoders/bing": 3,
+                    "./geocoders/google": 4,
+                    "./geocoders/here": 5,
+                    "./geocoders/mapbox": 6,
+                    "./geocoders/mapquest": 7,
+                    "./geocoders/mapzen": 8,
+                    "./geocoders/nominatim": 9,
+                    "./geocoders/photon": 10,
+                    "./geocoders/what3words": 11
+                }], 13: [function (_dereq_, module, exports) {
                     (function (global) {
                         var L = (typeof window !== "undefined" ? window['L'] : typeof global !== "undefined" ? global['L'] : null),
                             lastCallbackId = 0,
@@ -40597,36 +41835,1290 @@ function addNinListener() {
         });
 
         /***/
-}),
-/* 58 */
-/***/ (function (module, exports) {
+    }),
+    /* 58 */
+    /***/ (function (module, exports) {
 
         /*
         Leaflet.draw 1.0.2, a plugin that adds drawing and editing tools to Leaflet powered maps.
         (c) 2012-2017, Jacob Toye, Jon West, Smartrak, Leaflet
-        
+
         https://github.com/Leaflet/Leaflet.draw
         http://leafletjs.com
         */
         !function (t, e, i) {
-            function o(t, e) { for (; (t = t.parentElement) && !t.classList.contains(e);); return t } L.drawVersion = "1.0.2", L.Draw = {}, L.drawLocal = { draw: { toolbar: { actions: { title: "Cancel drawing", text: "Cancel" }, finish: { title: "Finish drawing", text: "Finish" }, undo: { title: "Delete last point drawn", text: "Delete last point" }, buttons: { polyline: "Draw a polyline", polygon: "Draw a polygon", rectangle: "Draw a rectangle", circle: "Draw a circle", marker: "Draw a marker", circlemarker: "Draw a circlemarker" } }, handlers: { circle: { tooltip: { start: "Click and drag to draw circle." }, radius: "Radius" }, circlemarker: { tooltip: { start: "Click map to place circle marker." } }, marker: { tooltip: { start: "Click map to place marker." } }, polygon: { tooltip: { start: "Click to start drawing shape.", cont: "Click to continue drawing shape.", end: "Click first point to close this shape." } }, polyline: { error: "<strong>Error:</strong> shape edges cannot cross!", tooltip: { start: "Click to start drawing line.", cont: "Click to continue drawing line.", end: "Click last point to finish line." } }, rectangle: { tooltip: { start: "Click and drag to draw rectangle." } }, simpleshape: { tooltip: { end: "Release mouse to finish drawing." } } } }, edit: { toolbar: { actions: { save: { title: "Save changes", text: "Save" }, cancel: { title: "Cancel editing, discards all changes", text: "Cancel" }, clearAll: { title: "Clear all layers", text: "Clear All" } }, buttons: { edit: "Edit layers", editDisabled: "No layers to edit", remove: "Delete layers", removeDisabled: "No layers to delete" } }, handlers: { edit: { tooltip: { text: "Drag handles or markers to edit features.", subtext: "Click cancel to undo changes." } }, remove: { tooltip: { text: "Click on a feature to remove." } } } } }, L.Draw.Event = {}, L.Draw.Event.CREATED = "draw:created", L.Draw.Event.EDITED = "draw:edited", L.Draw.Event.DELETED = "draw:deleted", L.Draw.Event.DRAWSTART = "draw:drawstart", L.Draw.Event.DRAWSTOP = "draw:drawstop", L.Draw.Event.DRAWVERTEX = "draw:drawvertex", L.Draw.Event.EDITSTART = "draw:editstart", L.Draw.Event.EDITMOVE = "draw:editmove", L.Draw.Event.EDITRESIZE = "draw:editresize", L.Draw.Event.EDITVERTEX = "draw:editvertex", L.Draw.Event.EDITSTOP = "draw:editstop", L.Draw.Event.DELETESTART = "draw:deletestart", L.Draw.Event.DELETESTOP = "draw:deletestop", L.Draw.Event.TOOLBAROPENED = "draw:toolbaropened", L.Draw.Event.TOOLBARCLOSED = "draw:toolbarclosed", L.Draw.Event.MARKERCONTEXT = "draw:markercontext", L.Draw = L.Draw || {}, L.Draw.Feature = L.Handler.extend({ initialize: function (t, e) { this._map = t, this._container = t._container, this._overlayPane = t._panes.overlayPane, this._popupPane = t._panes.popupPane, e && e.shapeOptions && (e.shapeOptions = L.Util.extend({}, this.options.shapeOptions, e.shapeOptions)), L.setOptions(this, e); var i = L.version.split("."); 1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.Draw.Feature.include(L.Evented.prototype) : L.Draw.Feature.include(L.Mixin.Events) }, enable: function () { this._enabled || (L.Handler.prototype.enable.call(this), this.fire("enabled", { handler: this.type }), this._map.fire(L.Draw.Event.DRAWSTART, { layerType: this.type })) }, disable: function () { this._enabled && (L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.DRAWSTOP, { layerType: this.type }), this.fire("disabled", { handler: this.type })) }, addHooks: function () { var t = this._map; t && (L.DomUtil.disableTextSelection(), t.getContainer().focus(), this._tooltip = new L.Draw.Tooltip(this._map), L.DomEvent.on(this._container, "keyup", this._cancelDrawing, this)) }, removeHooks: function () { this._map && (L.DomUtil.enableTextSelection(), this._tooltip.dispose(), this._tooltip = null, L.DomEvent.off(this._container, "keyup", this._cancelDrawing, this)) }, setOptions: function (t) { L.setOptions(this, t) }, _fireCreatedEvent: function (t) { this._map.fire(L.Draw.Event.CREATED, { layer: t, layerType: this.type }) }, _cancelDrawing: function (t) { 27 === t.keyCode && (this._map.fire("draw:canceled", { layerType: this.type }), this.disable()) } }), L.Draw.Polyline = L.Draw.Feature.extend({ statics: { TYPE: "polyline" }, Poly: L.Polyline, options: { allowIntersection: !0, repeatMode: !1, drawError: { color: "#b00b00", timeout: 2500 }, icon: new L.DivIcon({ iconSize: new L.Point(8, 8), className: "leaflet-div-icon leaflet-editing-icon" }), touchIcon: new L.DivIcon({ iconSize: new L.Point(20, 20), className: "leaflet-div-icon leaflet-editing-icon leaflet-touch-icon" }), guidelineDistance: 20, maxGuideLineLength: 4e3, shapeOptions: { stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !1, clickable: !0 }, metric: !0, feet: !0, nautic: !1, showLength: !0, zIndexOffset: 2e3, factor: 1, maxPoints: 0 }, initialize: function (t, e) { L.Browser.touch && (this.options.icon = this.options.touchIcon), this.options.drawError.message = L.drawLocal.draw.handlers.polyline.error, e && e.drawError && (e.drawError = L.Util.extend({}, this.options.drawError, e.drawError)), this.type = L.Draw.Polyline.TYPE, L.Draw.Feature.prototype.initialize.call(this, t, e) }, addHooks: function () { L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._markers = [], this._markerGroup = new L.LayerGroup, this._map.addLayer(this._markerGroup), this._poly = new L.Polyline([], this.options.shapeOptions), this._tooltip.updateContent(this._getTooltipText()), this._mouseMarker || (this._mouseMarker = L.marker(this._map.getCenter(), { icon: L.divIcon({ className: "leaflet-mouse-marker", iconAnchor: [20, 20], iconSize: [40, 40] }), opacity: 0, zIndexOffset: this.options.zIndexOffset })), this._mouseMarker.on("mouseout", this._onMouseOut, this).on("mousemove", this._onMouseMove, this).on("mousedown", this._onMouseDown, this).on("mouseup", this._onMouseUp, this).addTo(this._map), this._map.on("mouseup", this._onMouseUp, this).on("mousemove", this._onMouseMove, this).on("zoomlevelschange", this._onZoomEnd, this).on("touchstart", this._onTouch, this).on("zoomend", this._onZoomEnd, this)) }, removeHooks: function () { L.Draw.Feature.prototype.removeHooks.call(this), this._clearHideErrorTimeout(), this._cleanUpShape(), this._map.removeLayer(this._markerGroup), delete this._markerGroup, delete this._markers, this._map.removeLayer(this._poly), delete this._poly, this._mouseMarker.off("mousedown", this._onMouseDown, this).off("mouseout", this._onMouseOut, this).off("mouseup", this._onMouseUp, this).off("mousemove", this._onMouseMove, this), this._map.removeLayer(this._mouseMarker), delete this._mouseMarker, this._clearGuides(), this._map.off("mouseup", this._onMouseUp, this).off("mousemove", this._onMouseMove, this).off("zoomlevelschange", this._onZoomEnd, this).off("zoomend", this._onZoomEnd, this).off("touchstart", this._onTouch, this).off("click", this._onTouch, this) }, deleteLastVertex: function () { if (!(this._markers.length <= 1)) { var t = this._markers.pop(), e = this._poly, i = e.getLatLngs(), o = i.splice(-1, 1)[0]; this._poly.setLatLngs(i), this._markerGroup.removeLayer(t), e.getLatLngs().length < 2 && this._map.removeLayer(e), this._vertexChanged(o, !1) } }, addVertex: function (t) { if (this._markers.length >= 2 && !this.options.allowIntersection && this._poly.newLatLngIntersects(t)) return void this._showErrorTooltip(); this._errorShown && this._hideErrorTooltip(), this._markers.push(this._createMarker(t)), this._poly.addLatLng(t), 2 === this._poly.getLatLngs().length && this._map.addLayer(this._poly), this._vertexChanged(t, !0) }, completeShape: function () { this._markers.length <= 1 || (this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable()) }, _finishShape: function () { var t = this._poly._defaultShape ? this._poly._defaultShape() : this._poly.getLatLngs(), e = this._poly.newLatLngIntersects(t[t.length - 1]); if (!this.options.allowIntersection && e || !this._shapeIsValid()) return void this._showErrorTooltip(); this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable() }, _shapeIsValid: function () { return !0 }, _onZoomEnd: function () { null !== this._markers && this._updateGuide() }, _onMouseMove: function (t) { var e = this._map.mouseEventToLayerPoint(t.originalEvent), i = this._map.layerPointToLatLng(e); this._currentLatLng = i, this._updateTooltip(i), this._updateGuide(e), this._mouseMarker.setLatLng(i), L.DomEvent.preventDefault(t.originalEvent) }, _vertexChanged: function (t, e) { this._map.fire(L.Draw.Event.DRAWVERTEX, { layers: this._markerGroup }), this._updateFinishHandler(), this._updateRunningMeasure(t, e), this._clearGuides(), this._updateTooltip() }, _onMouseDown: function (t) { if (!this._clickHandled && !this._touchHandled && !this._disableMarkers) { this._onMouseMove(t), this._clickHandled = !0, this._disableNewMarkers(); var e = t.originalEvent, i = e.clientX, o = e.clientY; this._startPoint.call(this, i, o) } }, _startPoint: function (t, e) { this._mouseDownOrigin = L.point(t, e) }, _onMouseUp: function (t) { var e = t.originalEvent, i = e.clientX, o = e.clientY; this._endPoint.call(this, i, o, t), this._clickHandled = null }, _endPoint: function (e, i, o) { if (this._mouseDownOrigin) { var a = L.point(e, i).distanceTo(this._mouseDownOrigin), n = this._calculateFinishDistance(o.latlng); this.options.maxPoints > 1 && this.options.maxPoints == this._markers.length + 1 ? (this.addVertex(o.latlng), this._finishShape()) : n < 10 && L.Browser.touch ? this._finishShape() : Math.abs(a) < 9 * (t.devicePixelRatio || 1) && this.addVertex(o.latlng), this._enableNewMarkers() } this._mouseDownOrigin = null }, _onTouch: function (t) { var e, i, o = t.originalEvent; !o.touches || !o.touches[0] || this._clickHandled || this._touchHandled || this._disableMarkers || (e = o.touches[0].clientX, i = o.touches[0].clientY, this._disableNewMarkers(), this._touchHandled = !0, this._startPoint.call(this, e, i), this._endPoint.call(this, e, i, t), this._touchHandled = null), this._clickHandled = null }, _onMouseOut: function () { this._tooltip && this._tooltip._onMouseOut.call(this._tooltip) }, _calculateFinishDistance: function (t) { var e; if (this._markers.length > 0) { var i; if (this.type === L.Draw.Polyline.TYPE) i = this._markers[this._markers.length - 1]; else { if (this.type !== L.Draw.Polygon.TYPE) return 1 / 0; i = this._markers[0] } var o = this._map.latLngToContainerPoint(i.getLatLng()), a = new L.Marker(t, { icon: this.options.icon, zIndexOffset: 2 * this.options.zIndexOffset }), n = this._map.latLngToContainerPoint(a.getLatLng()); e = o.distanceTo(n) } else e = 1 / 0; return e }, _updateFinishHandler: function () { var t = this._markers.length; t > 1 && this._markers[t - 1].on("click", this._finishShape, this), t > 2 && this._markers[t - 2].off("click", this._finishShape, this) }, _createMarker: function (t) { var e = new L.Marker(t, { icon: this.options.icon, zIndexOffset: 2 * this.options.zIndexOffset }); return this._markerGroup.addLayer(e), e }, _updateGuide: function (t) { var e = this._markers ? this._markers.length : 0; e > 0 && (t = t || this._map.latLngToLayerPoint(this._currentLatLng), this._clearGuides(), this._drawGuide(this._map.latLngToLayerPoint(this._markers[e - 1].getLatLng()), t)) }, _updateTooltip: function (t) { var e = this._getTooltipText(); t && this._tooltip.updatePosition(t), this._errorShown || this._tooltip.updateContent(e) }, _drawGuide: function (t, e) { var i, o, a, n = Math.floor(Math.sqrt(Math.pow(e.x - t.x, 2) + Math.pow(e.y - t.y, 2))), s = this.options.guidelineDistance, r = this.options.maxGuideLineLength, l = n > r ? n - r : s; for (this._guidesContainer || (this._guidesContainer = L.DomUtil.create("div", "leaflet-draw-guides", this._overlayPane)); l < n; l += this.options.guidelineDistance)i = l / n, o = { x: Math.floor(t.x * (1 - i) + i * e.x), y: Math.floor(t.y * (1 - i) + i * e.y) }, a = L.DomUtil.create("div", "leaflet-draw-guide-dash", this._guidesContainer), a.style.backgroundColor = this._errorShown ? this.options.drawError.color : this.options.shapeOptions.color, L.DomUtil.setPosition(a, o) }, _updateGuideColor: function (t) { if (this._guidesContainer) for (var e = 0, i = this._guidesContainer.childNodes.length; e < i; e++)this._guidesContainer.childNodes[e].style.backgroundColor = t }, _clearGuides: function () { if (this._guidesContainer) for (; this._guidesContainer.firstChild;)this._guidesContainer.removeChild(this._guidesContainer.firstChild) }, _getTooltipText: function () { var t, e, i = this.options.showLength; return 0 === this._markers.length ? t = { text: L.drawLocal.draw.handlers.polyline.tooltip.start } : (e = i ? this._getMeasurementString() : "", t = 1 === this._markers.length ? { text: L.drawLocal.draw.handlers.polyline.tooltip.cont, subtext: e } : { text: L.drawLocal.draw.handlers.polyline.tooltip.end, subtext: e }), t }, _updateRunningMeasure: function (t, e) { var i, o, a = this._markers.length; 1 === this._markers.length ? this._measurementRunningTotal = 0 : (i = a - (e ? 2 : 1), o = L.GeometryUtil.isVersion07x() ? t.distanceTo(this._markers[i].getLatLng()) * (this.options.factor || 1) : this._map.distance(t, this._markers[i].getLatLng()) * (this.options.factor || 1), this._measurementRunningTotal += o * (e ? 1 : -1)) }, _getMeasurementString: function () { var t, e = this._currentLatLng, i = this._markers[this._markers.length - 1].getLatLng(); return t = L.GeometryUtil.isVersion07x() ? i && e && e.distanceTo ? this._measurementRunningTotal + e.distanceTo(i) * (this.options.factor || 1) : this._measurementRunningTotal || 0 : i && e ? this._measurementRunningTotal + this._map.distance(e, i) * (this.options.factor || 1) : this._measurementRunningTotal || 0, L.GeometryUtil.readableDistance(t, this.options.metric, this.options.feet, this.options.nautic, this.options.precision) }, _showErrorTooltip: function () { this._errorShown = !0, this._tooltip.showAsError().updateContent({ text: this.options.drawError.message }), this._updateGuideColor(this.options.drawError.color), this._poly.setStyle({ color: this.options.drawError.color }), this._clearHideErrorTimeout(), this._hideErrorTimeout = setTimeout(L.Util.bind(this._hideErrorTooltip, this), this.options.drawError.timeout) }, _hideErrorTooltip: function () { this._errorShown = !1, this._clearHideErrorTimeout(), this._tooltip.removeError().updateContent(this._getTooltipText()), this._updateGuideColor(this.options.shapeOptions.color), this._poly.setStyle({ color: this.options.shapeOptions.color }) }, _clearHideErrorTimeout: function () { this._hideErrorTimeout && (clearTimeout(this._hideErrorTimeout), this._hideErrorTimeout = null) }, _disableNewMarkers: function () { this._disableMarkers = !0 }, _enableNewMarkers: function () { setTimeout(function () { this._disableMarkers = !1 }.bind(this), 50) }, _cleanUpShape: function () { this._markers.length > 1 && this._markers[this._markers.length - 1].off("click", this._finishShape, this) }, _fireCreatedEvent: function () { var t = new this.Poly(this._poly.getLatLngs(), this.options.shapeOptions); L.Draw.Feature.prototype._fireCreatedEvent.call(this, t) } }), L.Draw.Polygon = L.Draw.Polyline.extend({ statics: { TYPE: "polygon" }, Poly: L.Polygon, options: { showArea: !1, showLength: !1, shapeOptions: { stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !0, fillColor: null, fillOpacity: .2, clickable: !0 }, metric: !0, feet: !0, nautic: !1, precision: {} }, initialize: function (t, e) { L.Draw.Polyline.prototype.initialize.call(this, t, e), this.type = L.Draw.Polygon.TYPE }, _updateFinishHandler: function () { var t = this._markers.length; 1 === t && this._markers[0].on("click", this._finishShape, this), t > 2 && (this._markers[t - 1].on("dblclick", this._finishShape, this), t > 3 && this._markers[t - 2].off("dblclick", this._finishShape, this)) }, _getTooltipText: function () { var t, e; return 0 === this._markers.length ? t = L.drawLocal.draw.handlers.polygon.tooltip.start : this._markers.length < 3 ? (t = L.drawLocal.draw.handlers.polygon.tooltip.cont, e = this._getMeasurementString()) : (t = L.drawLocal.draw.handlers.polygon.tooltip.end, e = this._getMeasurementString()), { text: t, subtext: e } }, _getMeasurementString: function () { var t = this._area, e = ""; return t || this.options.showLength ? (this.options.showLength && (e = L.Draw.Polyline.prototype._getMeasurementString.call(this)), t && (e += "<br>" + L.GeometryUtil.readableArea(t, this.options.metric, this.options.precision)), e) : null }, _shapeIsValid: function () { return this._markers.length >= 3 }, _vertexChanged: function (t, e) { var i; !this.options.allowIntersection && this.options.showArea && (i = this._poly.getLatLngs(), this._area = L.GeometryUtil.geodesicArea(i)), L.Draw.Polyline.prototype._vertexChanged.call(this, t, e) }, _cleanUpShape: function () { var t = this._markers.length; t > 0 && (this._markers[0].off("click", this._finishShape, this), t > 2 && this._markers[t - 1].off("dblclick", this._finishShape, this)) } }), L.SimpleShape = {}, L.Draw.SimpleShape = L.Draw.Feature.extend({ options: { repeatMode: !1 }, initialize: function (t, e) { this._endLabelText = L.drawLocal.draw.handlers.simpleshape.tooltip.end, L.Draw.Feature.prototype.initialize.call(this, t, e) }, addHooks: function () { L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._mapDraggable = this._map.dragging.enabled(), this._mapDraggable && this._map.dragging.disable(), this._container.style.cursor = "crosshair", this._tooltip.updateContent({ text: this._initialLabelText }), this._map.on("mousedown", this._onMouseDown, this).on("mousemove", this._onMouseMove, this).on("touchstart", this._onMouseDown, this).on("touchmove", this._onMouseMove, this), e.addEventListener("touchstart", L.DomEvent.preventDefault, { passive: !1 })) }, removeHooks: function () { L.Draw.Feature.prototype.removeHooks.call(this), this._map && (this._mapDraggable && this._map.dragging.enable(), this._container.style.cursor = "", this._map.off("mousedown", this._onMouseDown, this).off("mousemove", this._onMouseMove, this).off("touchstart", this._onMouseDown, this).off("touchmove", this._onMouseMove, this), L.DomEvent.off(e, "mouseup", this._onMouseUp, this), L.DomEvent.off(e, "touchend", this._onMouseUp, this), e.removeEventListener("touchstart", L.DomEvent.preventDefault), this._shape && (this._map.removeLayer(this._shape), delete this._shape)), this._isDrawing = !1 }, _getTooltipText: function () { return { text: this._endLabelText } }, _onMouseDown: function (t) { this._isDrawing = !0, this._startLatLng = t.latlng, L.DomEvent.on(e, "mouseup", this._onMouseUp, this).on(e, "touchend", this._onMouseUp, this).preventDefault(t.originalEvent) }, _onMouseMove: function (t) { var e = t.latlng; this._tooltip.updatePosition(e), this._isDrawing && (this._tooltip.updateContent(this._getTooltipText()), this._drawShape(e)) }, _onMouseUp: function () { this._shape && this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable() } }), L.Draw.Rectangle = L.Draw.SimpleShape.extend({ statics: { TYPE: "rectangle" }, options: { shapeOptions: { stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !0, fillColor: null, fillOpacity: .2, showArea: !0, clickable: !0 }, metric: !0 }, initialize: function (t, e) { this.type = L.Draw.Rectangle.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.rectangle.tooltip.start, L.Draw.SimpleShape.prototype.initialize.call(this, t, e) }, disable: function () { this._enabled && (this._isCurrentlyTwoClickDrawing = !1, L.Draw.SimpleShape.prototype.disable.call(this)) }, _onMouseUp: function (t) { if (!this._shape && !this._isCurrentlyTwoClickDrawing) return void (this._isCurrentlyTwoClickDrawing = !0); this._isCurrentlyTwoClickDrawing && !o(t.target, "leaflet-pane") || L.Draw.SimpleShape.prototype._onMouseUp.call(this) }, _drawShape: function (t) { this._shape ? this._shape.setBounds(new L.LatLngBounds(this._startLatLng, t)) : (this._shape = new L.Rectangle(new L.LatLngBounds(this._startLatLng, t), this.options.shapeOptions), this._map.addLayer(this._shape)) }, _fireCreatedEvent: function () { var t = new L.Rectangle(this._shape.getBounds(), this.options.shapeOptions); L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, t) }, _getTooltipText: function () { var t, e, i, o = L.Draw.SimpleShape.prototype._getTooltipText.call(this), a = this._shape, n = this.options.showArea; return a && (t = this._shape._defaultShape ? this._shape._defaultShape() : this._shape.getLatLngs(), e = L.GeometryUtil.geodesicArea(t), i = n ? L.GeometryUtil.readableArea(e, this.options.metric) : ""), { text: o.text, subtext: i } } }), L.Draw.Marker = L.Draw.Feature.extend({ statics: { TYPE: "marker" }, options: { icon: new L.Icon.Default, repeatMode: !1, zIndexOffset: 2e3 }, initialize: function (t, e) { this.type = L.Draw.Marker.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.marker.tooltip.start, L.Draw.Feature.prototype.initialize.call(this, t, e) }, addHooks: function () { L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._tooltip.updateContent({ text: this._initialLabelText }), this._mouseMarker || (this._mouseMarker = L.marker(this._map.getCenter(), { icon: L.divIcon({ className: "leaflet-mouse-marker", iconAnchor: [20, 20], iconSize: [40, 40] }), opacity: 0, zIndexOffset: this.options.zIndexOffset })), this._mouseMarker.on("click", this._onClick, this).addTo(this._map), this._map.on("mousemove", this._onMouseMove, this), this._map.on("click", this._onTouch, this)) }, removeHooks: function () { L.Draw.Feature.prototype.removeHooks.call(this), this._map && (this._map.off("click", this._onClick, this).off("click", this._onTouch, this), this._marker && (this._marker.off("click", this._onClick, this), this._map.removeLayer(this._marker), delete this._marker), this._mouseMarker.off("click", this._onClick, this), this._map.removeLayer(this._mouseMarker), delete this._mouseMarker, this._map.off("mousemove", this._onMouseMove, this)) }, _onMouseMove: function (t) { var e = t.latlng; this._tooltip.updatePosition(e), this._mouseMarker.setLatLng(e), this._marker ? (e = this._mouseMarker.getLatLng(), this._marker.setLatLng(e)) : (this._marker = this._createMarker(e), this._marker.on("click", this._onClick, this), this._map.on("click", this._onClick, this).addLayer(this._marker)) }, _createMarker: function (t) { return new L.Marker(t, { icon: this.options.icon, zIndexOffset: this.options.zIndexOffset }) }, _onClick: function () { this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable() }, _onTouch: function (t) { this._onMouseMove(t), this._onClick() }, _fireCreatedEvent: function () { var t = new L.Marker.Touch(this._marker.getLatLng(), { icon: this.options.icon }); L.Draw.Feature.prototype._fireCreatedEvent.call(this, t) } }), L.Draw.CircleMarker = L.Draw.Marker.extend({ statics: { TYPE: "circlemarker" }, options: { stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !0, fillColor: null, fillOpacity: .2, clickable: !0, zIndexOffset: 2e3 }, initialize: function (t, e) { this.type = L.Draw.CircleMarker.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.circlemarker.tooltip.start, L.Draw.Feature.prototype.initialize.call(this, t, e) }, _fireCreatedEvent: function () { var t = new L.CircleMarker(this._marker.getLatLng(), this.options); L.Draw.Feature.prototype._fireCreatedEvent.call(this, t) }, _createMarker: function (t) { return new L.CircleMarker(t, this.options) } }), L.Draw.Circle = L.Draw.SimpleShape.extend({ statics: { TYPE: "circle" }, options: { shapeOptions: { stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !0, fillColor: null, fillOpacity: .2, clickable: !0 }, showRadius: !0, metric: !0, feet: !0, nautic: !1 }, initialize: function (t, e) { this.type = L.Draw.Circle.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.circle.tooltip.start, L.Draw.SimpleShape.prototype.initialize.call(this, t, e) }, _drawShape: function (t) { if (L.GeometryUtil.isVersion07x()) var e = this._startLatLng.distanceTo(t); else var e = this._map.distance(this._startLatLng, t); this._shape ? this._shape.setRadius(e) : (this._shape = new L.Circle(this._startLatLng, e, this.options.shapeOptions), this._map.addLayer(this._shape)) }, _fireCreatedEvent: function () { var t = new L.Circle(this._startLatLng, this._shape.getRadius(), this.options.shapeOptions); L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, t) }, _onMouseMove: function (t) { var e, i = t.latlng, o = this.options.showRadius, a = this.options.metric; if (this._tooltip.updatePosition(i), this._isDrawing) { this._drawShape(i), e = this._shape.getRadius().toFixed(1); var n = ""; o && (n = L.drawLocal.draw.handlers.circle.radius + ": " + L.GeometryUtil.readableDistance(e, a, this.options.feet, this.options.nautic)), this._tooltip.updateContent({ text: this._endLabelText, subtext: n }) } } }), L.Edit = L.Edit || {}, L.Edit.Marker = L.Handler.extend({ initialize: function (t, e) { this._marker = t, L.setOptions(this, e) }, addHooks: function () { var t = this._marker; t.dragging.enable(), t.on("dragend", this._onDragEnd, t), this._toggleMarkerHighlight() }, removeHooks: function () { var t = this._marker; t.dragging.disable(), t.off("dragend", this._onDragEnd, t), this._toggleMarkerHighlight() }, _onDragEnd: function (t) { var e = t.target; e.edited = !0, this._map.fire(L.Draw.Event.EDITMOVE, { layer: e }) }, _toggleMarkerHighlight: function () { var t = this._marker._icon; t && (t.style.display = "none", L.DomUtil.hasClass(t, "leaflet-edit-marker-selected") ? (L.DomUtil.removeClass(t, "leaflet-edit-marker-selected"), this._offsetMarker(t, -4)) : (L.DomUtil.addClass(t, "leaflet-edit-marker-selected"), this._offsetMarker(t, 4)), t.style.display = "") }, _offsetMarker: function (t, e) { var i = parseInt(t.style.marginTop, 10) - e, o = parseInt(t.style.marginLeft, 10) - e; t.style.marginTop = i + "px", t.style.marginLeft = o + "px" } }), L.Marker.addInitHook(function () { L.Edit.Marker && (this.editing = new L.Edit.Marker(this), this.options.editable && this.editing.enable()) }), L.Edit = L.Edit || {}, L.Edit.Poly = L.Handler.extend({ initialize: function (t) { this.latlngs = [t._latlngs], t._holes && (this.latlngs = this.latlngs.concat(t._holes)), this._poly = t, this._poly.on("revert-edited", this._updateLatLngs, this) }, _defaultShape: function () { return L.Polyline._flat ? L.Polyline._flat(this._poly._latlngs) ? this._poly._latlngs : this._poly._latlngs[0] : this._poly._latlngs }, _eachVertexHandler: function (t) { for (var e = 0; e < this._verticesHandlers.length; e++)t(this._verticesHandlers[e]) }, addHooks: function () { this._initHandlers(), this._eachVertexHandler(function (t) { t.addHooks() }) }, removeHooks: function () { this._eachVertexHandler(function (t) { t.removeHooks() }) }, updateMarkers: function () { this._eachVertexHandler(function (t) { t.updateMarkers() }) }, _initHandlers: function () { this._verticesHandlers = []; for (var t = 0; t < this.latlngs.length; t++)this._verticesHandlers.push(new L.Edit.PolyVerticesEdit(this._poly, this.latlngs[t], this._poly.options.poly)) }, _updateLatLngs: function (t) { this.latlngs = [t.layer._latlngs], t.layer._holes && (this.latlngs = this.latlngs.concat(t.layer._holes)) } }), L.Edit.PolyVerticesEdit = L.Handler.extend({ options: { icon: new L.DivIcon({ iconSize: new L.Point(8, 8), className: "leaflet-div-icon leaflet-editing-icon" }), touchIcon: new L.DivIcon({ iconSize: new L.Point(20, 20), className: "leaflet-div-icon leaflet-editing-icon leaflet-touch-icon" }), drawError: { color: "#b00b00", timeout: 1e3 } }, initialize: function (t, e, i) { L.Browser.touch && (this.options.icon = this.options.touchIcon), this._poly = t, i && i.drawError && (i.drawError = L.Util.extend({}, this.options.drawError, i.drawError)), this._latlngs = e, L.setOptions(this, i) }, _defaultShape: function () { return L.Polyline._flat ? L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0] : this._latlngs }, addHooks: function () { var t = this._poly, e = t._path; t instanceof L.Polygon || (t.options.fill = !1, t.options.editing && (t.options.editing.fill = !1)), e && t.options.editing.className && (t.options.original.className && t.options.original.className.split(" ").forEach(function (t) { L.DomUtil.removeClass(e, t) }), t.options.editing.className.split(" ").forEach(function (t) { L.DomUtil.addClass(e, t) })), t.setStyle(t.options.editing), this._poly._map && (this._map = this._poly._map, this._markerGroup || this._initMarkers(), this._poly._map.addLayer(this._markerGroup)) }, removeHooks: function () { var t = this._poly, e = t._path; e && t.options.editing.className && (t.options.editing.className.split(" ").forEach(function (t) { L.DomUtil.removeClass(e, t) }), t.options.original.className && t.options.original.className.split(" ").forEach(function (t) { L.DomUtil.addClass(e, t) })), t.setStyle(t.options.original), t._map && (t._map.removeLayer(this._markerGroup), delete this._markerGroup, delete this._markers) }, updateMarkers: function () { this._markerGroup.clearLayers(), this._initMarkers() }, _initMarkers: function () { this._markerGroup || (this._markerGroup = new L.LayerGroup), this._markers = []; var t, e, i, o, a = this._defaultShape(); for (t = 0, i = a.length; t < i; t++)o = this._createMarker(a[t], t), o.on("click", this._onMarkerClick, this), o.on("contextmenu", this._onContextMenu, this), this._markers.push(o); var n, s; for (t = 0, e = i - 1; t < i; e = t++)(0 !== t || L.Polygon && this._poly instanceof L.Polygon) && (n = this._markers[e], s = this._markers[t], this._createMiddleMarker(n, s), this._updatePrevNext(n, s)) }, _createMarker: function (t, e) { var i = new L.Marker.Touch(t, { draggable: !0, icon: this.options.icon }); return i._origLatLng = t, i._index = e, i.on("dragstart", this._onMarkerDragStart, this).on("drag", this._onMarkerDrag, this).on("dragend", this._fireEdit, this).on("touchmove", this._onTouchMove, this).on("touchend", this._fireEdit, this).on("MSPointerMove", this._onTouchMove, this).on("MSPointerUp", this._fireEdit, this), this._markerGroup.addLayer(i), i }, _onMarkerDragStart: function () { this._poly.fire("editstart") }, _spliceLatLngs: function () { var t = this._defaultShape(), e = [].splice.apply(t, arguments); return this._poly._convertLatLngs(t, !0), this._poly.redraw(), e }, _removeMarker: function (t) { var e = t._index; this._markerGroup.removeLayer(t), this._markers.splice(e, 1), this._spliceLatLngs(e, 1), this._updateIndexes(e, -1), t.off("dragstart", this._onMarkerDragStart, this).off("drag", this._onMarkerDrag, this).off("dragend", this._fireEdit, this).off("touchmove", this._onMarkerDrag, this).off("touchend", this._fireEdit, this).off("click", this._onMarkerClick, this).off("MSPointerMove", this._onTouchMove, this).off("MSPointerUp", this._fireEdit, this) }, _fireEdit: function () { this._poly.edited = !0, this._poly.fire("edit"), this._poly._map.fire(L.Draw.Event.EDITVERTEX, { layers: this._markerGroup, poly: this._poly }) }, _onMarkerDrag: function (t) { var e = t.target, i = this._poly; if (L.extend(e._origLatLng, e._latlng), e._middleLeft && e._middleLeft.setLatLng(this._getMiddleLatLng(e._prev, e)), e._middleRight && e._middleRight.setLatLng(this._getMiddleLatLng(e, e._next)), i.options.poly) { var o = i._map._editTooltip; if (!i.options.poly.allowIntersection && i.intersects()) { var a = i.options.color; i.setStyle({ color: this.options.drawError.color }), 0 !== L.version.indexOf("0.7") && e.dragging._draggable._onUp(t), this._onMarkerClick(t), o && o.updateContent({ text: L.drawLocal.draw.handlers.polyline.error }), setTimeout(function () { i.setStyle({ color: a }), o && o.updateContent({ text: L.drawLocal.edit.handlers.edit.tooltip.text, subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext }) }, 1e3) } } this._poly._bounds._southWest = L.latLng(1 / 0, 1 / 0), this._poly._bounds._northEast = L.latLng(-1 / 0, -1 / 0); var n = this._poly.getLatLngs(); this._poly._convertLatLngs(n, !0), this._poly.redraw(), this._poly.fire("editdrag") }, _onMarkerClick: function (t) { var e = L.Polygon && this._poly instanceof L.Polygon ? 4 : 3, i = t.target; this._defaultShape().length < e || (this._removeMarker(i), this._updatePrevNext(i._prev, i._next), i._middleLeft && this._markerGroup.removeLayer(i._middleLeft), i._middleRight && this._markerGroup.removeLayer(i._middleRight), i._prev && i._next ? this._createMiddleMarker(i._prev, i._next) : i._prev ? i._next || (i._prev._middleRight = null) : i._next._middleLeft = null, this._fireEdit()) }, _onContextMenu: function (t) { var e = t.target; this._poly; this._poly._map.fire(L.Draw.Event.MARKERCONTEXT, { marker: e, layers: this._markerGroup, poly: this._poly }), L.DomEvent.stopPropagation }, _onTouchMove: function (t) { var e = this._map.mouseEventToLayerPoint(t.originalEvent.touches[0]), i = this._map.layerPointToLatLng(e), o = t.target; L.extend(o._origLatLng, i), o._middleLeft && o._middleLeft.setLatLng(this._getMiddleLatLng(o._prev, o)), o._middleRight && o._middleRight.setLatLng(this._getMiddleLatLng(o, o._next)), this._poly.redraw(), this.updateMarkers() }, _updateIndexes: function (t, e) { this._markerGroup.eachLayer(function (i) { i._index > t && (i._index += e) }) }, _createMiddleMarker: function (t, e) { var i, o, a, n = this._getMiddleLatLng(t, e), s = this._createMarker(n); s.setOpacity(.6), t._middleRight = e._middleLeft = s, o = function () { s.off("touchmove", o, this); var a = e._index; s._index = a, s.off("click", i, this).on("click", this._onMarkerClick, this), n.lat = s.getLatLng().lat, n.lng = s.getLatLng().lng, this._spliceLatLngs(a, 0, n), this._markers.splice(a, 0, s), s.setOpacity(1), this._updateIndexes(a, 1), e._index++, this._updatePrevNext(t, s), this._updatePrevNext(s, e), this._poly.fire("editstart") }, a = function () { s.off("dragstart", o, this), s.off("dragend", a, this), s.off("touchmove", o, this), this._createMiddleMarker(t, s), this._createMiddleMarker(s, e) }, i = function () { o.call(this), a.call(this), this._fireEdit() }, s.on("click", i, this).on("dragstart", o, this).on("dragend", a, this).on("touchmove", o, this), this._markerGroup.addLayer(s) }, _updatePrevNext: function (t, e) { t && (t._next = e), e && (e._prev = t) }, _getMiddleLatLng: function (t, e) { var i = this._poly._map, o = i.project(t.getLatLng()), a = i.project(e.getLatLng()); return i.unproject(o._add(a)._divideBy(2)) } }), L.Polyline.addInitHook(function () { this.editing || (L.Edit.Poly && (this.editing = new L.Edit.Poly(this), this.options.editable && this.editing.enable()), this.on("add", function () { this.editing && this.editing.enabled() && this.editing.addHooks() }), this.on("remove", function () { this.editing && this.editing.enabled() && this.editing.removeHooks() })) }), L.Edit = L.Edit || {}, L.Edit.SimpleShape = L.Handler.extend({
+            function o(t, e) {
+                for (; (t = t.parentElement) && !t.classList.contains(e);) ;
+                return t
+            }
+
+            L.drawVersion = "1.0.2", L.Draw = {}, L.drawLocal = {
+                draw: {
+                    toolbar: {
+                        actions: {title: "Cancel drawing", text: "Cancel"},
+                        finish: {title: "Finish drawing", text: "Finish"},
+                        undo: {title: "Delete last point drawn", text: "Delete last point"},
+                        buttons: {
+                            polyline: "Draw a polyline",
+                            polygon: "Draw a polygon",
+                            rectangle: "Draw a rectangle",
+                            circle: "Draw a circle",
+                            marker: "Draw a marker",
+                            circlemarker: "Draw a circlemarker"
+                        }
+                    },
+                    handlers: {
+                        circle: {tooltip: {start: "Click and drag to draw circle."}, radius: "Radius"},
+                        circlemarker: {tooltip: {start: "Click map to place circle marker."}},
+                        marker: {tooltip: {start: "Click map to place marker."}},
+                        polygon: {
+                            tooltip: {
+                                start: "Click to start drawing shape.",
+                                cont: "Click to continue drawing shape.",
+                                end: "Click first point to close this shape."
+                            }
+                        },
+                        polyline: {
+                            error: "<strong>Error:</strong> shape edges cannot cross!",
+                            tooltip: {
+                                start: "Click to start drawing line.",
+                                cont: "Click to continue drawing line.",
+                                end: "Click last point to finish line."
+                            }
+                        },
+                        rectangle: {tooltip: {start: "Click and drag to draw rectangle."}},
+                        simpleshape: {tooltip: {end: "Release mouse to finish drawing."}}
+                    }
+                },
+                edit: {
+                    toolbar: {
+                        actions: {
+                            save: {title: "Save changes", text: "Save"},
+                            cancel: {title: "Cancel editing, discards all changes", text: "Cancel"},
+                            clearAll: {title: "Clear all layers", text: "Clear All"}
+                        },
+                        buttons: {
+                            edit: "Edit layers",
+                            editDisabled: "No layers to edit",
+                            remove: "Delete layers",
+                            removeDisabled: "No layers to delete"
+                        }
+                    },
+                    handlers: {
+                        edit: {
+                            tooltip: {
+                                text: "Drag handles or markers to edit features.",
+                                subtext: "Click cancel to undo changes."
+                            }
+                        }, remove: {tooltip: {text: "Click on a feature to remove."}}
+                    }
+                }
+            }, L.Draw.Event = {}, L.Draw.Event.CREATED = "draw:created", L.Draw.Event.EDITED = "draw:edited", L.Draw.Event.DELETED = "draw:deleted", L.Draw.Event.DRAWSTART = "draw:drawstart", L.Draw.Event.DRAWSTOP = "draw:drawstop", L.Draw.Event.DRAWVERTEX = "draw:drawvertex", L.Draw.Event.EDITSTART = "draw:editstart", L.Draw.Event.EDITMOVE = "draw:editmove", L.Draw.Event.EDITRESIZE = "draw:editresize", L.Draw.Event.EDITVERTEX = "draw:editvertex", L.Draw.Event.EDITSTOP = "draw:editstop", L.Draw.Event.DELETESTART = "draw:deletestart", L.Draw.Event.DELETESTOP = "draw:deletestop", L.Draw.Event.TOOLBAROPENED = "draw:toolbaropened", L.Draw.Event.TOOLBARCLOSED = "draw:toolbarclosed", L.Draw.Event.MARKERCONTEXT = "draw:markercontext", L.Draw = L.Draw || {}, L.Draw.Feature = L.Handler.extend({
+                initialize: function (t, e) {
+                    this._map = t, this._container = t._container, this._overlayPane = t._panes.overlayPane, this._popupPane = t._panes.popupPane, e && e.shapeOptions && (e.shapeOptions = L.Util.extend({}, this.options.shapeOptions, e.shapeOptions)), L.setOptions(this, e);
+                    var i = L.version.split(".");
+                    1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.Draw.Feature.include(L.Evented.prototype) : L.Draw.Feature.include(L.Mixin.Events)
+                }, enable: function () {
+                    this._enabled || (L.Handler.prototype.enable.call(this), this.fire("enabled", {handler: this.type}), this._map.fire(L.Draw.Event.DRAWSTART, {layerType: this.type}))
+                }, disable: function () {
+                    this._enabled && (L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.DRAWSTOP, {layerType: this.type}), this.fire("disabled", {handler: this.type}))
+                }, addHooks: function () {
+                    var t = this._map;
+                    t && (L.DomUtil.disableTextSelection(), t.getContainer().focus(), this._tooltip = new L.Draw.Tooltip(this._map), L.DomEvent.on(this._container, "keyup", this._cancelDrawing, this))
+                }, removeHooks: function () {
+                    this._map && (L.DomUtil.enableTextSelection(), this._tooltip.dispose(), this._tooltip = null, L.DomEvent.off(this._container, "keyup", this._cancelDrawing, this))
+                }, setOptions: function (t) {
+                    L.setOptions(this, t)
+                }, _fireCreatedEvent: function (t) {
+                    this._map.fire(L.Draw.Event.CREATED, {layer: t, layerType: this.type})
+                }, _cancelDrawing: function (t) {
+                    27 === t.keyCode && (this._map.fire("draw:canceled", {layerType: this.type}), this.disable())
+                }
+            }), L.Draw.Polyline = L.Draw.Feature.extend({
+                statics: {TYPE: "polyline"},
+                Poly: L.Polyline,
                 options: {
-                    moveIcon: new L.DivIcon({ iconSize: new L.Point(8, 8), className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-move" }), resizeIcon: new L.DivIcon({ iconSize: new L.Point(8, 8), className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-resize" }), touchMoveIcon: new L.DivIcon({
-                        iconSize: new L.Point(20, 20), className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-move leaflet-touch-icon"
-                    }), touchResizeIcon: new L.DivIcon({ iconSize: new L.Point(20, 20), className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-resize leaflet-touch-icon" })
-                }, initialize: function (t, e) { L.Browser.touch && (this.options.moveIcon = this.options.touchMoveIcon, this.options.resizeIcon = this.options.touchResizeIcon), this._shape = t, L.Util.setOptions(this, e) }, addHooks: function () { var t = this._shape; this._shape._map && (this._map = this._shape._map, t.setStyle(t.options.editing), t._map && (this._map = t._map, this._markerGroup || this._initMarkers(), this._map.addLayer(this._markerGroup))) }, removeHooks: function () { var t = this._shape; if (t.setStyle(t.options.original), t._map) { this._unbindMarker(this._moveMarker); for (var e = 0, i = this._resizeMarkers.length; e < i; e++)this._unbindMarker(this._resizeMarkers[e]); this._resizeMarkers = null, this._map.removeLayer(this._markerGroup), delete this._markerGroup } this._map = null }, updateMarkers: function () { this._markerGroup.clearLayers(), this._initMarkers() }, _initMarkers: function () { this._markerGroup || (this._markerGroup = new L.LayerGroup), this._createMoveMarker(), this._createResizeMarker() }, _createMoveMarker: function () { }, _createResizeMarker: function () { }, _createMarker: function (t, e) { var i = new L.Marker.Touch(t, { draggable: !0, icon: e, zIndexOffset: 10 }); return this._bindMarker(i), this._markerGroup.addLayer(i), i }, _bindMarker: function (t) { t.on("dragstart", this._onMarkerDragStart, this).on("drag", this._onMarkerDrag, this).on("dragend", this._onMarkerDragEnd, this).on("touchstart", this._onTouchStart, this).on("touchmove", this._onTouchMove, this).on("MSPointerMove", this._onTouchMove, this).on("touchend", this._onTouchEnd, this).on("MSPointerUp", this._onTouchEnd, this) }, _unbindMarker: function (t) { t.off("dragstart", this._onMarkerDragStart, this).off("drag", this._onMarkerDrag, this).off("dragend", this._onMarkerDragEnd, this).off("touchstart", this._onTouchStart, this).off("touchmove", this._onTouchMove, this).off("MSPointerMove", this._onTouchMove, this).off("touchend", this._onTouchEnd, this).off("MSPointerUp", this._onTouchEnd, this) }, _onMarkerDragStart: function (t) { t.target.setOpacity(0), this._shape.fire("editstart") }, _fireEdit: function () { this._shape.edited = !0, this._shape.fire("edit") }, _onMarkerDrag: function (t) { var e = t.target, i = e.getLatLng(); e === this._moveMarker ? this._move(i) : this._resize(i), this._shape.redraw(), this._shape.fire("editdrag") }, _onMarkerDragEnd: function (t) { t.target.setOpacity(1), this._fireEdit() }, _onTouchStart: function (t) { if (L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, t), "function" == typeof this._getCorners) { var e = this._getCorners(), i = t.target, o = i._cornerIndex; i.setOpacity(0), this._oppositeCorner = e[(o + 2) % 4], this._toggleCornerMarkers(0, o) } this._shape.fire("editstart") }, _onTouchMove: function (t) { var e = this._map.mouseEventToLayerPoint(t.originalEvent.touches[0]), i = this._map.layerPointToLatLng(e); return t.target === this._moveMarker ? this._move(i) : this._resize(i), this._shape.redraw(), !1 }, _onTouchEnd: function (t) { t.target.setOpacity(1), this.updateMarkers(), this._fireEdit() }, _move: function () { }, _resize: function () { }
-            }), L.Edit = L.Edit || {}, L.Edit.Rectangle = L.Edit.SimpleShape.extend({ _createMoveMarker: function () { var t = this._shape.getBounds(), e = t.getCenter(); this._moveMarker = this._createMarker(e, this.options.moveIcon) }, _createResizeMarker: function () { var t = this._getCorners(); this._resizeMarkers = []; for (var e = 0, i = t.length; e < i; e++)this._resizeMarkers.push(this._createMarker(t[e], this.options.resizeIcon)), this._resizeMarkers[e]._cornerIndex = e }, _onMarkerDragStart: function (t) { L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, t); var e = this._getCorners(), i = t.target, o = i._cornerIndex; this._oppositeCorner = e[(o + 2) % 4], this._toggleCornerMarkers(0, o) }, _onMarkerDragEnd: function (t) { var e, i, o = t.target; o === this._moveMarker && (e = this._shape.getBounds(), i = e.getCenter(), o.setLatLng(i)), this._toggleCornerMarkers(1), this._repositionCornerMarkers(), L.Edit.SimpleShape.prototype._onMarkerDragEnd.call(this, t) }, _move: function (t) { for (var e, i = this._shape._defaultShape ? this._shape._defaultShape() : this._shape.getLatLngs(), o = this._shape.getBounds(), a = o.getCenter(), n = [], s = 0, r = i.length; s < r; s++)e = [i[s].lat - a.lat, i[s].lng - a.lng], n.push([t.lat + e[0], t.lng + e[1]]); this._shape.setLatLngs(n), this._repositionCornerMarkers(), this._map.fire(L.Draw.Event.EDITMOVE, { layer: this._shape }) }, _resize: function (t) { var e; this._shape.setBounds(L.latLngBounds(t, this._oppositeCorner)), e = this._shape.getBounds(), this._moveMarker.setLatLng(e.getCenter()), this._map.fire(L.Draw.Event.EDITRESIZE, { layer: this._shape }) }, _getCorners: function () { var t = this._shape.getBounds(); return [t.getNorthWest(), t.getNorthEast(), t.getSouthEast(), t.getSouthWest()] }, _toggleCornerMarkers: function (t) { for (var e = 0, i = this._resizeMarkers.length; e < i; e++)this._resizeMarkers[e].setOpacity(t) }, _repositionCornerMarkers: function () { for (var t = this._getCorners(), e = 0, i = this._resizeMarkers.length; e < i; e++)this._resizeMarkers[e].setLatLng(t[e]) } }), L.Rectangle.addInitHook(function () { L.Edit.Rectangle && (this.editing = new L.Edit.Rectangle(this), this.options.editable && this.editing.enable()) }), L.Edit = L.Edit || {}, L.Edit.CircleMarker = L.Edit.SimpleShape.extend({ _createMoveMarker: function () { var t = this._shape.getLatLng(); this._moveMarker = this._createMarker(t, this.options.moveIcon) }, _createResizeMarker: function () { this._resizeMarkers = [] }, _move: function (t) { if (this._resizeMarkers.length) { var e = this._getResizeMarkerPoint(t); this._resizeMarkers[0].setLatLng(e) } this._shape.setLatLng(t), this._map.fire(L.Draw.Event.EDITMOVE, { layer: this._shape }) } }), L.CircleMarker.addInitHook(function () { L.Edit.CircleMarker && (this.editing = new L.Edit.CircleMarker(this), this.options.editable && this.editing.enable()), this.on("add", function () { this.editing && this.editing.enabled() && this.editing.addHooks() }), this.on("remove", function () { this.editing && this.editing.enabled() && this.editing.removeHooks() }) }), L.Edit = L.Edit || {}, L.Edit.Circle = L.Edit.CircleMarker.extend({ _createResizeMarker: function () { var t = this._shape.getLatLng(), e = this._getResizeMarkerPoint(t); this._resizeMarkers = [], this._resizeMarkers.push(this._createMarker(e, this.options.resizeIcon)) }, _getResizeMarkerPoint: function (t) { var e = this._shape._radius * Math.cos(Math.PI / 4), i = this._map.project(t); return this._map.unproject([i.x + e, i.y - e]) }, _resize: function (t) { var e = this._moveMarker.getLatLng(); L.GeometryUtil.isVersion07x() ? radius = e.distanceTo(t) : radius = this._map.distance(e, t), this._shape.setRadius(radius), this._map.editTooltip && this._map._editTooltip.updateContent({ text: L.drawLocal.edit.handlers.edit.tooltip.subtext + "<br />" + L.drawLocal.edit.handlers.edit.tooltip.text, subtext: L.drawLocal.draw.handlers.circle.radius + ": " + L.GeometryUtil.readableDistance(radius, !0, this.options.feet, this.options.nautic) }), this._shape.setRadius(radius), this._map.fire(L.Draw.Event.EDITRESIZE, { layer: this._shape }) } }), L.Circle.addInitHook(function () { L.Edit.Circle && (this.editing = new L.Edit.Circle(this), this.options.editable && this.editing.enable()), this.on("add", function () { this.editing && this.editing.enabled() && this.editing.addHooks() }), this.on("remove", function () { this.editing && this.editing.enabled() && this.editing.removeHooks() }) }), L.Map.mergeOptions({ touchExtend: !0 }), L.Map.TouchExtend = L.Handler.extend({ initialize: function (t) { this._map = t, this._container = t._container, this._pane = t._panes.overlayPane }, addHooks: function () { L.DomEvent.on(this._container, "touchstart", this._onTouchStart, this), L.DomEvent.on(this._container, "touchend", this._onTouchEnd, this), L.DomEvent.on(this._container, "touchmove", this._onTouchMove, this), this._detectIE() ? (L.DomEvent.on(this._container, "MSPointerDown", this._onTouchStart, this), L.DomEvent.on(this._container, "MSPointerUp", this._onTouchEnd, this), L.DomEvent.on(this._container, "MSPointerMove", this._onTouchMove, this), L.DomEvent.on(this._container, "MSPointerCancel", this._onTouchCancel, this)) : (L.DomEvent.on(this._container, "touchcancel", this._onTouchCancel, this), L.DomEvent.on(this._container, "touchleave", this._onTouchLeave, this)) }, removeHooks: function () { L.DomEvent.off(this._container, "touchstart", this._onTouchStart), L.DomEvent.off(this._container, "touchend", this._onTouchEnd), L.DomEvent.off(this._container, "touchmove", this._onTouchMove), this._detectIE() ? (L.DomEvent.off(this._container, "MSPointerDowm", this._onTouchStart), L.DomEvent.off(this._container, "MSPointerUp", this._onTouchEnd), L.DomEvent.off(this._container, "MSPointerMove", this._onTouchMove), L.DomEvent.off(this._container, "MSPointerCancel", this._onTouchCancel)) : (L.DomEvent.off(this._container, "touchcancel", this._onTouchCancel), L.DomEvent.off(this._container, "touchleave", this._onTouchLeave)) }, _touchEvent: function (t, e) { var i = {}; if (void 0 !== t.touches) { if (!t.touches.length) return; i = t.touches[0] } else { if ("touch" !== t.pointerType) return; if (i = t, !this._filterClick(t)) return } var o = this._map.mouseEventToContainerPoint(i), a = this._map.mouseEventToLayerPoint(i), n = this._map.layerPointToLatLng(a); this._map.fire(e, { latlng: n, layerPoint: a, containerPoint: o, pageX: i.pageX, pageY: i.pageY, originalEvent: t }) }, _filterClick: function (t) { var e = t.timeStamp || t.originalEvent.timeStamp, i = L.DomEvent._lastClick && e - L.DomEvent._lastClick; return i && i > 100 && i < 500 || t.target._simulatedClick && !t._simulated ? (L.DomEvent.stop(t), !1) : (L.DomEvent._lastClick = e, !0) }, _onTouchStart: function (t) { if (this._map._loaded) { this._touchEvent(t, "touchstart") } }, _onTouchEnd: function (t) { if (this._map._loaded) { this._touchEvent(t, "touchend") } }, _onTouchCancel: function (t) { if (this._map._loaded) { var e = "touchcancel"; this._detectIE() && (e = "pointercancel"), this._touchEvent(t, e) } }, _onTouchLeave: function (t) { if (this._map._loaded) { this._touchEvent(t, "touchleave") } }, _onTouchMove: function (t) { if (this._map._loaded) { this._touchEvent(t, "touchmove") } }, _detectIE: function () { var e = t.navigator.userAgent, i = e.indexOf("MSIE "); if (i > 0) return parseInt(e.substring(i + 5, e.indexOf(".", i)), 10); if (e.indexOf("Trident/") > 0) { var o = e.indexOf("rv:"); return parseInt(e.substring(o + 3, e.indexOf(".", o)), 10) } var a = e.indexOf("Edge/"); return a > 0 && parseInt(e.substring(a + 5, e.indexOf(".", a)), 10) } }), L.Map.addInitHook("addHandler", "touchExtend", L.Map.TouchExtend), L.Marker.Touch = L.Marker.extend({ _initInteraction: function () { return this.addInteractiveTarget ? L.Marker.prototype._initInteraction.apply(this) : this._initInteractionLegacy() }, _initInteractionLegacy: function () { if (this.options.clickable) { var t = this._icon, e = ["dblclick", "mousedown", "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove"]; this._detectIE ? e.concat(["MSPointerDown", "MSPointerUp", "MSPointerMove", "MSPointerCancel"]) : e.concat(["touchcancel"]), L.DomUtil.addClass(t, "leaflet-clickable"), L.DomEvent.on(t, "click", this._onMouseClick, this), L.DomEvent.on(t, "keypress", this._onKeyPress, this); for (var i = 0; i < e.length; i++)L.DomEvent.on(t, e[i], this._fireMouseEvent, this); L.Handler.MarkerDrag && (this.dragging = new L.Handler.MarkerDrag(this), this.options.draggable && this.dragging.enable()) } }, _detectIE: function () { var e = t.navigator.userAgent, i = e.indexOf("MSIE "); if (i > 0) return parseInt(e.substring(i + 5, e.indexOf(".", i)), 10); if (e.indexOf("Trident/") > 0) { var o = e.indexOf("rv:"); return parseInt(e.substring(o + 3, e.indexOf(".", o)), 10) } var a = e.indexOf("Edge/"); return a > 0 && parseInt(e.substring(a + 5, e.indexOf(".", a)), 10) } }), L.LatLngUtil = { cloneLatLngs: function (t) { for (var e = [], i = 0, o = t.length; i < o; i++)Array.isArray(t[i]) ? e.push(L.LatLngUtil.cloneLatLngs(t[i])) : e.push(this.cloneLatLng(t[i])); return e }, cloneLatLng: function (t) { return L.latLng(t.lat, t.lng) } }, function () { var t = { km: 2, ha: 2, m: 0, mi: 2, ac: 2, yd: 0, ft: 0, nm: 2 }; L.GeometryUtil = L.extend(L.GeometryUtil || {}, { geodesicArea: function (t) { var e, i, o = t.length, a = 0, n = Math.PI / 180; if (o > 2) { for (var s = 0; s < o; s++)e = t[s], i = t[(s + 1) % o], a += (i.lng - e.lng) * n * (2 + Math.sin(e.lat * n) + Math.sin(i.lat * n)); a = 6378137 * a * 6378137 / 2 } return Math.abs(a) }, formattedNumber: function (t, e) { var i = parseFloat(t).toFixed(e), o = L.drawLocal.format && L.drawLocal.format.numeric, a = o && o.delimiters, n = a && a.thousands, s = a && a.decimal; if (n || s) { var r = i.split("."); i = n ? r[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + n) : r[0], s = s || ".", r.length > 1 && (i = i + s + r[1]) } return i }, readableArea: function (e, i, o) { var a, n, o = L.Util.extend({}, t, o); return i ? (n = ["ha", "m"], type = typeof i, "string" === type ? n = [i] : "boolean" !== type && (n = i), a = e >= 1e6 && -1 !== n.indexOf("km") ? L.GeometryUtil.formattedNumber(1e-6 * e, o.km) + " km²" : e >= 1e4 && -1 !== n.indexOf("ha") ? L.GeometryUtil.formattedNumber(1e-4 * e, o.ha) + " ha" : L.GeometryUtil.formattedNumber(e, o.m) + " m²") : (e /= .836127, a = e >= 3097600 ? L.GeometryUtil.formattedNumber(e / 3097600, o.mi) + " mi²" : e >= 4840 ? L.GeometryUtil.formattedNumber(e / 4840, o.ac) + " acres" : L.GeometryUtil.formattedNumber(e, o.yd) + " yd²"), a }, readableDistance: function (e, i, o, a, n) { var s, n = L.Util.extend({}, t, n); switch (i ? "string" == typeof i ? i : "metric" : o ? "feet" : a ? "nauticalMile" : "yards") { case "metric": s = e > 1e3 ? L.GeometryUtil.formattedNumber(e / 1e3, n.km) + " km" : L.GeometryUtil.formattedNumber(e, n.m) + " m"; break; case "feet": e *= 3.28083, s = L.GeometryUtil.formattedNumber(e, n.ft) + " ft"; break; case "nauticalMile": e *= .53996, s = L.GeometryUtil.formattedNumber(e / 1e3, n.nm) + " nm"; break; case "yards": default: e *= 1.09361, s = e > 1760 ? L.GeometryUtil.formattedNumber(e / 1760, n.mi) + " miles" : L.GeometryUtil.formattedNumber(e, n.yd) + " yd" }return s }, isVersion07x: function () { var t = L.version.split("."); return 0 === parseInt(t[0], 10) && 7 === parseInt(t[1], 10) } }) }(), L.Util.extend(L.LineUtil, { segmentsIntersect: function (t, e, i, o) { return this._checkCounterclockwise(t, i, o) !== this._checkCounterclockwise(e, i, o) && this._checkCounterclockwise(t, e, i) !== this._checkCounterclockwise(t, e, o) }, _checkCounterclockwise: function (t, e, i) { return (i.y - t.y) * (e.x - t.x) > (e.y - t.y) * (i.x - t.x) } }), L.Polyline.include({ intersects: function () { var t, e, i, o = this._getProjectedPoints(), a = o ? o.length : 0; if (this._tooFewPointsForIntersection()) return !1; for (t = a - 1; t >= 3; t--)if (e = o[t - 1], i = o[t], this._lineSegmentsIntersectsRange(e, i, t - 2)) return !0; return !1 }, newLatLngIntersects: function (t, e) { return !!this._map && this.newPointIntersects(this._map.latLngToLayerPoint(t), e) }, newPointIntersects: function (t, e) { var i = this._getProjectedPoints(), o = i ? i.length : 0, a = i ? i[o - 1] : null, n = o - 2; return !this._tooFewPointsForIntersection(1) && this._lineSegmentsIntersectsRange(a, t, n, e ? 1 : 0) }, _tooFewPointsForIntersection: function (t) { var e = this._getProjectedPoints(), i = e ? e.length : 0; return i += t || 0, !e || i <= 3 }, _lineSegmentsIntersectsRange: function (t, e, i, o) { var a, n, s = this._getProjectedPoints(); o = o || 0; for (var r = i; r > o; r--)if (a = s[r - 1], n = s[r], L.LineUtil.segmentsIntersect(t, e, a, n)) return !0; return !1 }, _getProjectedPoints: function () { if (!this._defaultShape) return this._originalPoints; for (var t = [], e = this._defaultShape(), i = 0; i < e.length; i++)t.push(this._map.latLngToLayerPoint(e[i])); return t } }), L.Polygon.include({ intersects: function () { var t, e, i, o, a = this._getProjectedPoints(); return !this._tooFewPointsForIntersection() && (!!L.Polyline.prototype.intersects.call(this) || (t = a.length, e = a[0], i = a[t - 1], o = t - 2, this._lineSegmentsIntersectsRange(i, e, o, 1))) } }), L.Control.Draw = L.Control.extend({ options: { position: "topleft", draw: {}, edit: !1 }, initialize: function (t) { if (L.version < "0.7") throw new Error("Leaflet.draw 0.2.3+ requires Leaflet 0.7.0+. Download latest from https://github.com/Leaflet/Leaflet/"); L.Control.prototype.initialize.call(this, t); var e; this._toolbars = {}, L.DrawToolbar && this.options.draw && (e = new L.DrawToolbar(this.options.draw), this._toolbars[L.DrawToolbar.TYPE] = e, this._toolbars[L.DrawToolbar.TYPE].on("enable", this._toolbarEnabled, this)), L.EditToolbar && this.options.edit && (e = new L.EditToolbar(this.options.edit), this._toolbars[L.EditToolbar.TYPE] = e, this._toolbars[L.EditToolbar.TYPE].on("enable", this._toolbarEnabled, this)), L.toolbar = this }, onAdd: function (t) { var e, i = L.DomUtil.create("div", "leaflet-draw"), o = !1; for (var a in this._toolbars) this._toolbars.hasOwnProperty(a) && (e = this._toolbars[a].addToolbar(t)) && (o || (L.DomUtil.hasClass(e, "leaflet-draw-toolbar-top") || L.DomUtil.addClass(e.childNodes[0], "leaflet-draw-toolbar-top"), o = !0), i.appendChild(e)); return i }, onRemove: function () { for (var t in this._toolbars) this._toolbars.hasOwnProperty(t) && this._toolbars[t].removeToolbar() }, setDrawingOptions: function (t) { for (var e in this._toolbars) this._toolbars[e] instanceof L.DrawToolbar && this._toolbars[e].setOptions(t) }, _toolbarEnabled: function (t) { var e = t.target; for (var i in this._toolbars) this._toolbars[i] !== e && this._toolbars[i].disable() } }), L.Map.mergeOptions({ drawControlTooltips: !0, drawControl: !1 }), L.Map.addInitHook(function () { this.options.drawControl && (this.drawControl = new L.Control.Draw, this.addControl(this.drawControl)) }), L.Toolbar = L.Class.extend({ initialize: function (t) { L.setOptions(this, t), this._modes = {}, this._actionButtons = [], this._activeMode = null; var e = L.version.split("."); 1 === parseInt(e[0], 10) && parseInt(e[1], 10) >= 2 ? L.Toolbar.include(L.Evented.prototype) : L.Toolbar.include(L.Mixin.Events) }, enabled: function () { return null !== this._activeMode }, disable: function () { this.enabled() && this._activeMode.handler.disable() }, addToolbar: function (t) { var e, i = L.DomUtil.create("div", "leaflet-draw-section"), o = 0, a = this._toolbarClass || "", n = this.getModeHandlers(t); for (this._toolbarContainer = L.DomUtil.create("div", "leaflet-draw-toolbar leaflet-bar"), this._map = t, e = 0; e < n.length; e++)n[e].enabled && this._initModeHandler(n[e].handler, this._toolbarContainer, o++, a, n[e].title); if (o) return this._lastButtonIndex = --o, this._actionsContainer = L.DomUtil.create("ul", "leaflet-draw-actions"), i.appendChild(this._toolbarContainer), i.appendChild(this._actionsContainer), i }, removeToolbar: function () { for (var t in this._modes) this._modes.hasOwnProperty(t) && (this._disposeButton(this._modes[t].button, this._modes[t].handler.enable, this._modes[t].handler), this._modes[t].handler.disable(), this._modes[t].handler.off("enabled", this._handlerActivated, this).off("disabled", this._handlerDeactivated, this)); this._modes = {}; for (var e = 0, i = this._actionButtons.length; e < i; e++)this._disposeButton(this._actionButtons[e].button, this._actionButtons[e].callback, this); this._actionButtons = [], this._actionsContainer = null }, _initModeHandler: function (t, e, i, o, a) { var n = t.type; this._modes[n] = {}, this._modes[n].handler = t, this._modes[n].button = this._createButton({ type: n, title: a, className: o + "-" + n, container: e, callback: this._modes[n].handler.enable, context: this._modes[n].handler }), this._modes[n].buttonIndex = i, this._modes[n].handler.on("enabled", this._handlerActivated, this).on("disabled", this._handlerDeactivated, this) }, _detectIOS: function () { return /iPad|iPhone|iPod/.test(navigator.userAgent) && !t.MSStream }, _createButton: function (t) { var e = L.DomUtil.create("a", t.className || "", t.container), i = L.DomUtil.create("span", "sr-only", t.container); e.href = "#", e.appendChild(i), t.title && (e.title = t.title, i.innerHTML = t.title), t.text && (e.innerHTML = t.text, i.innerHTML = t.text); var o = this._detectIOS() ? "touchstart" : "click"; return L.DomEvent.on(e, "click", L.DomEvent.stopPropagation).on(e, "mousedown", L.DomEvent.stopPropagation).on(e, "dblclick", L.DomEvent.stopPropagation).on(e, "touchstart", L.DomEvent.stopPropagation).on(e, "click", L.DomEvent.preventDefault).on(e, o, t.callback, t.context), e }, _disposeButton: function (t, e) { var i = this._detectIOS() ? "touchstart" : "click"; L.DomEvent.off(t, "click", L.DomEvent.stopPropagation).off(t, "mousedown", L.DomEvent.stopPropagation).off(t, "dblclick", L.DomEvent.stopPropagation).off(t, "touchstart", L.DomEvent.stopPropagation).off(t, "click", L.DomEvent.preventDefault).off(t, i, e) }, _handlerActivated: function (t) { this.disable(), this._activeMode = this._modes[t.handler], L.DomUtil.addClass(this._activeMode.button, "leaflet-draw-toolbar-button-enabled"), this._showActionsToolbar(), this.fire("enable") }, _handlerDeactivated: function () { this._hideActionsToolbar(), L.DomUtil.removeClass(this._activeMode.button, "leaflet-draw-toolbar-button-enabled"), this._activeMode = null, this.fire("disable") }, _createActions: function (t) { var e, i, o, a, n = this._actionsContainer, s = this.getActions(t), r = s.length; for (i = 0, o = this._actionButtons.length; i < o; i++)this._disposeButton(this._actionButtons[i].button, this._actionButtons[i].callback); for (this._actionButtons = []; n.firstChild;)n.removeChild(n.firstChild); for (var l = 0; l < r; l++)"enabled" in s[l] && !s[l].enabled || (e = L.DomUtil.create("li", "", n), a = this._createButton({ title: s[l].title, text: s[l].text, container: e, callback: s[l].callback, context: s[l].context }), this._actionButtons.push({ button: a, callback: s[l].callback })) }, _showActionsToolbar: function () { var t = this._activeMode.buttonIndex, e = this._lastButtonIndex, i = this._activeMode.button.offsetTop - 1; this._createActions(this._activeMode.handler), this._actionsContainer.style.top = i + "px", 0 === t && (L.DomUtil.addClass(this._toolbarContainer, "leaflet-draw-toolbar-notop"), L.DomUtil.addClass(this._actionsContainer, "leaflet-draw-actions-top")), t === e && (L.DomUtil.addClass(this._toolbarContainer, "leaflet-draw-toolbar-nobottom"), L.DomUtil.addClass(this._actionsContainer, "leaflet-draw-actions-bottom")), this._actionsContainer.style.display = "block", this._map.fire(L.Draw.Event.TOOLBAROPENED) }, _hideActionsToolbar: function () { this._actionsContainer.style.display = "none", L.DomUtil.removeClass(this._toolbarContainer, "leaflet-draw-toolbar-notop"), L.DomUtil.removeClass(this._toolbarContainer, "leaflet-draw-toolbar-nobottom"), L.DomUtil.removeClass(this._actionsContainer, "leaflet-draw-actions-top"), L.DomUtil.removeClass(this._actionsContainer, "leaflet-draw-actions-bottom"), this._map.fire(L.Draw.Event.TOOLBARCLOSED) } }), L.Draw = L.Draw || {}, L.Draw.Tooltip = L.Class.extend({ initialize: function (t) { this._map = t, this._popupPane = t._panes.popupPane, this._visible = !1, this._container = t.options.drawControlTooltips ? L.DomUtil.create("div", "leaflet-draw-tooltip", this._popupPane) : null, this._singleLineLabel = !1, this._map.on("mouseout", this._onMouseOut, this) }, dispose: function () { this._map.off("mouseout", this._onMouseOut, this), this._container && (this._popupPane.removeChild(this._container), this._container = null) }, updateContent: function (t) { return this._container ? (t.subtext = t.subtext || "", 0 !== t.subtext.length || this._singleLineLabel ? t.subtext.length > 0 && this._singleLineLabel && (L.DomUtil.removeClass(this._container, "leaflet-draw-tooltip-single"), this._singleLineLabel = !1) : (L.DomUtil.addClass(this._container, "leaflet-draw-tooltip-single"), this._singleLineLabel = !0), this._container.innerHTML = (t.subtext.length > 0 ? '<span class="leaflet-draw-tooltip-subtext">' + t.subtext + "</span><br />" : "") + "<span>" + t.text + "</span>", t.text || t.subtext ? (this._visible = !0, this._container.style.visibility = "inherit") : (this._visible = !1, this._container.style.visibility = "hidden"), this) : this }, updatePosition: function (t) { var e = this._map.latLngToLayerPoint(t), i = this._container; return this._container && (this._visible && (i.style.visibility = "inherit"), L.DomUtil.setPosition(i, e)), this }, showAsError: function () { return this._container && L.DomUtil.addClass(this._container, "leaflet-error-draw-tooltip"), this }, removeError: function () { return this._container && L.DomUtil.removeClass(this._container, "leaflet-error-draw-tooltip"), this }, _onMouseOut: function () { this._container && (this._container.style.visibility = "hidden") } }), L.DrawToolbar = L.Toolbar.extend({ statics: { TYPE: "draw" }, options: { polyline: {}, polygon: {}, rectangle: {}, circle: {}, marker: {}, circlemarker: {} }, initialize: function (t) { for (var e in this.options) this.options.hasOwnProperty(e) && t[e] && (t[e] = L.extend({}, this.options[e], t[e])); this._toolbarClass = "leaflet-draw-draw", L.Toolbar.prototype.initialize.call(this, t) }, getModeHandlers: function (t) { return [{ enabled: this.options.polyline, handler: new L.Draw.Polyline(t, this.options.polyline), title: L.drawLocal.draw.toolbar.buttons.polyline }, { enabled: this.options.polygon, handler: new L.Draw.Polygon(t, this.options.polygon), title: L.drawLocal.draw.toolbar.buttons.polygon }, { enabled: this.options.rectangle, handler: new L.Draw.Rectangle(t, this.options.rectangle), title: L.drawLocal.draw.toolbar.buttons.rectangle }, { enabled: this.options.circle, handler: new L.Draw.Circle(t, this.options.circle), title: L.drawLocal.draw.toolbar.buttons.circle }, { enabled: this.options.marker, handler: new L.Draw.Marker(t, this.options.marker), title: L.drawLocal.draw.toolbar.buttons.marker }, { enabled: this.options.circlemarker, handler: new L.Draw.CircleMarker(t, this.options.circlemarker), title: L.drawLocal.draw.toolbar.buttons.circlemarker }] }, getActions: function (t) { return [{ enabled: t.completeShape, title: L.drawLocal.draw.toolbar.finish.title, text: L.drawLocal.draw.toolbar.finish.text, callback: t.completeShape, context: t }, { enabled: t.deleteLastVertex, title: L.drawLocal.draw.toolbar.undo.title, text: L.drawLocal.draw.toolbar.undo.text, callback: t.deleteLastVertex, context: t }, { title: L.drawLocal.draw.toolbar.actions.title, text: L.drawLocal.draw.toolbar.actions.text, callback: this.disable, context: this }] }, setOptions: function (t) { L.setOptions(this, t); for (var e in this._modes) this._modes.hasOwnProperty(e) && t.hasOwnProperty(e) && this._modes[e].handler.setOptions(t[e]) } }), L.EditToolbar = L.Toolbar.extend({ statics: { TYPE: "edit" }, options: { edit: { selectedPathOptions: { dashArray: "10, 10", fill: !0, fillColor: "#fe57a1", fillOpacity: .1, maintainColor: !1 } }, remove: {}, poly: null, featureGroup: null }, initialize: function (t) { t.edit && (void 0 === t.edit.selectedPathOptions && (t.edit.selectedPathOptions = this.options.edit.selectedPathOptions), t.edit.selectedPathOptions = L.extend({}, this.options.edit.selectedPathOptions, t.edit.selectedPathOptions)), t.remove && (t.remove = L.extend({}, this.options.remove, t.remove)), t.poly && (t.poly = L.extend({}, this.options.poly, t.poly)), this._toolbarClass = "leaflet-draw-edit", L.Toolbar.prototype.initialize.call(this, t), this._selectedFeatureCount = 0 }, getModeHandlers: function (t) { var e = this.options.featureGroup; return [{ enabled: this.options.edit, handler: new L.EditToolbar.Edit(t, { featureGroup: e, selectedPathOptions: this.options.edit.selectedPathOptions, poly: this.options.poly }), title: L.drawLocal.edit.toolbar.buttons.edit }, { enabled: this.options.remove, handler: new L.EditToolbar.Delete(t, { featureGroup: e }), title: L.drawLocal.edit.toolbar.buttons.remove }] }, getActions: function (t) { var e = [{ title: L.drawLocal.edit.toolbar.actions.save.title, text: L.drawLocal.edit.toolbar.actions.save.text, callback: this._save, context: this }, { title: L.drawLocal.edit.toolbar.actions.cancel.title, text: L.drawLocal.edit.toolbar.actions.cancel.text, callback: this.disable, context: this }]; return t.removeAllLayers && e.push({ title: L.drawLocal.edit.toolbar.actions.clearAll.title, text: L.drawLocal.edit.toolbar.actions.clearAll.text, callback: this._clearAllLayers, context: this }), e }, addToolbar: function (t) { var e = L.Toolbar.prototype.addToolbar.call(this, t); return this._checkDisabled(), this.options.featureGroup.on("layeradd layerremove", this._checkDisabled, this), e }, removeToolbar: function () { this.options.featureGroup.off("layeradd layerremove", this._checkDisabled, this), L.Toolbar.prototype.removeToolbar.call(this) }, disable: function () { this.enabled() && (this._activeMode.handler.revertLayers(), L.Toolbar.prototype.disable.call(this)) }, _save: function () { this._activeMode.handler.save(), this._activeMode && this._activeMode.handler.disable() }, _clearAllLayers: function () { this._activeMode.handler.removeAllLayers(), this._activeMode && this._activeMode.handler.disable() }, _checkDisabled: function () { var t, e = this.options.featureGroup, i = 0 !== e.getLayers().length; this.options.edit && (t = this._modes[L.EditToolbar.Edit.TYPE].button, i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"), t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.edit : L.drawLocal.edit.toolbar.buttons.editDisabled)), this.options.remove && (t = this._modes[L.EditToolbar.Delete.TYPE].button, i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"), t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.remove : L.drawLocal.edit.toolbar.buttons.removeDisabled)) } }), L.EditToolbar.Edit = L.Handler.extend({
-                statics: { TYPE: "edit" }, initialize: function (t, e) { if (L.Handler.prototype.initialize.call(this, t), L.setOptions(this, e), this._featureGroup = e.featureGroup, !(this._featureGroup instanceof L.FeatureGroup)) throw new Error("options.featureGroup must be a L.FeatureGroup"); this._uneditedLayerProps = {}, this.type = L.EditToolbar.Edit.TYPE; var i = L.version.split("."); 1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.EditToolbar.Edit.include(L.Evented.prototype) : L.EditToolbar.Edit.include(L.Mixin.Events) }, enable: function () { !this._enabled && this._hasAvailableLayers() && (this.fire("enabled", { handler: this.type }), this._map.fire(L.Draw.Event.EDITSTART, { handler: this.type }), L.Handler.prototype.enable.call(this), this._featureGroup.on("layeradd", this._enableLayerEdit, this).on("layerremove", this._disableLayerEdit, this)) }, disable: function () { this._enabled && (this._featureGroup.off("layeradd", this._enableLayerEdit, this).off("layerremove", this._disableLayerEdit, this), L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.EDITSTOP, { handler: this.type }), this.fire("disabled", { handler: this.type })) }, addHooks: function () { var t = this._map; t && (t.getContainer().focus(), this._featureGroup.eachLayer(this._enableLayerEdit, this), this._tooltip = new L.Draw.Tooltip(this._map), this._tooltip.updateContent({ text: L.drawLocal.edit.handlers.edit.tooltip.text, subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext }), t._editTooltip = this._tooltip, this._updateTooltip(), this._map.on("mousemove", this._onMouseMove, this).on("touchmove", this._onMouseMove, this).on("MSPointerMove", this._onMouseMove, this).on(L.Draw.Event.EDITVERTEX, this._updateTooltip, this)) }, removeHooks: function () { this._map && (this._featureGroup.eachLayer(this._disableLayerEdit, this), this._uneditedLayerProps = {}, this._tooltip.dispose(), this._tooltip = null, this._map.off("mousemove", this._onMouseMove, this).off("touchmove", this._onMouseMove, this).off("MSPointerMove", this._onMouseMove, this).off(L.Draw.Event.EDITVERTEX, this._updateTooltip, this)) }, revertLayers: function () { this._featureGroup.eachLayer(function (t) { this._revertLayer(t) }, this) }, save: function () { var t = new L.LayerGroup; this._featureGroup.eachLayer(function (e) { e.edited && (t.addLayer(e), e.edited = !1) }), this._map.fire(L.Draw.Event.EDITED, { layers: t }) }, _backupLayer: function (t) { var e = L.Util.stamp(t); this._uneditedLayerProps[e] || (t instanceof L.Polyline || t instanceof L.Polygon || t instanceof L.Rectangle ? this._uneditedLayerProps[e] = { latlngs: L.LatLngUtil.cloneLatLngs(t.getLatLngs()) } : t instanceof L.Circle ? this._uneditedLayerProps[e] = { latlng: L.LatLngUtil.cloneLatLng(t.getLatLng()), radius: t.getRadius() } : (t instanceof L.Marker || t instanceof L.CircleMarker) && (this._uneditedLayerProps[e] = { latlng: L.LatLngUtil.cloneLatLng(t.getLatLng()) })) }, _getTooltipText: function () { return { text: L.drawLocal.edit.handlers.edit.tooltip.text, subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext } }, _updateTooltip: function () { this._tooltip.updateContent(this._getTooltipText()) }, _revertLayer: function (t) { var e = L.Util.stamp(t); t.edited = !1, this._uneditedLayerProps.hasOwnProperty(e) && (t instanceof L.Polyline || t instanceof L.Polygon || t instanceof L.Rectangle ? t.setLatLngs(this._uneditedLayerProps[e].latlngs) : t instanceof L.Circle ? (t.setLatLng(this._uneditedLayerProps[e].latlng), t.setRadius(this._uneditedLayerProps[e].radius)) : (t instanceof L.Marker || t instanceof L.CircleMarker) && t.setLatLng(this._uneditedLayerProps[e].latlng), t.fire("revert-edited", { layer: t })) }, _enableLayerEdit: function (t) { var e, i, o = t.layer || t.target || t; this._backupLayer(o), this.options.poly && (i = L.Util.extend({}, this.options.poly), o.options.poly = i), this.options.selectedPathOptions && (e = L.Util.extend({}, this.options.selectedPathOptions), e.maintainColor && (e.color = o.options.color, e.fillColor = o.options.fillColor), o.options.original = L.extend({}, o.options), o.options.editing = e), o instanceof L.Marker ? (o.editing && o.editing.enable(), o.dragging.enable(), o.on("dragend", this._onMarkerDragEnd).on("touchmove", this._onTouchMove, this).on("MSPointerMove", this._onTouchMove, this).on("touchend", this._onMarkerDragEnd, this).on("MSPointerUp", this._onMarkerDragEnd, this)) : o.editing.enable() }, _disableLayerEdit: function (t) {
-                    var e = t.layer || t.target || t; e.edited = !1, e.editing && e.editing.disable(), delete e.options.editing, delete e.options.original,
-                        this._selectedPathOptions && (e instanceof L.Marker ? this._toggleMarkerHighlight(e) : (e.setStyle(e.options.previousOptions), delete e.options.previousOptions)), e instanceof L.Marker ? (e.dragging.disable(), e.off("dragend", this._onMarkerDragEnd, this).off("touchmove", this._onTouchMove, this).off("MSPointerMove", this._onTouchMove, this).off("touchend", this._onMarkerDragEnd, this).off("MSPointerUp", this._onMarkerDragEnd, this)) : e.editing.disable()
-                }, _onMouseMove: function (t) { this._tooltip.updatePosition(t.latlng) }, _onMarkerDragEnd: function (t) { var e = t.target; e.edited = !0, this._map.fire(L.Draw.Event.EDITMOVE, { layer: e }) }, _onTouchMove: function (t) { var e = t.originalEvent.changedTouches[0], i = this._map.mouseEventToLayerPoint(e), o = this._map.layerPointToLatLng(i); t.target.setLatLng(o) }, _hasAvailableLayers: function () { return 0 !== this._featureGroup.getLayers().length }
-            }), L.EditToolbar.Delete = L.Handler.extend({ statics: { TYPE: "remove" }, initialize: function (t, e) { if (L.Handler.prototype.initialize.call(this, t), L.Util.setOptions(this, e), this._deletableLayers = this.options.featureGroup, !(this._deletableLayers instanceof L.FeatureGroup)) throw new Error("options.featureGroup must be a L.FeatureGroup"); this.type = L.EditToolbar.Delete.TYPE; var i = L.version.split("."); 1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.EditToolbar.Delete.include(L.Evented.prototype) : L.EditToolbar.Delete.include(L.Mixin.Events) }, enable: function () { !this._enabled && this._hasAvailableLayers() && (this.fire("enabled", { handler: this.type }), this._map.fire(L.Draw.Event.DELETESTART, { handler: this.type }), L.Handler.prototype.enable.call(this), this._deletableLayers.on("layeradd", this._enableLayerDelete, this).on("layerremove", this._disableLayerDelete, this)) }, disable: function () { this._enabled && (this._deletableLayers.off("layeradd", this._enableLayerDelete, this).off("layerremove", this._disableLayerDelete, this), L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.DELETESTOP, { handler: this.type }), this.fire("disabled", { handler: this.type })) }, addHooks: function () { var t = this._map; t && (t.getContainer().focus(), this._deletableLayers.eachLayer(this._enableLayerDelete, this), this._deletedLayers = new L.LayerGroup, this._tooltip = new L.Draw.Tooltip(this._map), this._tooltip.updateContent({ text: L.drawLocal.edit.handlers.remove.tooltip.text }), this._map.on("mousemove", this._onMouseMove, this)) }, removeHooks: function () { this._map && (this._deletableLayers.eachLayer(this._disableLayerDelete, this), this._deletedLayers = null, this._tooltip.dispose(), this._tooltip = null, this._map.off("mousemove", this._onMouseMove, this)) }, revertLayers: function () { this._deletedLayers.eachLayer(function (t) { this._deletableLayers.addLayer(t), t.fire("revert-deleted", { layer: t }) }, this) }, save: function () { this._map.fire(L.Draw.Event.DELETED, { layers: this._deletedLayers }) }, removeAllLayers: function () { this._deletableLayers.eachLayer(function (t) { this._removeLayer({ layer: t }) }, this), this.save() }, _enableLayerDelete: function (t) { (t.layer || t.target || t).on("click", this._removeLayer, this) }, _disableLayerDelete: function (t) { var e = t.layer || t.target || t; e.off("click", this._removeLayer, this), this._deletedLayers.removeLayer(e) }, _removeLayer: function (t) { var e = t.layer || t.target || t; this._deletableLayers.removeLayer(e), this._deletedLayers.addLayer(e), e.fire("deleted") }, _onMouseMove: function (t) { this._tooltip.updatePosition(t.latlng) }, _hasAvailableLayers: function () { return 0 !== this._deletableLayers.getLayers().length } })
+                    allowIntersection: !0,
+                    repeatMode: !1,
+                    drawError: {color: "#b00b00", timeout: 2500},
+                    icon: new L.DivIcon({
+                        iconSize: new L.Point(8, 8),
+                        className: "leaflet-div-icon leaflet-editing-icon"
+                    }),
+                    touchIcon: new L.DivIcon({
+                        iconSize: new L.Point(20, 20),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-touch-icon"
+                    }),
+                    guidelineDistance: 20,
+                    maxGuideLineLength: 4e3,
+                    shapeOptions: {stroke: !0, color: "#3388ff", weight: 4, opacity: .5, fill: !1, clickable: !0},
+                    metric: !0,
+                    feet: !0,
+                    nautic: !1,
+                    showLength: !0,
+                    zIndexOffset: 2e3,
+                    factor: 1,
+                    maxPoints: 0
+                },
+                initialize: function (t, e) {
+                    L.Browser.touch && (this.options.icon = this.options.touchIcon), this.options.drawError.message = L.drawLocal.draw.handlers.polyline.error, e && e.drawError && (e.drawError = L.Util.extend({}, this.options.drawError, e.drawError)), this.type = L.Draw.Polyline.TYPE, L.Draw.Feature.prototype.initialize.call(this, t, e)
+                },
+                addHooks: function () {
+                    L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._markers = [], this._markerGroup = new L.LayerGroup, this._map.addLayer(this._markerGroup), this._poly = new L.Polyline([], this.options.shapeOptions), this._tooltip.updateContent(this._getTooltipText()), this._mouseMarker || (this._mouseMarker = L.marker(this._map.getCenter(), {
+                        icon: L.divIcon({
+                            className: "leaflet-mouse-marker",
+                            iconAnchor: [20, 20],
+                            iconSize: [40, 40]
+                        }), opacity: 0, zIndexOffset: this.options.zIndexOffset
+                    })), this._mouseMarker.on("mouseout", this._onMouseOut, this).on("mousemove", this._onMouseMove, this).on("mousedown", this._onMouseDown, this).on("mouseup", this._onMouseUp, this).addTo(this._map), this._map.on("mouseup", this._onMouseUp, this).on("mousemove", this._onMouseMove, this).on("zoomlevelschange", this._onZoomEnd, this).on("touchstart", this._onTouch, this).on("zoomend", this._onZoomEnd, this))
+                },
+                removeHooks: function () {
+                    L.Draw.Feature.prototype.removeHooks.call(this), this._clearHideErrorTimeout(), this._cleanUpShape(), this._map.removeLayer(this._markerGroup), delete this._markerGroup, delete this._markers, this._map.removeLayer(this._poly), delete this._poly, this._mouseMarker.off("mousedown", this._onMouseDown, this).off("mouseout", this._onMouseOut, this).off("mouseup", this._onMouseUp, this).off("mousemove", this._onMouseMove, this), this._map.removeLayer(this._mouseMarker), delete this._mouseMarker, this._clearGuides(), this._map.off("mouseup", this._onMouseUp, this).off("mousemove", this._onMouseMove, this).off("zoomlevelschange", this._onZoomEnd, this).off("zoomend", this._onZoomEnd, this).off("touchstart", this._onTouch, this).off("click", this._onTouch, this)
+                },
+                deleteLastVertex: function () {
+                    if (!(this._markers.length <= 1)) {
+                        var t = this._markers.pop(), e = this._poly, i = e.getLatLngs(), o = i.splice(-1, 1)[0];
+                        this._poly.setLatLngs(i), this._markerGroup.removeLayer(t), e.getLatLngs().length < 2 && this._map.removeLayer(e), this._vertexChanged(o, !1)
+                    }
+                },
+                addVertex: function (t) {
+                    if (this._markers.length >= 2 && !this.options.allowIntersection && this._poly.newLatLngIntersects(t)) return void this._showErrorTooltip();
+                    this._errorShown && this._hideErrorTooltip(), this._markers.push(this._createMarker(t)), this._poly.addLatLng(t), 2 === this._poly.getLatLngs().length && this._map.addLayer(this._poly), this._vertexChanged(t, !0)
+                },
+                completeShape: function () {
+                    this._markers.length <= 1 || (this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable())
+                },
+                _finishShape: function () {
+                    var t = this._poly._defaultShape ? this._poly._defaultShape() : this._poly.getLatLngs(),
+                        e = this._poly.newLatLngIntersects(t[t.length - 1]);
+                    if (!this.options.allowIntersection && e || !this._shapeIsValid()) return void this._showErrorTooltip();
+                    this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable()
+                },
+                _shapeIsValid: function () {
+                    return !0
+                },
+                _onZoomEnd: function () {
+                    null !== this._markers && this._updateGuide()
+                },
+                _onMouseMove: function (t) {
+                    var e = this._map.mouseEventToLayerPoint(t.originalEvent), i = this._map.layerPointToLatLng(e);
+                    this._currentLatLng = i, this._updateTooltip(i), this._updateGuide(e), this._mouseMarker.setLatLng(i), L.DomEvent.preventDefault(t.originalEvent)
+                },
+                _vertexChanged: function (t, e) {
+                    this._map.fire(L.Draw.Event.DRAWVERTEX, {layers: this._markerGroup}), this._updateFinishHandler(), this._updateRunningMeasure(t, e), this._clearGuides(), this._updateTooltip()
+                },
+                _onMouseDown: function (t) {
+                    if (!this._clickHandled && !this._touchHandled && !this._disableMarkers) {
+                        this._onMouseMove(t), this._clickHandled = !0, this._disableNewMarkers();
+                        var e = t.originalEvent, i = e.clientX, o = e.clientY;
+                        this._startPoint.call(this, i, o)
+                    }
+                },
+                _startPoint: function (t, e) {
+                    this._mouseDownOrigin = L.point(t, e)
+                },
+                _onMouseUp: function (t) {
+                    var e = t.originalEvent, i = e.clientX, o = e.clientY;
+                    this._endPoint.call(this, i, o, t), this._clickHandled = null
+                },
+                _endPoint: function (e, i, o) {
+                    if (this._mouseDownOrigin) {
+                        var a = L.point(e, i).distanceTo(this._mouseDownOrigin),
+                            n = this._calculateFinishDistance(o.latlng);
+                        this.options.maxPoints > 1 && this.options.maxPoints == this._markers.length + 1 ? (this.addVertex(o.latlng), this._finishShape()) : n < 10 && L.Browser.touch ? this._finishShape() : Math.abs(a) < 9 * (t.devicePixelRatio || 1) && this.addVertex(o.latlng), this._enableNewMarkers()
+                    }
+                    this._mouseDownOrigin = null
+                },
+                _onTouch: function (t) {
+                    var e, i, o = t.originalEvent;
+                    !o.touches || !o.touches[0] || this._clickHandled || this._touchHandled || this._disableMarkers || (e = o.touches[0].clientX, i = o.touches[0].clientY, this._disableNewMarkers(), this._touchHandled = !0, this._startPoint.call(this, e, i), this._endPoint.call(this, e, i, t), this._touchHandled = null), this._clickHandled = null
+                },
+                _onMouseOut: function () {
+                    this._tooltip && this._tooltip._onMouseOut.call(this._tooltip)
+                },
+                _calculateFinishDistance: function (t) {
+                    var e;
+                    if (this._markers.length > 0) {
+                        var i;
+                        if (this.type === L.Draw.Polyline.TYPE) i = this._markers[this._markers.length - 1]; else {
+                            if (this.type !== L.Draw.Polygon.TYPE) return 1 / 0;
+                            i = this._markers[0]
+                        }
+                        var o = this._map.latLngToContainerPoint(i.getLatLng()),
+                            a = new L.Marker(t, {icon: this.options.icon, zIndexOffset: 2 * this.options.zIndexOffset}),
+                            n = this._map.latLngToContainerPoint(a.getLatLng());
+                        e = o.distanceTo(n)
+                    } else e = 1 / 0;
+                    return e
+                },
+                _updateFinishHandler: function () {
+                    var t = this._markers.length;
+                    t > 1 && this._markers[t - 1].on("click", this._finishShape, this), t > 2 && this._markers[t - 2].off("click", this._finishShape, this)
+                },
+                _createMarker: function (t) {
+                    var e = new L.Marker(t, {icon: this.options.icon, zIndexOffset: 2 * this.options.zIndexOffset});
+                    return this._markerGroup.addLayer(e), e
+                },
+                _updateGuide: function (t) {
+                    var e = this._markers ? this._markers.length : 0;
+                    e > 0 && (t = t || this._map.latLngToLayerPoint(this._currentLatLng), this._clearGuides(), this._drawGuide(this._map.latLngToLayerPoint(this._markers[e - 1].getLatLng()), t))
+                },
+                _updateTooltip: function (t) {
+                    var e = this._getTooltipText();
+                    t && this._tooltip.updatePosition(t), this._errorShown || this._tooltip.updateContent(e)
+                },
+                _drawGuide: function (t, e) {
+                    var i, o, a, n = Math.floor(Math.sqrt(Math.pow(e.x - t.x, 2) + Math.pow(e.y - t.y, 2))),
+                        s = this.options.guidelineDistance, r = this.options.maxGuideLineLength, l = n > r ? n - r : s;
+                    for (this._guidesContainer || (this._guidesContainer = L.DomUtil.create("div", "leaflet-draw-guides", this._overlayPane)); l < n; l += this.options.guidelineDistance) i = l / n, o = {
+                        x: Math.floor(t.x * (1 - i) + i * e.x),
+                        y: Math.floor(t.y * (1 - i) + i * e.y)
+                    }, a = L.DomUtil.create("div", "leaflet-draw-guide-dash", this._guidesContainer), a.style.backgroundColor = this._errorShown ? this.options.drawError.color : this.options.shapeOptions.color, L.DomUtil.setPosition(a, o)
+                },
+                _updateGuideColor: function (t) {
+                    if (this._guidesContainer) for (var e = 0, i = this._guidesContainer.childNodes.length; e < i; e++) this._guidesContainer.childNodes[e].style.backgroundColor = t
+                },
+                _clearGuides: function () {
+                    if (this._guidesContainer) for (; this._guidesContainer.firstChild;) this._guidesContainer.removeChild(this._guidesContainer.firstChild)
+                },
+                _getTooltipText: function () {
+                    var t, e, i = this.options.showLength;
+                    return 0 === this._markers.length ? t = {text: L.drawLocal.draw.handlers.polyline.tooltip.start} : (e = i ? this._getMeasurementString() : "", t = 1 === this._markers.length ? {
+                        text: L.drawLocal.draw.handlers.polyline.tooltip.cont,
+                        subtext: e
+                    } : {text: L.drawLocal.draw.handlers.polyline.tooltip.end, subtext: e}), t
+                },
+                _updateRunningMeasure: function (t, e) {
+                    var i, o, a = this._markers.length;
+                    1 === this._markers.length ? this._measurementRunningTotal = 0 : (i = a - (e ? 2 : 1), o = L.GeometryUtil.isVersion07x() ? t.distanceTo(this._markers[i].getLatLng()) * (this.options.factor || 1) : this._map.distance(t, this._markers[i].getLatLng()) * (this.options.factor || 1), this._measurementRunningTotal += o * (e ? 1 : -1))
+                },
+                _getMeasurementString: function () {
+                    var t, e = this._currentLatLng, i = this._markers[this._markers.length - 1].getLatLng();
+                    return t = L.GeometryUtil.isVersion07x() ? i && e && e.distanceTo ? this._measurementRunningTotal + e.distanceTo(i) * (this.options.factor || 1) : this._measurementRunningTotal || 0 : i && e ? this._measurementRunningTotal + this._map.distance(e, i) * (this.options.factor || 1) : this._measurementRunningTotal || 0, L.GeometryUtil.readableDistance(t, this.options.metric, this.options.feet, this.options.nautic, this.options.precision)
+                },
+                _showErrorTooltip: function () {
+                    this._errorShown = !0, this._tooltip.showAsError().updateContent({text: this.options.drawError.message}), this._updateGuideColor(this.options.drawError.color), this._poly.setStyle({color: this.options.drawError.color}), this._clearHideErrorTimeout(), this._hideErrorTimeout = setTimeout(L.Util.bind(this._hideErrorTooltip, this), this.options.drawError.timeout)
+                },
+                _hideErrorTooltip: function () {
+                    this._errorShown = !1, this._clearHideErrorTimeout(), this._tooltip.removeError().updateContent(this._getTooltipText()), this._updateGuideColor(this.options.shapeOptions.color), this._poly.setStyle({color: this.options.shapeOptions.color})
+                },
+                _clearHideErrorTimeout: function () {
+                    this._hideErrorTimeout && (clearTimeout(this._hideErrorTimeout), this._hideErrorTimeout = null)
+                },
+                _disableNewMarkers: function () {
+                    this._disableMarkers = !0
+                },
+                _enableNewMarkers: function () {
+                    setTimeout(function () {
+                        this._disableMarkers = !1
+                    }.bind(this), 50)
+                },
+                _cleanUpShape: function () {
+                    this._markers.length > 1 && this._markers[this._markers.length - 1].off("click", this._finishShape, this)
+                },
+                _fireCreatedEvent: function () {
+                    var t = new this.Poly(this._poly.getLatLngs(), this.options.shapeOptions);
+                    L.Draw.Feature.prototype._fireCreatedEvent.call(this, t)
+                }
+            }), L.Draw.Polygon = L.Draw.Polyline.extend({
+                statics: {TYPE: "polygon"},
+                Poly: L.Polygon,
+                options: {
+                    showArea: !1,
+                    showLength: !1,
+                    shapeOptions: {
+                        stroke: !0,
+                        color: "#3388ff",
+                        weight: 4,
+                        opacity: .5,
+                        fill: !0,
+                        fillColor: null,
+                        fillOpacity: .2,
+                        clickable: !0
+                    },
+                    metric: !0,
+                    feet: !0,
+                    nautic: !1,
+                    precision: {}
+                },
+                initialize: function (t, e) {
+                    L.Draw.Polyline.prototype.initialize.call(this, t, e), this.type = L.Draw.Polygon.TYPE
+                },
+                _updateFinishHandler: function () {
+                    var t = this._markers.length;
+                    1 === t && this._markers[0].on("click", this._finishShape, this), t > 2 && (this._markers[t - 1].on("dblclick", this._finishShape, this), t > 3 && this._markers[t - 2].off("dblclick", this._finishShape, this))
+                },
+                _getTooltipText: function () {
+                    var t, e;
+                    return 0 === this._markers.length ? t = L.drawLocal.draw.handlers.polygon.tooltip.start : this._markers.length < 3 ? (t = L.drawLocal.draw.handlers.polygon.tooltip.cont, e = this._getMeasurementString()) : (t = L.drawLocal.draw.handlers.polygon.tooltip.end, e = this._getMeasurementString()), {
+                        text: t,
+                        subtext: e
+                    }
+                },
+                _getMeasurementString: function () {
+                    var t = this._area, e = "";
+                    return t || this.options.showLength ? (this.options.showLength && (e = L.Draw.Polyline.prototype._getMeasurementString.call(this)), t && (e += "<br>" + L.GeometryUtil.readableArea(t, this.options.metric, this.options.precision)), e) : null
+                },
+                _shapeIsValid: function () {
+                    return this._markers.length >= 3
+                },
+                _vertexChanged: function (t, e) {
+                    var i;
+                    !this.options.allowIntersection && this.options.showArea && (i = this._poly.getLatLngs(), this._area = L.GeometryUtil.geodesicArea(i)), L.Draw.Polyline.prototype._vertexChanged.call(this, t, e)
+                },
+                _cleanUpShape: function () {
+                    var t = this._markers.length;
+                    t > 0 && (this._markers[0].off("click", this._finishShape, this), t > 2 && this._markers[t - 1].off("dblclick", this._finishShape, this))
+                }
+            }), L.SimpleShape = {}, L.Draw.SimpleShape = L.Draw.Feature.extend({
+                options: {repeatMode: !1}, initialize: function (t, e) {
+                    this._endLabelText = L.drawLocal.draw.handlers.simpleshape.tooltip.end, L.Draw.Feature.prototype.initialize.call(this, t, e)
+                }, addHooks: function () {
+                    L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._mapDraggable = this._map.dragging.enabled(), this._mapDraggable && this._map.dragging.disable(), this._container.style.cursor = "crosshair", this._tooltip.updateContent({text: this._initialLabelText}), this._map.on("mousedown", this._onMouseDown, this).on("mousemove", this._onMouseMove, this).on("touchstart", this._onMouseDown, this).on("touchmove", this._onMouseMove, this), e.addEventListener("touchstart", L.DomEvent.preventDefault, {passive: !1}))
+                }, removeHooks: function () {
+                    L.Draw.Feature.prototype.removeHooks.call(this), this._map && (this._mapDraggable && this._map.dragging.enable(), this._container.style.cursor = "", this._map.off("mousedown", this._onMouseDown, this).off("mousemove", this._onMouseMove, this).off("touchstart", this._onMouseDown, this).off("touchmove", this._onMouseMove, this), L.DomEvent.off(e, "mouseup", this._onMouseUp, this), L.DomEvent.off(e, "touchend", this._onMouseUp, this), e.removeEventListener("touchstart", L.DomEvent.preventDefault), this._shape && (this._map.removeLayer(this._shape), delete this._shape)), this._isDrawing = !1
+                }, _getTooltipText: function () {
+                    return {text: this._endLabelText}
+                }, _onMouseDown: function (t) {
+                    this._isDrawing = !0, this._startLatLng = t.latlng, L.DomEvent.on(e, "mouseup", this._onMouseUp, this).on(e, "touchend", this._onMouseUp, this).preventDefault(t.originalEvent)
+                }, _onMouseMove: function (t) {
+                    var e = t.latlng;
+                    this._tooltip.updatePosition(e), this._isDrawing && (this._tooltip.updateContent(this._getTooltipText()), this._drawShape(e))
+                }, _onMouseUp: function () {
+                    this._shape && this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable()
+                }
+            }), L.Draw.Rectangle = L.Draw.SimpleShape.extend({
+                statics: {TYPE: "rectangle"},
+                options: {
+                    shapeOptions: {
+                        stroke: !0,
+                        color: "#3388ff",
+                        weight: 4,
+                        opacity: .5,
+                        fill: !0,
+                        fillColor: null,
+                        fillOpacity: .2,
+                        showArea: !0,
+                        clickable: !0
+                    }, metric: !0
+                },
+                initialize: function (t, e) {
+                    this.type = L.Draw.Rectangle.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.rectangle.tooltip.start, L.Draw.SimpleShape.prototype.initialize.call(this, t, e)
+                },
+                disable: function () {
+                    this._enabled && (this._isCurrentlyTwoClickDrawing = !1, L.Draw.SimpleShape.prototype.disable.call(this))
+                },
+                _onMouseUp: function (t) {
+                    if (!this._shape && !this._isCurrentlyTwoClickDrawing) return void (this._isCurrentlyTwoClickDrawing = !0);
+                    this._isCurrentlyTwoClickDrawing && !o(t.target, "leaflet-pane") || L.Draw.SimpleShape.prototype._onMouseUp.call(this)
+                },
+                _drawShape: function (t) {
+                    this._shape ? this._shape.setBounds(new L.LatLngBounds(this._startLatLng, t)) : (this._shape = new L.Rectangle(new L.LatLngBounds(this._startLatLng, t), this.options.shapeOptions), this._map.addLayer(this._shape))
+                },
+                _fireCreatedEvent: function () {
+                    var t = new L.Rectangle(this._shape.getBounds(), this.options.shapeOptions);
+                    L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, t)
+                },
+                _getTooltipText: function () {
+                    var t, e, i, o = L.Draw.SimpleShape.prototype._getTooltipText.call(this), a = this._shape,
+                        n = this.options.showArea;
+                    return a && (t = this._shape._defaultShape ? this._shape._defaultShape() : this._shape.getLatLngs(), e = L.GeometryUtil.geodesicArea(t), i = n ? L.GeometryUtil.readableArea(e, this.options.metric) : ""), {
+                        text: o.text,
+                        subtext: i
+                    }
+                }
+            }), L.Draw.Marker = L.Draw.Feature.extend({
+                statics: {TYPE: "marker"},
+                options: {icon: new L.Icon.Default, repeatMode: !1, zIndexOffset: 2e3},
+                initialize: function (t, e) {
+                    this.type = L.Draw.Marker.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.marker.tooltip.start, L.Draw.Feature.prototype.initialize.call(this, t, e)
+                },
+                addHooks: function () {
+                    L.Draw.Feature.prototype.addHooks.call(this), this._map && (this._tooltip.updateContent({text: this._initialLabelText}), this._mouseMarker || (this._mouseMarker = L.marker(this._map.getCenter(), {
+                        icon: L.divIcon({
+                            className: "leaflet-mouse-marker",
+                            iconAnchor: [20, 20],
+                            iconSize: [40, 40]
+                        }), opacity: 0, zIndexOffset: this.options.zIndexOffset
+                    })), this._mouseMarker.on("click", this._onClick, this).addTo(this._map), this._map.on("mousemove", this._onMouseMove, this), this._map.on("click", this._onTouch, this))
+                },
+                removeHooks: function () {
+                    L.Draw.Feature.prototype.removeHooks.call(this), this._map && (this._map.off("click", this._onClick, this).off("click", this._onTouch, this), this._marker && (this._marker.off("click", this._onClick, this), this._map.removeLayer(this._marker), delete this._marker), this._mouseMarker.off("click", this._onClick, this), this._map.removeLayer(this._mouseMarker), delete this._mouseMarker, this._map.off("mousemove", this._onMouseMove, this))
+                },
+                _onMouseMove: function (t) {
+                    var e = t.latlng;
+                    this._tooltip.updatePosition(e), this._mouseMarker.setLatLng(e), this._marker ? (e = this._mouseMarker.getLatLng(), this._marker.setLatLng(e)) : (this._marker = this._createMarker(e), this._marker.on("click", this._onClick, this), this._map.on("click", this._onClick, this).addLayer(this._marker))
+                },
+                _createMarker: function (t) {
+                    return new L.Marker(t, {icon: this.options.icon, zIndexOffset: this.options.zIndexOffset})
+                },
+                _onClick: function () {
+                    this._fireCreatedEvent(), this.disable(), this.options.repeatMode && this.enable()
+                },
+                _onTouch: function (t) {
+                    this._onMouseMove(t), this._onClick()
+                },
+                _fireCreatedEvent: function () {
+                    var t = new L.Marker.Touch(this._marker.getLatLng(), {icon: this.options.icon});
+                    L.Draw.Feature.prototype._fireCreatedEvent.call(this, t)
+                }
+            }), L.Draw.CircleMarker = L.Draw.Marker.extend({
+                statics: {TYPE: "circlemarker"},
+                options: {
+                    stroke: !0,
+                    color: "#3388ff",
+                    weight: 4,
+                    opacity: .5,
+                    fill: !0,
+                    fillColor: null,
+                    fillOpacity: .2,
+                    clickable: !0,
+                    zIndexOffset: 2e3
+                },
+                initialize: function (t, e) {
+                    this.type = L.Draw.CircleMarker.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.circlemarker.tooltip.start, L.Draw.Feature.prototype.initialize.call(this, t, e)
+                },
+                _fireCreatedEvent: function () {
+                    var t = new L.CircleMarker(this._marker.getLatLng(), this.options);
+                    L.Draw.Feature.prototype._fireCreatedEvent.call(this, t)
+                },
+                _createMarker: function (t) {
+                    return new L.CircleMarker(t, this.options)
+                }
+            }), L.Draw.Circle = L.Draw.SimpleShape.extend({
+                statics: {TYPE: "circle"},
+                options: {
+                    shapeOptions: {
+                        stroke: !0,
+                        color: "#3388ff",
+                        weight: 4,
+                        opacity: .5,
+                        fill: !0,
+                        fillColor: null,
+                        fillOpacity: .2,
+                        clickable: !0
+                    }, showRadius: !0, metric: !0, feet: !0, nautic: !1
+                },
+                initialize: function (t, e) {
+                    this.type = L.Draw.Circle.TYPE, this._initialLabelText = L.drawLocal.draw.handlers.circle.tooltip.start, L.Draw.SimpleShape.prototype.initialize.call(this, t, e)
+                },
+                _drawShape: function (t) {
+                    if (L.GeometryUtil.isVersion07x()) var e = this._startLatLng.distanceTo(t); else var e = this._map.distance(this._startLatLng, t);
+                    this._shape ? this._shape.setRadius(e) : (this._shape = new L.Circle(this._startLatLng, e, this.options.shapeOptions), this._map.addLayer(this._shape))
+                },
+                _fireCreatedEvent: function () {
+                    var t = new L.Circle(this._startLatLng, this._shape.getRadius(), this.options.shapeOptions);
+                    L.Draw.SimpleShape.prototype._fireCreatedEvent.call(this, t)
+                },
+                _onMouseMove: function (t) {
+                    var e, i = t.latlng, o = this.options.showRadius, a = this.options.metric;
+                    if (this._tooltip.updatePosition(i), this._isDrawing) {
+                        this._drawShape(i), e = this._shape.getRadius().toFixed(1);
+                        var n = "";
+                        o && (n = L.drawLocal.draw.handlers.circle.radius + ": " + L.GeometryUtil.readableDistance(e, a, this.options.feet, this.options.nautic)), this._tooltip.updateContent({
+                            text: this._endLabelText,
+                            subtext: n
+                        })
+                    }
+                }
+            }), L.Edit = L.Edit || {}, L.Edit.Marker = L.Handler.extend({
+                initialize: function (t, e) {
+                    this._marker = t, L.setOptions(this, e)
+                }, addHooks: function () {
+                    var t = this._marker;
+                    t.dragging.enable(), t.on("dragend", this._onDragEnd, t), this._toggleMarkerHighlight()
+                }, removeHooks: function () {
+                    var t = this._marker;
+                    t.dragging.disable(), t.off("dragend", this._onDragEnd, t), this._toggleMarkerHighlight()
+                }, _onDragEnd: function (t) {
+                    var e = t.target;
+                    e.edited = !0, this._map.fire(L.Draw.Event.EDITMOVE, {layer: e})
+                }, _toggleMarkerHighlight: function () {
+                    var t = this._marker._icon;
+                    t && (t.style.display = "none", L.DomUtil.hasClass(t, "leaflet-edit-marker-selected") ? (L.DomUtil.removeClass(t, "leaflet-edit-marker-selected"), this._offsetMarker(t, -4)) : (L.DomUtil.addClass(t, "leaflet-edit-marker-selected"), this._offsetMarker(t, 4)), t.style.display = "")
+                }, _offsetMarker: function (t, e) {
+                    var i = parseInt(t.style.marginTop, 10) - e, o = parseInt(t.style.marginLeft, 10) - e;
+                    t.style.marginTop = i + "px", t.style.marginLeft = o + "px"
+                }
+            }), L.Marker.addInitHook(function () {
+                L.Edit.Marker && (this.editing = new L.Edit.Marker(this), this.options.editable && this.editing.enable())
+            }), L.Edit = L.Edit || {}, L.Edit.Poly = L.Handler.extend({
+                initialize: function (t) {
+                    this.latlngs = [t._latlngs], t._holes && (this.latlngs = this.latlngs.concat(t._holes)), this._poly = t, this._poly.on("revert-edited", this._updateLatLngs, this)
+                }, _defaultShape: function () {
+                    return L.Polyline._flat ? L.Polyline._flat(this._poly._latlngs) ? this._poly._latlngs : this._poly._latlngs[0] : this._poly._latlngs
+                }, _eachVertexHandler: function (t) {
+                    for (var e = 0; e < this._verticesHandlers.length; e++) t(this._verticesHandlers[e])
+                }, addHooks: function () {
+                    this._initHandlers(), this._eachVertexHandler(function (t) {
+                        t.addHooks()
+                    })
+                }, removeHooks: function () {
+                    this._eachVertexHandler(function (t) {
+                        t.removeHooks()
+                    })
+                }, updateMarkers: function () {
+                    this._eachVertexHandler(function (t) {
+                        t.updateMarkers()
+                    })
+                }, _initHandlers: function () {
+                    this._verticesHandlers = [];
+                    for (var t = 0; t < this.latlngs.length; t++) this._verticesHandlers.push(new L.Edit.PolyVerticesEdit(this._poly, this.latlngs[t], this._poly.options.poly))
+                }, _updateLatLngs: function (t) {
+                    this.latlngs = [t.layer._latlngs], t.layer._holes && (this.latlngs = this.latlngs.concat(t.layer._holes))
+                }
+            }), L.Edit.PolyVerticesEdit = L.Handler.extend({
+                options: {
+                    icon: new L.DivIcon({
+                        iconSize: new L.Point(8, 8),
+                        className: "leaflet-div-icon leaflet-editing-icon"
+                    }),
+                    touchIcon: new L.DivIcon({
+                        iconSize: new L.Point(20, 20),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-touch-icon"
+                    }),
+                    drawError: {color: "#b00b00", timeout: 1e3}
+                }, initialize: function (t, e, i) {
+                    L.Browser.touch && (this.options.icon = this.options.touchIcon), this._poly = t, i && i.drawError && (i.drawError = L.Util.extend({}, this.options.drawError, i.drawError)), this._latlngs = e, L.setOptions(this, i)
+                }, _defaultShape: function () {
+                    return L.Polyline._flat ? L.Polyline._flat(this._latlngs) ? this._latlngs : this._latlngs[0] : this._latlngs
+                }, addHooks: function () {
+                    var t = this._poly, e = t._path;
+                    t instanceof L.Polygon || (t.options.fill = !1, t.options.editing && (t.options.editing.fill = !1)), e && t.options.editing.className && (t.options.original.className && t.options.original.className.split(" ").forEach(function (t) {
+                        L.DomUtil.removeClass(e, t)
+                    }), t.options.editing.className.split(" ").forEach(function (t) {
+                        L.DomUtil.addClass(e, t)
+                    })), t.setStyle(t.options.editing), this._poly._map && (this._map = this._poly._map, this._markerGroup || this._initMarkers(), this._poly._map.addLayer(this._markerGroup))
+                }, removeHooks: function () {
+                    var t = this._poly, e = t._path;
+                    e && t.options.editing.className && (t.options.editing.className.split(" ").forEach(function (t) {
+                        L.DomUtil.removeClass(e, t)
+                    }), t.options.original.className && t.options.original.className.split(" ").forEach(function (t) {
+                        L.DomUtil.addClass(e, t)
+                    })), t.setStyle(t.options.original), t._map && (t._map.removeLayer(this._markerGroup), delete this._markerGroup, delete this._markers)
+                }, updateMarkers: function () {
+                    this._markerGroup.clearLayers(), this._initMarkers()
+                }, _initMarkers: function () {
+                    this._markerGroup || (this._markerGroup = new L.LayerGroup), this._markers = [];
+                    var t, e, i, o, a = this._defaultShape();
+                    for (t = 0, i = a.length; t < i; t++) o = this._createMarker(a[t], t), o.on("click", this._onMarkerClick, this), o.on("contextmenu", this._onContextMenu, this), this._markers.push(o);
+                    var n, s;
+                    for (t = 0, e = i - 1; t < i; e = t++) (0 !== t || L.Polygon && this._poly instanceof L.Polygon) && (n = this._markers[e], s = this._markers[t], this._createMiddleMarker(n, s), this._updatePrevNext(n, s))
+                }, _createMarker: function (t, e) {
+                    var i = new L.Marker.Touch(t, {draggable: !0, icon: this.options.icon});
+                    return i._origLatLng = t, i._index = e, i.on("dragstart", this._onMarkerDragStart, this).on("drag", this._onMarkerDrag, this).on("dragend", this._fireEdit, this).on("touchmove", this._onTouchMove, this).on("touchend", this._fireEdit, this).on("MSPointerMove", this._onTouchMove, this).on("MSPointerUp", this._fireEdit, this), this._markerGroup.addLayer(i), i
+                }, _onMarkerDragStart: function () {
+                    this._poly.fire("editstart")
+                }, _spliceLatLngs: function () {
+                    var t = this._defaultShape(), e = [].splice.apply(t, arguments);
+                    return this._poly._convertLatLngs(t, !0), this._poly.redraw(), e
+                }, _removeMarker: function (t) {
+                    var e = t._index;
+                    this._markerGroup.removeLayer(t), this._markers.splice(e, 1), this._spliceLatLngs(e, 1), this._updateIndexes(e, -1), t.off("dragstart", this._onMarkerDragStart, this).off("drag", this._onMarkerDrag, this).off("dragend", this._fireEdit, this).off("touchmove", this._onMarkerDrag, this).off("touchend", this._fireEdit, this).off("click", this._onMarkerClick, this).off("MSPointerMove", this._onTouchMove, this).off("MSPointerUp", this._fireEdit, this)
+                }, _fireEdit: function () {
+                    this._poly.edited = !0, this._poly.fire("edit"), this._poly._map.fire(L.Draw.Event.EDITVERTEX, {
+                        layers: this._markerGroup,
+                        poly: this._poly
+                    })
+                }, _onMarkerDrag: function (t) {
+                    var e = t.target, i = this._poly;
+                    if (L.extend(e._origLatLng, e._latlng), e._middleLeft && e._middleLeft.setLatLng(this._getMiddleLatLng(e._prev, e)), e._middleRight && e._middleRight.setLatLng(this._getMiddleLatLng(e, e._next)), i.options.poly) {
+                        var o = i._map._editTooltip;
+                        if (!i.options.poly.allowIntersection && i.intersects()) {
+                            var a = i.options.color;
+                            i.setStyle({color: this.options.drawError.color}), 0 !== L.version.indexOf("0.7") && e.dragging._draggable._onUp(t), this._onMarkerClick(t), o && o.updateContent({text: L.drawLocal.draw.handlers.polyline.error}), setTimeout(function () {
+                                i.setStyle({color: a}), o && o.updateContent({
+                                    text: L.drawLocal.edit.handlers.edit.tooltip.text,
+                                    subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
+                                })
+                            }, 1e3)
+                        }
+                    }
+                    this._poly._bounds._southWest = L.latLng(1 / 0, 1 / 0), this._poly._bounds._northEast = L.latLng(-1 / 0, -1 / 0);
+                    var n = this._poly.getLatLngs();
+                    this._poly._convertLatLngs(n, !0), this._poly.redraw(), this._poly.fire("editdrag")
+                }, _onMarkerClick: function (t) {
+                    var e = L.Polygon && this._poly instanceof L.Polygon ? 4 : 3, i = t.target;
+                    this._defaultShape().length < e || (this._removeMarker(i), this._updatePrevNext(i._prev, i._next), i._middleLeft && this._markerGroup.removeLayer(i._middleLeft), i._middleRight && this._markerGroup.removeLayer(i._middleRight), i._prev && i._next ? this._createMiddleMarker(i._prev, i._next) : i._prev ? i._next || (i._prev._middleRight = null) : i._next._middleLeft = null, this._fireEdit())
+                }, _onContextMenu: function (t) {
+                    var e = t.target;
+                    this._poly;
+                    this._poly._map.fire(L.Draw.Event.MARKERCONTEXT, {
+                        marker: e,
+                        layers: this._markerGroup,
+                        poly: this._poly
+                    }), L.DomEvent.stopPropagation
+                }, _onTouchMove: function (t) {
+                    var e = this._map.mouseEventToLayerPoint(t.originalEvent.touches[0]),
+                        i = this._map.layerPointToLatLng(e), o = t.target;
+                    L.extend(o._origLatLng, i), o._middleLeft && o._middleLeft.setLatLng(this._getMiddleLatLng(o._prev, o)), o._middleRight && o._middleRight.setLatLng(this._getMiddleLatLng(o, o._next)), this._poly.redraw(), this.updateMarkers()
+                }, _updateIndexes: function (t, e) {
+                    this._markerGroup.eachLayer(function (i) {
+                        i._index > t && (i._index += e)
+                    })
+                }, _createMiddleMarker: function (t, e) {
+                    var i, o, a, n = this._getMiddleLatLng(t, e), s = this._createMarker(n);
+                    s.setOpacity(.6), t._middleRight = e._middleLeft = s, o = function () {
+                        s.off("touchmove", o, this);
+                        var a = e._index;
+                        s._index = a, s.off("click", i, this).on("click", this._onMarkerClick, this), n.lat = s.getLatLng().lat, n.lng = s.getLatLng().lng, this._spliceLatLngs(a, 0, n), this._markers.splice(a, 0, s), s.setOpacity(1), this._updateIndexes(a, 1), e._index++, this._updatePrevNext(t, s), this._updatePrevNext(s, e), this._poly.fire("editstart")
+                    }, a = function () {
+                        s.off("dragstart", o, this), s.off("dragend", a, this), s.off("touchmove", o, this), this._createMiddleMarker(t, s), this._createMiddleMarker(s, e)
+                    }, i = function () {
+                        o.call(this), a.call(this), this._fireEdit()
+                    }, s.on("click", i, this).on("dragstart", o, this).on("dragend", a, this).on("touchmove", o, this), this._markerGroup.addLayer(s)
+                }, _updatePrevNext: function (t, e) {
+                    t && (t._next = e), e && (e._prev = t)
+                }, _getMiddleLatLng: function (t, e) {
+                    var i = this._poly._map, o = i.project(t.getLatLng()), a = i.project(e.getLatLng());
+                    return i.unproject(o._add(a)._divideBy(2))
+                }
+            }), L.Polyline.addInitHook(function () {
+                this.editing || (L.Edit.Poly && (this.editing = new L.Edit.Poly(this), this.options.editable && this.editing.enable()), this.on("add", function () {
+                    this.editing && this.editing.enabled() && this.editing.addHooks()
+                }), this.on("remove", function () {
+                    this.editing && this.editing.enabled() && this.editing.removeHooks()
+                }))
+            }), L.Edit = L.Edit || {}, L.Edit.SimpleShape = L.Handler.extend({
+                options: {
+                    moveIcon: new L.DivIcon({
+                        iconSize: new L.Point(8, 8),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-move"
+                    }),
+                    resizeIcon: new L.DivIcon({
+                        iconSize: new L.Point(8, 8),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-resize"
+                    }),
+                    touchMoveIcon: new L.DivIcon({
+                        iconSize: new L.Point(20, 20),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-move leaflet-touch-icon"
+                    }),
+                    touchResizeIcon: new L.DivIcon({
+                        iconSize: new L.Point(20, 20),
+                        className: "leaflet-div-icon leaflet-editing-icon leaflet-edit-resize leaflet-touch-icon"
+                    })
+                }, initialize: function (t, e) {
+                    L.Browser.touch && (this.options.moveIcon = this.options.touchMoveIcon, this.options.resizeIcon = this.options.touchResizeIcon), this._shape = t, L.Util.setOptions(this, e)
+                }, addHooks: function () {
+                    var t = this._shape;
+                    this._shape._map && (this._map = this._shape._map, t.setStyle(t.options.editing), t._map && (this._map = t._map, this._markerGroup || this._initMarkers(), this._map.addLayer(this._markerGroup)))
+                }, removeHooks: function () {
+                    var t = this._shape;
+                    if (t.setStyle(t.options.original), t._map) {
+                        this._unbindMarker(this._moveMarker);
+                        for (var e = 0, i = this._resizeMarkers.length; e < i; e++) this._unbindMarker(this._resizeMarkers[e]);
+                        this._resizeMarkers = null, this._map.removeLayer(this._markerGroup), delete this._markerGroup
+                    }
+                    this._map = null
+                }, updateMarkers: function () {
+                    this._markerGroup.clearLayers(), this._initMarkers()
+                }, _initMarkers: function () {
+                    this._markerGroup || (this._markerGroup = new L.LayerGroup), this._createMoveMarker(), this._createResizeMarker()
+                }, _createMoveMarker: function () {
+                }, _createResizeMarker: function () {
+                }, _createMarker: function (t, e) {
+                    var i = new L.Marker.Touch(t, {draggable: !0, icon: e, zIndexOffset: 10});
+                    return this._bindMarker(i), this._markerGroup.addLayer(i), i
+                }, _bindMarker: function (t) {
+                    t.on("dragstart", this._onMarkerDragStart, this).on("drag", this._onMarkerDrag, this).on("dragend", this._onMarkerDragEnd, this).on("touchstart", this._onTouchStart, this).on("touchmove", this._onTouchMove, this).on("MSPointerMove", this._onTouchMove, this).on("touchend", this._onTouchEnd, this).on("MSPointerUp", this._onTouchEnd, this)
+                }, _unbindMarker: function (t) {
+                    t.off("dragstart", this._onMarkerDragStart, this).off("drag", this._onMarkerDrag, this).off("dragend", this._onMarkerDragEnd, this).off("touchstart", this._onTouchStart, this).off("touchmove", this._onTouchMove, this).off("MSPointerMove", this._onTouchMove, this).off("touchend", this._onTouchEnd, this).off("MSPointerUp", this._onTouchEnd, this)
+                }, _onMarkerDragStart: function (t) {
+                    t.target.setOpacity(0), this._shape.fire("editstart")
+                }, _fireEdit: function () {
+                    this._shape.edited = !0, this._shape.fire("edit")
+                }, _onMarkerDrag: function (t) {
+                    var e = t.target, i = e.getLatLng();
+                    e === this._moveMarker ? this._move(i) : this._resize(i), this._shape.redraw(), this._shape.fire("editdrag")
+                }, _onMarkerDragEnd: function (t) {
+                    t.target.setOpacity(1), this._fireEdit()
+                }, _onTouchStart: function (t) {
+                    if (L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, t), "function" == typeof this._getCorners) {
+                        var e = this._getCorners(), i = t.target, o = i._cornerIndex;
+                        i.setOpacity(0), this._oppositeCorner = e[(o + 2) % 4], this._toggleCornerMarkers(0, o)
+                    }
+                    this._shape.fire("editstart")
+                }, _onTouchMove: function (t) {
+                    var e = this._map.mouseEventToLayerPoint(t.originalEvent.touches[0]),
+                        i = this._map.layerPointToLatLng(e);
+                    return t.target === this._moveMarker ? this._move(i) : this._resize(i), this._shape.redraw(), !1
+                }, _onTouchEnd: function (t) {
+                    t.target.setOpacity(1), this.updateMarkers(), this._fireEdit()
+                }, _move: function () {
+                }, _resize: function () {
+                }
+            }), L.Edit = L.Edit || {}, L.Edit.Rectangle = L.Edit.SimpleShape.extend({
+                _createMoveMarker: function () {
+                    var t = this._shape.getBounds(), e = t.getCenter();
+                    this._moveMarker = this._createMarker(e, this.options.moveIcon)
+                }, _createResizeMarker: function () {
+                    var t = this._getCorners();
+                    this._resizeMarkers = [];
+                    for (var e = 0, i = t.length; e < i; e++) this._resizeMarkers.push(this._createMarker(t[e], this.options.resizeIcon)), this._resizeMarkers[e]._cornerIndex = e
+                }, _onMarkerDragStart: function (t) {
+                    L.Edit.SimpleShape.prototype._onMarkerDragStart.call(this, t);
+                    var e = this._getCorners(), i = t.target, o = i._cornerIndex;
+                    this._oppositeCorner = e[(o + 2) % 4], this._toggleCornerMarkers(0, o)
+                }, _onMarkerDragEnd: function (t) {
+                    var e, i, o = t.target;
+                    o === this._moveMarker && (e = this._shape.getBounds(), i = e.getCenter(), o.setLatLng(i)), this._toggleCornerMarkers(1), this._repositionCornerMarkers(), L.Edit.SimpleShape.prototype._onMarkerDragEnd.call(this, t)
+                }, _move: function (t) {
+                    for (var e, i = this._shape._defaultShape ? this._shape._defaultShape() : this._shape.getLatLngs(), o = this._shape.getBounds(), a = o.getCenter(), n = [], s = 0, r = i.length; s < r; s++) e = [i[s].lat - a.lat, i[s].lng - a.lng], n.push([t.lat + e[0], t.lng + e[1]]);
+                    this._shape.setLatLngs(n), this._repositionCornerMarkers(), this._map.fire(L.Draw.Event.EDITMOVE, {layer: this._shape})
+                }, _resize: function (t) {
+                    var e;
+                    this._shape.setBounds(L.latLngBounds(t, this._oppositeCorner)), e = this._shape.getBounds(), this._moveMarker.setLatLng(e.getCenter()), this._map.fire(L.Draw.Event.EDITRESIZE, {layer: this._shape})
+                }, _getCorners: function () {
+                    var t = this._shape.getBounds();
+                    return [t.getNorthWest(), t.getNorthEast(), t.getSouthEast(), t.getSouthWest()]
+                }, _toggleCornerMarkers: function (t) {
+                    for (var e = 0, i = this._resizeMarkers.length; e < i; e++) this._resizeMarkers[e].setOpacity(t)
+                }, _repositionCornerMarkers: function () {
+                    for (var t = this._getCorners(), e = 0, i = this._resizeMarkers.length; e < i; e++) this._resizeMarkers[e].setLatLng(t[e])
+                }
+            }), L.Rectangle.addInitHook(function () {
+                L.Edit.Rectangle && (this.editing = new L.Edit.Rectangle(this), this.options.editable && this.editing.enable())
+            }), L.Edit = L.Edit || {}, L.Edit.CircleMarker = L.Edit.SimpleShape.extend({
+                _createMoveMarker: function () {
+                    var t = this._shape.getLatLng();
+                    this._moveMarker = this._createMarker(t, this.options.moveIcon)
+                }, _createResizeMarker: function () {
+                    this._resizeMarkers = []
+                }, _move: function (t) {
+                    if (this._resizeMarkers.length) {
+                        var e = this._getResizeMarkerPoint(t);
+                        this._resizeMarkers[0].setLatLng(e)
+                    }
+                    this._shape.setLatLng(t), this._map.fire(L.Draw.Event.EDITMOVE, {layer: this._shape})
+                }
+            }), L.CircleMarker.addInitHook(function () {
+                L.Edit.CircleMarker && (this.editing = new L.Edit.CircleMarker(this), this.options.editable && this.editing.enable()), this.on("add", function () {
+                    this.editing && this.editing.enabled() && this.editing.addHooks()
+                }), this.on("remove", function () {
+                    this.editing && this.editing.enabled() && this.editing.removeHooks()
+                })
+            }), L.Edit = L.Edit || {}, L.Edit.Circle = L.Edit.CircleMarker.extend({
+                _createResizeMarker: function () {
+                    var t = this._shape.getLatLng(), e = this._getResizeMarkerPoint(t);
+                    this._resizeMarkers = [], this._resizeMarkers.push(this._createMarker(e, this.options.resizeIcon))
+                }, _getResizeMarkerPoint: function (t) {
+                    var e = this._shape._radius * Math.cos(Math.PI / 4), i = this._map.project(t);
+                    return this._map.unproject([i.x + e, i.y - e])
+                }, _resize: function (t) {
+                    var e = this._moveMarker.getLatLng();
+                    L.GeometryUtil.isVersion07x() ? radius = e.distanceTo(t) : radius = this._map.distance(e, t), this._shape.setRadius(radius), this._map.editTooltip && this._map._editTooltip.updateContent({
+                        text: L.drawLocal.edit.handlers.edit.tooltip.subtext + "<br />" + L.drawLocal.edit.handlers.edit.tooltip.text,
+                        subtext: L.drawLocal.draw.handlers.circle.radius + ": " + L.GeometryUtil.readableDistance(radius, !0, this.options.feet, this.options.nautic)
+                    }), this._shape.setRadius(radius), this._map.fire(L.Draw.Event.EDITRESIZE, {layer: this._shape})
+                }
+            }), L.Circle.addInitHook(function () {
+                L.Edit.Circle && (this.editing = new L.Edit.Circle(this), this.options.editable && this.editing.enable()), this.on("add", function () {
+                    this.editing && this.editing.enabled() && this.editing.addHooks()
+                }), this.on("remove", function () {
+                    this.editing && this.editing.enabled() && this.editing.removeHooks()
+                })
+            }), L.Map.mergeOptions({touchExtend: !0}), L.Map.TouchExtend = L.Handler.extend({
+                initialize: function (t) {
+                    this._map = t, this._container = t._container, this._pane = t._panes.overlayPane
+                }, addHooks: function () {
+                    L.DomEvent.on(this._container, "touchstart", this._onTouchStart, this), L.DomEvent.on(this._container, "touchend", this._onTouchEnd, this), L.DomEvent.on(this._container, "touchmove", this._onTouchMove, this), this._detectIE() ? (L.DomEvent.on(this._container, "MSPointerDown", this._onTouchStart, this), L.DomEvent.on(this._container, "MSPointerUp", this._onTouchEnd, this), L.DomEvent.on(this._container, "MSPointerMove", this._onTouchMove, this), L.DomEvent.on(this._container, "MSPointerCancel", this._onTouchCancel, this)) : (L.DomEvent.on(this._container, "touchcancel", this._onTouchCancel, this), L.DomEvent.on(this._container, "touchleave", this._onTouchLeave, this))
+                }, removeHooks: function () {
+                    L.DomEvent.off(this._container, "touchstart", this._onTouchStart), L.DomEvent.off(this._container, "touchend", this._onTouchEnd), L.DomEvent.off(this._container, "touchmove", this._onTouchMove), this._detectIE() ? (L.DomEvent.off(this._container, "MSPointerDowm", this._onTouchStart), L.DomEvent.off(this._container, "MSPointerUp", this._onTouchEnd), L.DomEvent.off(this._container, "MSPointerMove", this._onTouchMove), L.DomEvent.off(this._container, "MSPointerCancel", this._onTouchCancel)) : (L.DomEvent.off(this._container, "touchcancel", this._onTouchCancel), L.DomEvent.off(this._container, "touchleave", this._onTouchLeave))
+                }, _touchEvent: function (t, e) {
+                    var i = {};
+                    if (void 0 !== t.touches) {
+                        if (!t.touches.length) return;
+                        i = t.touches[0]
+                    } else {
+                        if ("touch" !== t.pointerType) return;
+                        if (i = t, !this._filterClick(t)) return
+                    }
+                    var o = this._map.mouseEventToContainerPoint(i), a = this._map.mouseEventToLayerPoint(i),
+                        n = this._map.layerPointToLatLng(a);
+                    this._map.fire(e, {
+                        latlng: n,
+                        layerPoint: a,
+                        containerPoint: o,
+                        pageX: i.pageX,
+                        pageY: i.pageY,
+                        originalEvent: t
+                    })
+                }, _filterClick: function (t) {
+                    var e = t.timeStamp || t.originalEvent.timeStamp,
+                        i = L.DomEvent._lastClick && e - L.DomEvent._lastClick;
+                    return i && i > 100 && i < 500 || t.target._simulatedClick && !t._simulated ? (L.DomEvent.stop(t), !1) : (L.DomEvent._lastClick = e, !0)
+                }, _onTouchStart: function (t) {
+                    if (this._map._loaded) {
+                        this._touchEvent(t, "touchstart")
+                    }
+                }, _onTouchEnd: function (t) {
+                    if (this._map._loaded) {
+                        this._touchEvent(t, "touchend")
+                    }
+                }, _onTouchCancel: function (t) {
+                    if (this._map._loaded) {
+                        var e = "touchcancel";
+                        this._detectIE() && (e = "pointercancel"), this._touchEvent(t, e)
+                    }
+                }, _onTouchLeave: function (t) {
+                    if (this._map._loaded) {
+                        this._touchEvent(t, "touchleave")
+                    }
+                }, _onTouchMove: function (t) {
+                    if (this._map._loaded) {
+                        this._touchEvent(t, "touchmove")
+                    }
+                }, _detectIE: function () {
+                    var e = t.navigator.userAgent, i = e.indexOf("MSIE ");
+                    if (i > 0) return parseInt(e.substring(i + 5, e.indexOf(".", i)), 10);
+                    if (e.indexOf("Trident/") > 0) {
+                        var o = e.indexOf("rv:");
+                        return parseInt(e.substring(o + 3, e.indexOf(".", o)), 10)
+                    }
+                    var a = e.indexOf("Edge/");
+                    return a > 0 && parseInt(e.substring(a + 5, e.indexOf(".", a)), 10)
+                }
+            }), L.Map.addInitHook("addHandler", "touchExtend", L.Map.TouchExtend), L.Marker.Touch = L.Marker.extend({
+                _initInteraction: function () {
+                    return this.addInteractiveTarget ? L.Marker.prototype._initInteraction.apply(this) : this._initInteractionLegacy()
+                }, _initInteractionLegacy: function () {
+                    if (this.options.clickable) {
+                        var t = this._icon,
+                            e = ["dblclick", "mousedown", "mouseover", "mouseout", "contextmenu", "touchstart", "touchend", "touchmove"];
+                        this._detectIE ? e.concat(["MSPointerDown", "MSPointerUp", "MSPointerMove", "MSPointerCancel"]) : e.concat(["touchcancel"]), L.DomUtil.addClass(t, "leaflet-clickable"), L.DomEvent.on(t, "click", this._onMouseClick, this), L.DomEvent.on(t, "keypress", this._onKeyPress, this);
+                        for (var i = 0; i < e.length; i++) L.DomEvent.on(t, e[i], this._fireMouseEvent, this);
+                        L.Handler.MarkerDrag && (this.dragging = new L.Handler.MarkerDrag(this), this.options.draggable && this.dragging.enable())
+                    }
+                }, _detectIE: function () {
+                    var e = t.navigator.userAgent, i = e.indexOf("MSIE ");
+                    if (i > 0) return parseInt(e.substring(i + 5, e.indexOf(".", i)), 10);
+                    if (e.indexOf("Trident/") > 0) {
+                        var o = e.indexOf("rv:");
+                        return parseInt(e.substring(o + 3, e.indexOf(".", o)), 10)
+                    }
+                    var a = e.indexOf("Edge/");
+                    return a > 0 && parseInt(e.substring(a + 5, e.indexOf(".", a)), 10)
+                }
+            }), L.LatLngUtil = {
+                cloneLatLngs: function (t) {
+                    for (var e = [], i = 0, o = t.length; i < o; i++) Array.isArray(t[i]) ? e.push(L.LatLngUtil.cloneLatLngs(t[i])) : e.push(this.cloneLatLng(t[i]));
+                    return e
+                }, cloneLatLng: function (t) {
+                    return L.latLng(t.lat, t.lng)
+                }
+            }, function () {
+                var t = {km: 2, ha: 2, m: 0, mi: 2, ac: 2, yd: 0, ft: 0, nm: 2};
+                L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
+                    geodesicArea: function (t) {
+                        var e, i, o = t.length, a = 0, n = Math.PI / 180;
+                        if (o > 2) {
+                            for (var s = 0; s < o; s++) e = t[s], i = t[(s + 1) % o], a += (i.lng - e.lng) * n * (2 + Math.sin(e.lat * n) + Math.sin(i.lat * n));
+                            a = 6378137 * a * 6378137 / 2
+                        }
+                        return Math.abs(a)
+                    }, formattedNumber: function (t, e) {
+                        var i = parseFloat(t).toFixed(e), o = L.drawLocal.format && L.drawLocal.format.numeric,
+                            a = o && o.delimiters, n = a && a.thousands, s = a && a.decimal;
+                        if (n || s) {
+                            var r = i.split(".");
+                            i = n ? r[0].replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1" + n) : r[0], s = s || ".", r.length > 1 && (i = i + s + r[1])
+                        }
+                        return i
+                    }, readableArea: function (e, i, o) {
+                        var a, n, o = L.Util.extend({}, t, o);
+                        return i ? (n = ["ha", "m"], type = typeof i, "string" === type ? n = [i] : "boolean" !== type && (n = i), a = e >= 1e6 && -1 !== n.indexOf("km") ? L.GeometryUtil.formattedNumber(1e-6 * e, o.km) + " km²" : e >= 1e4 && -1 !== n.indexOf("ha") ? L.GeometryUtil.formattedNumber(1e-4 * e, o.ha) + " ha" : L.GeometryUtil.formattedNumber(e, o.m) + " m²") : (e /= .836127, a = e >= 3097600 ? L.GeometryUtil.formattedNumber(e / 3097600, o.mi) + " mi²" : e >= 4840 ? L.GeometryUtil.formattedNumber(e / 4840, o.ac) + " acres" : L.GeometryUtil.formattedNumber(e, o.yd) + " yd²"), a
+                    }, readableDistance: function (e, i, o, a, n) {
+                        var s, n = L.Util.extend({}, t, n);
+                        switch (i ? "string" == typeof i ? i : "metric" : o ? "feet" : a ? "nauticalMile" : "yards") {
+                            case "metric":
+                                s = e > 1e3 ? L.GeometryUtil.formattedNumber(e / 1e3, n.km) + " km" : L.GeometryUtil.formattedNumber(e, n.m) + " m";
+                                break;
+                            case "feet":
+                                e *= 3.28083, s = L.GeometryUtil.formattedNumber(e, n.ft) + " ft";
+                                break;
+                            case "nauticalMile":
+                                e *= .53996, s = L.GeometryUtil.formattedNumber(e / 1e3, n.nm) + " nm";
+                                break;
+                            case "yards":
+                            default:
+                                e *= 1.09361, s = e > 1760 ? L.GeometryUtil.formattedNumber(e / 1760, n.mi) + " miles" : L.GeometryUtil.formattedNumber(e, n.yd) + " yd"
+                        }
+                        return s
+                    }, isVersion07x: function () {
+                        var t = L.version.split(".");
+                        return 0 === parseInt(t[0], 10) && 7 === parseInt(t[1], 10)
+                    }
+                })
+            }(), L.Util.extend(L.LineUtil, {
+                segmentsIntersect: function (t, e, i, o) {
+                    return this._checkCounterclockwise(t, i, o) !== this._checkCounterclockwise(e, i, o) && this._checkCounterclockwise(t, e, i) !== this._checkCounterclockwise(t, e, o)
+                }, _checkCounterclockwise: function (t, e, i) {
+                    return (i.y - t.y) * (e.x - t.x) > (e.y - t.y) * (i.x - t.x)
+                }
+            }), L.Polyline.include({
+                intersects: function () {
+                    var t, e, i, o = this._getProjectedPoints(), a = o ? o.length : 0;
+                    if (this._tooFewPointsForIntersection()) return !1;
+                    for (t = a - 1; t >= 3; t--) if (e = o[t - 1], i = o[t], this._lineSegmentsIntersectsRange(e, i, t - 2)) return !0;
+                    return !1
+                }, newLatLngIntersects: function (t, e) {
+                    return !!this._map && this.newPointIntersects(this._map.latLngToLayerPoint(t), e)
+                }, newPointIntersects: function (t, e) {
+                    var i = this._getProjectedPoints(), o = i ? i.length : 0, a = i ? i[o - 1] : null, n = o - 2;
+                    return !this._tooFewPointsForIntersection(1) && this._lineSegmentsIntersectsRange(a, t, n, e ? 1 : 0)
+                }, _tooFewPointsForIntersection: function (t) {
+                    var e = this._getProjectedPoints(), i = e ? e.length : 0;
+                    return i += t || 0, !e || i <= 3
+                }, _lineSegmentsIntersectsRange: function (t, e, i, o) {
+                    var a, n, s = this._getProjectedPoints();
+                    o = o || 0;
+                    for (var r = i; r > o; r--) if (a = s[r - 1], n = s[r], L.LineUtil.segmentsIntersect(t, e, a, n)) return !0;
+                    return !1
+                }, _getProjectedPoints: function () {
+                    if (!this._defaultShape) return this._originalPoints;
+                    for (var t = [], e = this._defaultShape(), i = 0; i < e.length; i++) t.push(this._map.latLngToLayerPoint(e[i]));
+                    return t
+                }
+            }), L.Polygon.include({
+                intersects: function () {
+                    var t, e, i, o, a = this._getProjectedPoints();
+                    return !this._tooFewPointsForIntersection() && (!!L.Polyline.prototype.intersects.call(this) || (t = a.length, e = a[0], i = a[t - 1], o = t - 2, this._lineSegmentsIntersectsRange(i, e, o, 1)))
+                }
+            }), L.Control.Draw = L.Control.extend({
+                options: {position: "topleft", draw: {}, edit: !1}, initialize: function (t) {
+                    if (L.version < "0.7") throw new Error("Leaflet.draw 0.2.3+ requires Leaflet 0.7.0+. Download latest from https://github.com/Leaflet/Leaflet/");
+                    L.Control.prototype.initialize.call(this, t);
+                    var e;
+                    this._toolbars = {}, L.DrawToolbar && this.options.draw && (e = new L.DrawToolbar(this.options.draw), this._toolbars[L.DrawToolbar.TYPE] = e, this._toolbars[L.DrawToolbar.TYPE].on("enable", this._toolbarEnabled, this)), L.EditToolbar && this.options.edit && (e = new L.EditToolbar(this.options.edit), this._toolbars[L.EditToolbar.TYPE] = e, this._toolbars[L.EditToolbar.TYPE].on("enable", this._toolbarEnabled, this)), L.toolbar = this
+                }, onAdd: function (t) {
+                    var e, i = L.DomUtil.create("div", "leaflet-draw"), o = !1;
+                    for (var a in this._toolbars) this._toolbars.hasOwnProperty(a) && (e = this._toolbars[a].addToolbar(t)) && (o || (L.DomUtil.hasClass(e, "leaflet-draw-toolbar-top") || L.DomUtil.addClass(e.childNodes[0], "leaflet-draw-toolbar-top"), o = !0), i.appendChild(e));
+                    return i
+                }, onRemove: function () {
+                    for (var t in this._toolbars) this._toolbars.hasOwnProperty(t) && this._toolbars[t].removeToolbar()
+                }, setDrawingOptions: function (t) {
+                    for (var e in this._toolbars) this._toolbars[e] instanceof L.DrawToolbar && this._toolbars[e].setOptions(t)
+                }, _toolbarEnabled: function (t) {
+                    var e = t.target;
+                    for (var i in this._toolbars) this._toolbars[i] !== e && this._toolbars[i].disable()
+                }
+            }), L.Map.mergeOptions({drawControlTooltips: !0, drawControl: !1}), L.Map.addInitHook(function () {
+                this.options.drawControl && (this.drawControl = new L.Control.Draw, this.addControl(this.drawControl))
+            }), L.Toolbar = L.Class.extend({
+                initialize: function (t) {
+                    L.setOptions(this, t), this._modes = {}, this._actionButtons = [], this._activeMode = null;
+                    var e = L.version.split(".");
+                    1 === parseInt(e[0], 10) && parseInt(e[1], 10) >= 2 ? L.Toolbar.include(L.Evented.prototype) : L.Toolbar.include(L.Mixin.Events)
+                }, enabled: function () {
+                    return null !== this._activeMode
+                }, disable: function () {
+                    this.enabled() && this._activeMode.handler.disable()
+                }, addToolbar: function (t) {
+                    var e, i = L.DomUtil.create("div", "leaflet-draw-section"), o = 0, a = this._toolbarClass || "",
+                        n = this.getModeHandlers(t);
+                    for (this._toolbarContainer = L.DomUtil.create("div", "leaflet-draw-toolbar leaflet-bar"), this._map = t, e = 0; e < n.length; e++) n[e].enabled && this._initModeHandler(n[e].handler, this._toolbarContainer, o++, a, n[e].title);
+                    if (o) return this._lastButtonIndex = --o, this._actionsContainer = L.DomUtil.create("ul", "leaflet-draw-actions"), i.appendChild(this._toolbarContainer), i.appendChild(this._actionsContainer), i
+                }, removeToolbar: function () {
+                    for (var t in this._modes) this._modes.hasOwnProperty(t) && (this._disposeButton(this._modes[t].button, this._modes[t].handler.enable, this._modes[t].handler), this._modes[t].handler.disable(), this._modes[t].handler.off("enabled", this._handlerActivated, this).off("disabled", this._handlerDeactivated, this));
+                    this._modes = {};
+                    for (var e = 0, i = this._actionButtons.length; e < i; e++) this._disposeButton(this._actionButtons[e].button, this._actionButtons[e].callback, this);
+                    this._actionButtons = [], this._actionsContainer = null
+                }, _initModeHandler: function (t, e, i, o, a) {
+                    var n = t.type;
+                    this._modes[n] = {}, this._modes[n].handler = t, this._modes[n].button = this._createButton({
+                        type: n,
+                        title: a,
+                        className: o + "-" + n,
+                        container: e,
+                        callback: this._modes[n].handler.enable,
+                        context: this._modes[n].handler
+                    }), this._modes[n].buttonIndex = i, this._modes[n].handler.on("enabled", this._handlerActivated, this).on("disabled", this._handlerDeactivated, this)
+                }, _detectIOS: function () {
+                    return /iPad|iPhone|iPod/.test(navigator.userAgent) && !t.MSStream
+                }, _createButton: function (t) {
+                    var e = L.DomUtil.create("a", t.className || "", t.container),
+                        i = L.DomUtil.create("span", "sr-only", t.container);
+                    e.href = "#", e.appendChild(i), t.title && (e.title = t.title, i.innerHTML = t.title), t.text && (e.innerHTML = t.text, i.innerHTML = t.text);
+                    var o = this._detectIOS() ? "touchstart" : "click";
+                    return L.DomEvent.on(e, "click", L.DomEvent.stopPropagation).on(e, "mousedown", L.DomEvent.stopPropagation).on(e, "dblclick", L.DomEvent.stopPropagation).on(e, "touchstart", L.DomEvent.stopPropagation).on(e, "click", L.DomEvent.preventDefault).on(e, o, t.callback, t.context), e
+                }, _disposeButton: function (t, e) {
+                    var i = this._detectIOS() ? "touchstart" : "click";
+                    L.DomEvent.off(t, "click", L.DomEvent.stopPropagation).off(t, "mousedown", L.DomEvent.stopPropagation).off(t, "dblclick", L.DomEvent.stopPropagation).off(t, "touchstart", L.DomEvent.stopPropagation).off(t, "click", L.DomEvent.preventDefault).off(t, i, e)
+                }, _handlerActivated: function (t) {
+                    this.disable(), this._activeMode = this._modes[t.handler], L.DomUtil.addClass(this._activeMode.button, "leaflet-draw-toolbar-button-enabled"), this._showActionsToolbar(), this.fire("enable")
+                }, _handlerDeactivated: function () {
+                    this._hideActionsToolbar(), L.DomUtil.removeClass(this._activeMode.button, "leaflet-draw-toolbar-button-enabled"), this._activeMode = null, this.fire("disable")
+                }, _createActions: function (t) {
+                    var e, i, o, a, n = this._actionsContainer, s = this.getActions(t), r = s.length;
+                    for (i = 0, o = this._actionButtons.length; i < o; i++) this._disposeButton(this._actionButtons[i].button, this._actionButtons[i].callback);
+                    for (this._actionButtons = []; n.firstChild;) n.removeChild(n.firstChild);
+                    for (var l = 0; l < r; l++) "enabled" in s[l] && !s[l].enabled || (e = L.DomUtil.create("li", "", n), a = this._createButton({
+                        title: s[l].title,
+                        text: s[l].text,
+                        container: e,
+                        callback: s[l].callback,
+                        context: s[l].context
+                    }), this._actionButtons.push({button: a, callback: s[l].callback}))
+                }, _showActionsToolbar: function () {
+                    var t = this._activeMode.buttonIndex, e = this._lastButtonIndex,
+                        i = this._activeMode.button.offsetTop - 1;
+                    this._createActions(this._activeMode.handler), this._actionsContainer.style.top = i + "px", 0 === t && (L.DomUtil.addClass(this._toolbarContainer, "leaflet-draw-toolbar-notop"), L.DomUtil.addClass(this._actionsContainer, "leaflet-draw-actions-top")), t === e && (L.DomUtil.addClass(this._toolbarContainer, "leaflet-draw-toolbar-nobottom"), L.DomUtil.addClass(this._actionsContainer, "leaflet-draw-actions-bottom")), this._actionsContainer.style.display = "block", this._map.fire(L.Draw.Event.TOOLBAROPENED)
+                }, _hideActionsToolbar: function () {
+                    this._actionsContainer.style.display = "none", L.DomUtil.removeClass(this._toolbarContainer, "leaflet-draw-toolbar-notop"), L.DomUtil.removeClass(this._toolbarContainer, "leaflet-draw-toolbar-nobottom"), L.DomUtil.removeClass(this._actionsContainer, "leaflet-draw-actions-top"), L.DomUtil.removeClass(this._actionsContainer, "leaflet-draw-actions-bottom"), this._map.fire(L.Draw.Event.TOOLBARCLOSED)
+                }
+            }), L.Draw = L.Draw || {}, L.Draw.Tooltip = L.Class.extend({
+                initialize: function (t) {
+                    this._map = t, this._popupPane = t._panes.popupPane, this._visible = !1, this._container = t.options.drawControlTooltips ? L.DomUtil.create("div", "leaflet-draw-tooltip", this._popupPane) : null, this._singleLineLabel = !1, this._map.on("mouseout", this._onMouseOut, this)
+                }, dispose: function () {
+                    this._map.off("mouseout", this._onMouseOut, this), this._container && (this._popupPane.removeChild(this._container), this._container = null)
+                }, updateContent: function (t) {
+                    return this._container ? (t.subtext = t.subtext || "", 0 !== t.subtext.length || this._singleLineLabel ? t.subtext.length > 0 && this._singleLineLabel && (L.DomUtil.removeClass(this._container, "leaflet-draw-tooltip-single"), this._singleLineLabel = !1) : (L.DomUtil.addClass(this._container, "leaflet-draw-tooltip-single"), this._singleLineLabel = !0), this._container.innerHTML = (t.subtext.length > 0 ? '<span class="leaflet-draw-tooltip-subtext">' + t.subtext + "</span><br />" : "") + "<span>" + t.text + "</span>", t.text || t.subtext ? (this._visible = !0, this._container.style.visibility = "inherit") : (this._visible = !1, this._container.style.visibility = "hidden"), this) : this
+                }, updatePosition: function (t) {
+                    var e = this._map.latLngToLayerPoint(t), i = this._container;
+                    return this._container && (this._visible && (i.style.visibility = "inherit"), L.DomUtil.setPosition(i, e)), this
+                }, showAsError: function () {
+                    return this._container && L.DomUtil.addClass(this._container, "leaflet-error-draw-tooltip"), this
+                }, removeError: function () {
+                    return this._container && L.DomUtil.removeClass(this._container, "leaflet-error-draw-tooltip"), this
+                }, _onMouseOut: function () {
+                    this._container && (this._container.style.visibility = "hidden")
+                }
+            }), L.DrawToolbar = L.Toolbar.extend({
+                statics: {TYPE: "draw"},
+                options: {polyline: {}, polygon: {}, rectangle: {}, circle: {}, marker: {}, circlemarker: {}},
+                initialize: function (t) {
+                    for (var e in this.options) this.options.hasOwnProperty(e) && t[e] && (t[e] = L.extend({}, this.options[e], t[e]));
+                    this._toolbarClass = "leaflet-draw-draw", L.Toolbar.prototype.initialize.call(this, t)
+                },
+                getModeHandlers: function (t) {
+                    return [{
+                        enabled: this.options.polyline,
+                        handler: new L.Draw.Polyline(t, this.options.polyline),
+                        title: L.drawLocal.draw.toolbar.buttons.polyline
+                    }, {
+                        enabled: this.options.polygon,
+                        handler: new L.Draw.Polygon(t, this.options.polygon),
+                        title: L.drawLocal.draw.toolbar.buttons.polygon
+                    }, {
+                        enabled: this.options.rectangle,
+                        handler: new L.Draw.Rectangle(t, this.options.rectangle),
+                        title: L.drawLocal.draw.toolbar.buttons.rectangle
+                    }, {
+                        enabled: this.options.circle,
+                        handler: new L.Draw.Circle(t, this.options.circle),
+                        title: L.drawLocal.draw.toolbar.buttons.circle
+                    }, {
+                        enabled: this.options.marker,
+                        handler: new L.Draw.Marker(t, this.options.marker),
+                        title: L.drawLocal.draw.toolbar.buttons.marker
+                    }, {
+                        enabled: this.options.circlemarker,
+                        handler: new L.Draw.CircleMarker(t, this.options.circlemarker),
+                        title: L.drawLocal.draw.toolbar.buttons.circlemarker
+                    }]
+                },
+                getActions: function (t) {
+                    return [{
+                        enabled: t.completeShape,
+                        title: L.drawLocal.draw.toolbar.finish.title,
+                        text: L.drawLocal.draw.toolbar.finish.text,
+                        callback: t.completeShape,
+                        context: t
+                    }, {
+                        enabled: t.deleteLastVertex,
+                        title: L.drawLocal.draw.toolbar.undo.title,
+                        text: L.drawLocal.draw.toolbar.undo.text,
+                        callback: t.deleteLastVertex,
+                        context: t
+                    }, {
+                        title: L.drawLocal.draw.toolbar.actions.title,
+                        text: L.drawLocal.draw.toolbar.actions.text,
+                        callback: this.disable,
+                        context: this
+                    }]
+                },
+                setOptions: function (t) {
+                    L.setOptions(this, t);
+                    for (var e in this._modes) this._modes.hasOwnProperty(e) && t.hasOwnProperty(e) && this._modes[e].handler.setOptions(t[e])
+                }
+            }), L.EditToolbar = L.Toolbar.extend({
+                statics: {TYPE: "edit"},
+                options: {
+                    edit: {
+                        selectedPathOptions: {
+                            dashArray: "10, 10",
+                            fill: !0,
+                            fillColor: "#fe57a1",
+                            fillOpacity: .1,
+                            maintainColor: !1
+                        }
+                    }, remove: {}, poly: null, featureGroup: null
+                },
+                initialize: function (t) {
+                    t.edit && (void 0 === t.edit.selectedPathOptions && (t.edit.selectedPathOptions = this.options.edit.selectedPathOptions), t.edit.selectedPathOptions = L.extend({}, this.options.edit.selectedPathOptions, t.edit.selectedPathOptions)), t.remove && (t.remove = L.extend({}, this.options.remove, t.remove)), t.poly && (t.poly = L.extend({}, this.options.poly, t.poly)), this._toolbarClass = "leaflet-draw-edit", L.Toolbar.prototype.initialize.call(this, t), this._selectedFeatureCount = 0
+                },
+                getModeHandlers: function (t) {
+                    var e = this.options.featureGroup;
+                    return [{
+                        enabled: this.options.edit,
+                        handler: new L.EditToolbar.Edit(t, {
+                            featureGroup: e,
+                            selectedPathOptions: this.options.edit.selectedPathOptions,
+                            poly: this.options.poly
+                        }),
+                        title: L.drawLocal.edit.toolbar.buttons.edit
+                    }, {
+                        enabled: this.options.remove,
+                        handler: new L.EditToolbar.Delete(t, {featureGroup: e}),
+                        title: L.drawLocal.edit.toolbar.buttons.remove
+                    }]
+                },
+                getActions: function (t) {
+                    var e = [{
+                        title: L.drawLocal.edit.toolbar.actions.save.title,
+                        text: L.drawLocal.edit.toolbar.actions.save.text,
+                        callback: this._save,
+                        context: this
+                    }, {
+                        title: L.drawLocal.edit.toolbar.actions.cancel.title,
+                        text: L.drawLocal.edit.toolbar.actions.cancel.text,
+                        callback: this.disable,
+                        context: this
+                    }];
+                    return t.removeAllLayers && e.push({
+                        title: L.drawLocal.edit.toolbar.actions.clearAll.title,
+                        text: L.drawLocal.edit.toolbar.actions.clearAll.text,
+                        callback: this._clearAllLayers,
+                        context: this
+                    }), e
+                },
+                addToolbar: function (t) {
+                    var e = L.Toolbar.prototype.addToolbar.call(this, t);
+                    return this._checkDisabled(), this.options.featureGroup.on("layeradd layerremove", this._checkDisabled, this), e
+                },
+                removeToolbar: function () {
+                    this.options.featureGroup.off("layeradd layerremove", this._checkDisabled, this), L.Toolbar.prototype.removeToolbar.call(this)
+                },
+                disable: function () {
+                    this.enabled() && (this._activeMode.handler.revertLayers(), L.Toolbar.prototype.disable.call(this))
+                },
+                _save: function () {
+                    this._activeMode.handler.save(), this._activeMode && this._activeMode.handler.disable()
+                },
+                _clearAllLayers: function () {
+                    this._activeMode.handler.removeAllLayers(), this._activeMode && this._activeMode.handler.disable()
+                },
+                _checkDisabled: function () {
+                    var t, e = this.options.featureGroup, i = 0 !== e.getLayers().length;
+                    this.options.edit && (t = this._modes[L.EditToolbar.Edit.TYPE].button, i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"), t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.edit : L.drawLocal.edit.toolbar.buttons.editDisabled)), this.options.remove && (t = this._modes[L.EditToolbar.Delete.TYPE].button, i ? L.DomUtil.removeClass(t, "leaflet-disabled") : L.DomUtil.addClass(t, "leaflet-disabled"), t.setAttribute("title", i ? L.drawLocal.edit.toolbar.buttons.remove : L.drawLocal.edit.toolbar.buttons.removeDisabled))
+                }
+            }), L.EditToolbar.Edit = L.Handler.extend({
+                statics: {TYPE: "edit"}, initialize: function (t, e) {
+                    if (L.Handler.prototype.initialize.call(this, t), L.setOptions(this, e), this._featureGroup = e.featureGroup, !(this._featureGroup instanceof L.FeatureGroup)) throw new Error("options.featureGroup must be a L.FeatureGroup");
+                    this._uneditedLayerProps = {}, this.type = L.EditToolbar.Edit.TYPE;
+                    var i = L.version.split(".");
+                    1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.EditToolbar.Edit.include(L.Evented.prototype) : L.EditToolbar.Edit.include(L.Mixin.Events)
+                }, enable: function () {
+                    !this._enabled && this._hasAvailableLayers() && (this.fire("enabled", {handler: this.type}), this._map.fire(L.Draw.Event.EDITSTART, {handler: this.type}), L.Handler.prototype.enable.call(this), this._featureGroup.on("layeradd", this._enableLayerEdit, this).on("layerremove", this._disableLayerEdit, this))
+                }, disable: function () {
+                    this._enabled && (this._featureGroup.off("layeradd", this._enableLayerEdit, this).off("layerremove", this._disableLayerEdit, this), L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.EDITSTOP, {handler: this.type}), this.fire("disabled", {handler: this.type}))
+                }, addHooks: function () {
+                    var t = this._map;
+                    t && (t.getContainer().focus(), this._featureGroup.eachLayer(this._enableLayerEdit, this), this._tooltip = new L.Draw.Tooltip(this._map), this._tooltip.updateContent({
+                        text: L.drawLocal.edit.handlers.edit.tooltip.text,
+                        subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
+                    }), t._editTooltip = this._tooltip, this._updateTooltip(), this._map.on("mousemove", this._onMouseMove, this).on("touchmove", this._onMouseMove, this).on("MSPointerMove", this._onMouseMove, this).on(L.Draw.Event.EDITVERTEX, this._updateTooltip, this))
+                }, removeHooks: function () {
+                    this._map && (this._featureGroup.eachLayer(this._disableLayerEdit, this), this._uneditedLayerProps = {}, this._tooltip.dispose(), this._tooltip = null, this._map.off("mousemove", this._onMouseMove, this).off("touchmove", this._onMouseMove, this).off("MSPointerMove", this._onMouseMove, this).off(L.Draw.Event.EDITVERTEX, this._updateTooltip, this))
+                }, revertLayers: function () {
+                    this._featureGroup.eachLayer(function (t) {
+                        this._revertLayer(t)
+                    }, this)
+                }, save: function () {
+                    var t = new L.LayerGroup;
+                    this._featureGroup.eachLayer(function (e) {
+                        e.edited && (t.addLayer(e), e.edited = !1)
+                    }), this._map.fire(L.Draw.Event.EDITED, {layers: t})
+                }, _backupLayer: function (t) {
+                    var e = L.Util.stamp(t);
+                    this._uneditedLayerProps[e] || (t instanceof L.Polyline || t instanceof L.Polygon || t instanceof L.Rectangle ? this._uneditedLayerProps[e] = {latlngs: L.LatLngUtil.cloneLatLngs(t.getLatLngs())} : t instanceof L.Circle ? this._uneditedLayerProps[e] = {
+                        latlng: L.LatLngUtil.cloneLatLng(t.getLatLng()),
+                        radius: t.getRadius()
+                    } : (t instanceof L.Marker || t instanceof L.CircleMarker) && (this._uneditedLayerProps[e] = {latlng: L.LatLngUtil.cloneLatLng(t.getLatLng())}))
+                }, _getTooltipText: function () {
+                    return {
+                        text: L.drawLocal.edit.handlers.edit.tooltip.text,
+                        subtext: L.drawLocal.edit.handlers.edit.tooltip.subtext
+                    }
+                }, _updateTooltip: function () {
+                    this._tooltip.updateContent(this._getTooltipText())
+                }, _revertLayer: function (t) {
+                    var e = L.Util.stamp(t);
+                    t.edited = !1, this._uneditedLayerProps.hasOwnProperty(e) && (t instanceof L.Polyline || t instanceof L.Polygon || t instanceof L.Rectangle ? t.setLatLngs(this._uneditedLayerProps[e].latlngs) : t instanceof L.Circle ? (t.setLatLng(this._uneditedLayerProps[e].latlng), t.setRadius(this._uneditedLayerProps[e].radius)) : (t instanceof L.Marker || t instanceof L.CircleMarker) && t.setLatLng(this._uneditedLayerProps[e].latlng), t.fire("revert-edited", {layer: t}))
+                }, _enableLayerEdit: function (t) {
+                    var e, i, o = t.layer || t.target || t;
+                    this._backupLayer(o), this.options.poly && (i = L.Util.extend({}, this.options.poly), o.options.poly = i), this.options.selectedPathOptions && (e = L.Util.extend({}, this.options.selectedPathOptions), e.maintainColor && (e.color = o.options.color, e.fillColor = o.options.fillColor), o.options.original = L.extend({}, o.options), o.options.editing = e), o instanceof L.Marker ? (o.editing && o.editing.enable(), o.dragging.enable(), o.on("dragend", this._onMarkerDragEnd).on("touchmove", this._onTouchMove, this).on("MSPointerMove", this._onTouchMove, this).on("touchend", this._onMarkerDragEnd, this).on("MSPointerUp", this._onMarkerDragEnd, this)) : o.editing.enable()
+                }, _disableLayerEdit: function (t) {
+                    var e = t.layer || t.target || t;
+                    e.edited = !1, e.editing && e.editing.disable(), delete e.options.editing, delete e.options.original,
+                    this._selectedPathOptions && (e instanceof L.Marker ? this._toggleMarkerHighlight(e) : (e.setStyle(e.options.previousOptions), delete e.options.previousOptions)), e instanceof L.Marker ? (e.dragging.disable(), e.off("dragend", this._onMarkerDragEnd, this).off("touchmove", this._onTouchMove, this).off("MSPointerMove", this._onTouchMove, this).off("touchend", this._onMarkerDragEnd, this).off("MSPointerUp", this._onMarkerDragEnd, this)) : e.editing.disable()
+                }, _onMouseMove: function (t) {
+                    this._tooltip.updatePosition(t.latlng)
+                }, _onMarkerDragEnd: function (t) {
+                    var e = t.target;
+                    e.edited = !0, this._map.fire(L.Draw.Event.EDITMOVE, {layer: e})
+                }, _onTouchMove: function (t) {
+                    var e = t.originalEvent.changedTouches[0], i = this._map.mouseEventToLayerPoint(e),
+                        o = this._map.layerPointToLatLng(i);
+                    t.target.setLatLng(o)
+                }, _hasAvailableLayers: function () {
+                    return 0 !== this._featureGroup.getLayers().length
+                }
+            }), L.EditToolbar.Delete = L.Handler.extend({
+                statics: {TYPE: "remove"}, initialize: function (t, e) {
+                    if (L.Handler.prototype.initialize.call(this, t), L.Util.setOptions(this, e), this._deletableLayers = this.options.featureGroup, !(this._deletableLayers instanceof L.FeatureGroup)) throw new Error("options.featureGroup must be a L.FeatureGroup");
+                    this.type = L.EditToolbar.Delete.TYPE;
+                    var i = L.version.split(".");
+                    1 === parseInt(i[0], 10) && parseInt(i[1], 10) >= 2 ? L.EditToolbar.Delete.include(L.Evented.prototype) : L.EditToolbar.Delete.include(L.Mixin.Events)
+                }, enable: function () {
+                    !this._enabled && this._hasAvailableLayers() && (this.fire("enabled", {handler: this.type}), this._map.fire(L.Draw.Event.DELETESTART, {handler: this.type}), L.Handler.prototype.enable.call(this), this._deletableLayers.on("layeradd", this._enableLayerDelete, this).on("layerremove", this._disableLayerDelete, this))
+                }, disable: function () {
+                    this._enabled && (this._deletableLayers.off("layeradd", this._enableLayerDelete, this).off("layerremove", this._disableLayerDelete, this), L.Handler.prototype.disable.call(this), this._map.fire(L.Draw.Event.DELETESTOP, {handler: this.type}), this.fire("disabled", {handler: this.type}))
+                }, addHooks: function () {
+                    var t = this._map;
+                    t && (t.getContainer().focus(), this._deletableLayers.eachLayer(this._enableLayerDelete, this), this._deletedLayers = new L.LayerGroup, this._tooltip = new L.Draw.Tooltip(this._map), this._tooltip.updateContent({text: L.drawLocal.edit.handlers.remove.tooltip.text}), this._map.on("mousemove", this._onMouseMove, this))
+                }, removeHooks: function () {
+                    this._map && (this._deletableLayers.eachLayer(this._disableLayerDelete, this), this._deletedLayers = null, this._tooltip.dispose(), this._tooltip = null, this._map.off("mousemove", this._onMouseMove, this))
+                }, revertLayers: function () {
+                    this._deletedLayers.eachLayer(function (t) {
+                        this._deletableLayers.addLayer(t), t.fire("revert-deleted", {layer: t})
+                    }, this)
+                }, save: function () {
+                    this._map.fire(L.Draw.Event.DELETED, {layers: this._deletedLayers})
+                }, removeAllLayers: function () {
+                    this._deletableLayers.eachLayer(function (t) {
+                        this._removeLayer({layer: t})
+                    }, this), this.save()
+                }, _enableLayerDelete: function (t) {
+                    (t.layer || t.target || t).on("click", this._removeLayer, this)
+                }, _disableLayerDelete: function (t) {
+                    var e = t.layer || t.target || t;
+                    e.off("click", this._removeLayer, this), this._deletedLayers.removeLayer(e)
+                }, _removeLayer: function (t) {
+                    var e = t.layer || t.target || t;
+                    this._deletableLayers.removeLayer(e), this._deletedLayers.addLayer(e), e.fire("deleted")
+                }, _onMouseMove: function (t) {
+                    this._tooltip.updatePosition(t.latlng)
+                }, _hasAvailableLayers: function () {
+                    return 0 !== this._deletableLayers.getLayers().length
+                }
+            })
         }(window, document);
 
         /***/
-}),
-/* 59 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 59 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         // style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -40647,13 +43139,15 @@ function addNinListener() {
                 });
             }
             // When the module is disposed, remove the <style> tags
-            module.hot.dispose(function () { update(); });
+            module.hot.dispose(function () {
+                update();
+            });
         }
 
         /***/
-}),
-/* 60 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 60 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         exports = module.exports = __webpack_require__(12)();
         // imports
@@ -40666,30 +43160,30 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 61 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 61 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "deac1d4aa2ccf7ed832e4db55bb64e63.png";
 
         /***/
-}),
-/* 62 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 62 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "fd5728f2cf777b06b966d05c0c823dc9.svg";
 
         /***/
-}),
-/* 63 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 63 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "6a1e950d14904d4b6fb5c9bdc3dfad06.png";
 
         /***/
-}),
-/* 64 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 64 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         // style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -40710,13 +43204,15 @@ function addNinListener() {
                 });
             }
             // When the module is disposed, remove the <style> tags
-            module.hot.dispose(function () { update(); });
+            module.hot.dispose(function () {
+                update();
+            });
         }
 
         /***/
-}),
-/* 65 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 65 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         exports = module.exports = __webpack_require__(12)();
         // imports
@@ -40729,30 +43225,30 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 66 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 66 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "a6137456ed160d7606981aa57c559898.png";
 
         /***/
-}),
-/* 67 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 67 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "4f0283c6ce28e888000e978e537a6a56.png";
 
         /***/
-}),
-/* 68 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 68 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "2273e3d8ad9264b7daa5bdbf8e6b47f8.png";
 
         /***/
-}),
-/* 69 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 69 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         // style-loader: Adds some css to the DOM by adding a <style> tag
 
@@ -40773,13 +43269,15 @@ function addNinListener() {
                 });
             }
             // When the module is disposed, remove the <style> tags
-            module.hot.dispose(function () { update(); });
+            module.hot.dispose(function () {
+                update();
+            });
         }
 
         /***/
-}),
-/* 70 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 70 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         exports = module.exports = __webpack_require__(12)();
         // imports
@@ -40792,20 +43290,20 @@ function addNinListener() {
 
 
         /***/
-}),
-/* 71 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 71 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "401d815dc206b8dc1b17cd0e37695975.png";
 
         /***/
-}),
-/* 72 */
-/***/ (function (module, exports, __webpack_require__) {
+    }),
+    /* 72 */
+    /***/ (function (module, exports, __webpack_require__) {
 
         module.exports = __webpack_require__.p + "44a526eed258222515aa21eaffd14a96.png";
 
         /***/
-})
-/******/]);
+    })
+    /******/]);
 //# sourceMappingURL=app-eddbd5e1749986b8c5a5.js.map
