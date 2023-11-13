@@ -8,6 +8,21 @@ window.closeIframe = function () {
     document.body.removeChild(ifrm);
 };
 
+function objectToQueryString(obj) {
+    const params = [];
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            // Encode both the key and value to ensure proper URL encoding
+            const encodedKey = encodeURIComponent(key);
+            const encodedValue = encodeURIComponent(obj[key]);
+            params.push(`${encodedKey}=${encodedValue}`);
+        }
+    }
+    params.push('iframe_edit=true')
+    return params.join('&');
+}
+
 var ifrm;
 var useIframe = false;
 
@@ -17970,7 +17985,7 @@ function addNinListener() {
                             console.log("OU:", ou);
 
                             // Define the URL
-                            const url = `/ima2/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
+                            const url = `/api/trackedEntityInstances/${tei}.json?program=${program}&ou=${ou}&fields=attributes`;
 
                             // Fetch the JSON data
                             fetch(url)
