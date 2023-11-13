@@ -1,3 +1,5 @@
+
+
 window.returntoreview = function (values) {
     Object.keys(values).forEach((key) => {
         var el = document.querySelector(`#YXed7PnLRco-${key}-val input,#YXed7PnLRco-${key}-val select`);
@@ -7,6 +9,21 @@ window.returntoreview = function (values) {
 window.closeIframe = function () {
     document.body.removeChild(ifrm);
 };
+
+function objectToQueryString(obj) {
+    const params = [];
+
+    for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+            // Encode both the key and value to ensure proper URL encoding
+            const encodedKey = encodeURIComponent(key);
+            const encodedValue = encodeURIComponent(obj[key]);
+            params.push(`${encodedKey}=${encodedValue}`);
+        }
+    }
+    params.push('iframe_edit=true')
+    return params.join('&');
+}
 
 var ifrm;
 var useIframe = false;
@@ -166,17 +183,6 @@ function addNinListener() {
         'Subcounty/District',
         'Village'
     ];
-
-    const niraFormInputs = {
-        'Age in Days': null,
-        'Age in Months': null,
-        'Age in years': null,
-        'Full Name': null,
-        'Parish': null,
-        'Sex': null,
-        'Subcounty/District': null,
-        'Village': null
-    }
 
     var spanNIN;
     for (const linkElement of outerForm.querySelectorAll('a')) {

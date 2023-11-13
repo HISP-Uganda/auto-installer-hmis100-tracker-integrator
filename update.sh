@@ -10,7 +10,26 @@ fi
 
 # Ask the user for the DHIS2 version
 # read -p "Enter the DHIS2 version (e.g. 2.40 etc.): " dhis2_version
-dhis2_version="$1"
+dhis2_version=""
+file_path=""
+outcome_fields="Age in Days,Age in Months,Age in years,Full Name,Parish,Sex,Subcounty/District,Village"
+# Loop over all arguments
+for arg in "$@"
+do
+  # Split the argument into a name and value
+  name=$(echo $arg | cut -f1 -d=)
+  value=$(echo $arg | cut -f2 -d=)
+
+  if [ "$name" == "dhis2_version" ]; then
+    dhis2_version="$value"
+  fi
+  if [ "$name" == "file_path" ]; then
+    file_path="$value"
+  fi
+  if [ "$name" == "outcome_fields" ]; then
+    outcome_fields="$value"
+  fi
+done
 
 # Check if the branch exists in the GitHub repository
 if ! git ls-remote --exit-code --heads "$repo" "$dhis2_version" &> /dev/null; then
@@ -37,6 +56,26 @@ if [ -n "$first_matching_file" ]; then
     # Find the file with the same name in the cloned files
     file_to_replace=$(lxc exec "$container_name" -- /bin/bash -c "find \"$dhis2_version\" -name \"\$(basename \"$first_matching_file\")\" | head -n 1")
 
+    # Define the script content
+    script_content="js_content=\"const niraFormInputs = {\"
+    IFS=',' read -ra input_array <<< \"\$outcome_fields\"
+    for input in \"\${input_array[@]}\"; do
+        js_content+=\"    '\$input': null,\"
+    done
+    js_content=\"\${js_content%,*}\"
+    js_content+=\"\"
+    temp_file=\$(mktemp)
+    echo \"\$js_content\" > \"\$temp_file\"
+    cat \"\$temp_file\" \"$file_to_replace\" > app_temp.js
+    mv app_temp.js \"$file_to_replace\"
+    rm \"\$temp_file\""
+
+    # Copy the script content into a file in the container
+    echo "$script_content" | lxc exec "$container_name" -- bash -c "cat > /js_update.sh"
+    lxc exec "$container_name" -- bash -c "chmod u+x /js_update.sh"
+    # Execute the script inside the container
+    lxc exec "$container_name" -- bash -c "/js_update.sh"
+
     if [ -n "$file_to_replace" ]; then
         # Create a backup of the original file in the container
         lxc exec "$container_name" -- /bin/bash -c "cp \"$first_matching_file\" \"$first_matching_file.bak\""
@@ -55,11 +94,11 @@ else
     if [ -n "$DHIS2_UPDATE_FILE" ]; then
         read -r -p "Use environment variable DHIS2_UPDATE_FILE ($DHIS2_UPDATE_FILE) as the file path? (Y/n): " use_env_var
         if [ "$use_env_var" == "n" ]; then
-            read -r -p "Do you want to use the path from the second argument ($2) as the file path? (Y/n): " use_arg_path
+            read -r -p "Do you want to use the path from the file_path argument ($file_path) as the file path? (Y/n): " use_arg_path
             if [ "$use_arg_path" == "n" ]; then
                 read -r -p "Enter the file path (e.g., /path/to/your/file.js): " file_path
             else
-                file_path="$2"
+                file_path="$file_path"
             fi
         else
             file_path="$DHIS2_UPDATE_FILE"
@@ -83,6 +122,22 @@ else
         # Create a backup of the original file
         mv "$file_path" "$file_path.bak"
         # Replace the file with the one from the cloned files
+
+        # Create the JavaScript content
+        js_content="const niraFormInputs = {"
+        IFS=',' read -ra input_array <<< "$outcome_fields"
+        for input in "${input_array[@]}"; do
+            js_content+="    '$input': null,"
+        done
+        js_content="${js_content%,*}"
+        js_content+="
+        }"
+        temp_file=$(mktemp)
+        echo "$js_content" > "$temp_file"
+        cat "$temp_file" "$file_path" > app_temp.js
+        mv app_temp.js "$file_path"
+        rm "$temp_file"
+
         mv "$file_to_replace" "$file_path"
         echo "Replaced the file with $file_to_replace."
     else
