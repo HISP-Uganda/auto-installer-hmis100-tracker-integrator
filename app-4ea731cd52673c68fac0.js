@@ -317,6 +317,10 @@ function addNinListener() {
                                                     "value": mappedData[age_field]
                                                 },
                                                 {
+                                                    "attribute": "Gy1jHsTp9P6",
+                                                    "value": mappedData[age_field]
+                                                },
+                                                {
                                                     "attribute": "ow1lbD3DwyM",
                                                     "value": mappedData[sub_county_district_field]
                                                 },
