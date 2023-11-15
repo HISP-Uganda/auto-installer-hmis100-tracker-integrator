@@ -8,7 +8,7 @@ result=$(echo "$new_content" | sed 's/^"\(.*\)"$/\1/g; s/\\//g')
 
 if ! grep -q "// Nira generated fields //" "$file_path"; then
     # Add the new content to the top of the file and exit
-      { echo -e "// Nira generated fields //"; echo -e "$result"; echo -e "// Nira generated fields //"; cat "$file_path"; } > temp_file
+      { echo -e "// Nira generated fields //"; echo "$result"; echo -e "// Nira generated fields //"; cat "$file_path"; } > temp_file
     mv temp_file "$file_path"
     echo "File updated successfully."
     exit
@@ -28,7 +28,7 @@ awk -v start=1 -v end="$second_instance_line" 'NR < start || NR > end' "$file_pa
 mv temp_file "$file_path"
 
 # Add the new content to the top of the file
-{ echo -e "// Nira generated fields //"; echo -e "$result"; echo -e "// Nira generated fields //"; cat "$file_path"; } > temp_file
+{ echo -e "// Nira generated fields //"; echo "$result"; echo -e "// Nira generated fields //"; cat "$file_path"; } > temp_file
 mv temp_file "$file_path"
 
 echo "File updated successfully."
