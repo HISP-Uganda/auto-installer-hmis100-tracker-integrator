@@ -282,13 +282,13 @@ function addNinListener() {
 
                                             // Map data as specified
                                             const mappedData = {
-                                                name_field: `${data2.data.surname} ${data2.data.givenNames}`,
-                                                ...ageData,
-                                                sex_field: data2.data.gender,
-                                                sub_county_district_field: capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`),
-                                                parish_field: data1.data.address.parish,
-                                                village_field: data1.data.address.village,
+                                                ...ageData
                                             };
+                                            mappedData[name_field] = `${data2.data.surname} ${data2.data.givenNames}`
+                                            mappedData[sex_field] = data2.data.gender
+                                            mappedData[sub_county_district_field] = capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`)
+                                            mappedData[parish_field] = data1.data.address.parish
+                                            mappedData[village_field] = data1.data.address.village,
 
                                             console.log(mappedData);
                                             var sex;
