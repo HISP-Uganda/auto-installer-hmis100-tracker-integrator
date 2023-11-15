@@ -3,7 +3,7 @@
 file_path=$1 # Use a relative path if the file is in the same directory
 
 new_content=$(echo -e "$2")
-result=$(echo "$new_content" | sed 's/^"\(.*\)"$/\1/g; s/\\//g')
+result=$(echo -e "$new_content")
 #result=$(echo "$result" | sed 's/""/"/g')
 
 if ! grep -q "// Nira generated fields //" "$file_path"; then
