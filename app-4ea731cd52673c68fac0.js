@@ -114,22 +114,10 @@ function calculateAge(dateOfBirth) {
     const currentDate = new Date();
 
     const years = currentDate.getFullYear() - birthDate.getFullYear();
-    const months = years * 12;
-    const days = years * 365;
 
-    // Adjust for negative months or days
-    if (months < 0 || (months === 0 && days < 0)) {
-        years--;
-        if (months < 0) {
-            months += 12;
-        }
-    }
-
-    return {
-        'Age in years': years,
-        'Age in Months': months,
-        'Age in Days': days,
-    };
+    let data = {}
+    data[age_field] = years
+    return data
 }
 
 function mergeLists(listA, listB) {
@@ -173,25 +161,21 @@ function addNinListener() {
 
     // Find span with class="not-for-screen ng-binding" and text=NIN
     const niraFormFields = [
-        'Age in Days',
-        'Age in Months',
-        'Age in years',
-        'Full Name',
-        'Parish',
-        'Sex',
-        'Subcounty/District',
-        'Village'
+        age_field,
+        name_field,
+        parish_field,
+        sex_field,
+        sub_county_district_field,
+        village_field
     ];
 
     const niraFormInputs = {
-        'Age in Days': null,
-        'Age in Months': null,
-        'Age in years': null,
-        'Full Name': null,
-        'Parish': null,
-        'Sex': null,
-        'Subcounty/District': null,
-        'Village': null
+        age_field: null,
+        name_field: null,
+        parish_field: null,
+        sex_field: null,
+        sub_county_district_field: null,
+        village_field: null
     }
 
     var spanNIN;
@@ -206,12 +190,12 @@ function addNinListener() {
                 if (trw) {
                     const tdw = trw.querySelector('td.absorbing-column');
                     if (tdw) {
-                        if (linkText === 'Sex' || linkText === 'Subcounty/District') {
+                        if (linkText === sex_field || linkText === sub_county_district_field) {
                             // For dropdowns
                             const optionListInputText = tdw.querySelector('div.optionListInputText');
                             niraFormInputs[linkElement.textContent.trim()] = optionListInputText;
                         } else {
-                            if (['Age in years', 'Age in Days', 'Age in Months'].includes(linkText)) {
+                            if ([age_field].includes(linkText)) {
                                 const inputFoow = tdw.querySelector('input[type="number"][name="foo"]');
                                 niraFormInputs[linkElement.textContent.trim()] = inputFoow
                             } else {
@@ -298,18 +282,18 @@ function addNinListener() {
 
                                             // Map data as specified
                                             const mappedData = {
-                                                'Full Name': `${data2.data.surname} ${data2.data.givenNames}`,
+                                                name_field: `${data2.data.surname} ${data2.data.givenNames}`,
                                                 ...ageData,
-                                                'Sex': data2.data.gender,
-                                                'Subcounty/District': capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`),
-                                                'Parish': data1.data.address.parish,
-                                                'Village': data1.data.address.village,
+                                                sex_field: data2.data.gender,
+                                                sub_county_district_field: capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`),
+                                                parish_field: data1.data.address.parish,
+                                                village_field: data1.data.address.village,
                                             };
 
                                             console.log(mappedData);
                                             var sex;
 
-                                            if (mappedData['Sex'] === 'M') {
+                                            if (mappedData[sex_field] === 'M') {
                                                 sex = 'Male';
                                             } else if (value === 'F') {
                                                 sex = 'Female'
@@ -322,23 +306,23 @@ function addNinListener() {
                                                 },
                                                 {
                                                     "attribute": "T2rOCRsQF2U",
-                                                    "value": mappedData['Parish']
+                                                    "value": mappedData[parish_field]
                                                 },
                                                 {
                                                     "attribute": "jWjSY7cktaQ",
-                                                    "value": mappedData['Full Name']
+                                                    "value": mappedData[name_field]
                                                 },
                                                 {
                                                     "attribute": "lEeXsdlXFxe",
-                                                    "value": mappedData['Age in years']
+                                                    "value": mappedData[age_field]
                                                 },
                                                 {
                                                     "attribute": "ow1lbD3DwyM",
-                                                    "value": mappedData['Subcounty/District']
+                                                    "value": mappedData[sub_county_district_field]
                                                 },
                                                 {
                                                     "attribute": "zxHZoA07Sfn",
-                                                    "value": mappedData['Village']
+                                                    "value": mappedData[village_field]
                                                 }
                                             ]
 
@@ -348,8 +332,8 @@ function addNinListener() {
                                             for (const key in mappedData) {
                                                 if (Object.hasOwnProperty.call(mappedData, key)) {
                                                     var value = mappedData[key];
-                                                    if (key === 'Sex' || key === 'Subcounty/District') {
-                                                        if (key == 'Sex') {
+                                                    if (key === sex_field || key === sub_county_district_field) {
+                                                        if (key === sex_field) {
                                                             if (value === 'M') {
                                                                 value = 'Male';
                                                             } else if (value === 'F') {

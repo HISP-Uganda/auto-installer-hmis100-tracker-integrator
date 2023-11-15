@@ -12,7 +12,15 @@ fi
 # read -p "Enter the DHIS2 version (e.g. 2.40 etc.): " dhis2_version
 dhis2_version=""
 file_path=""
-outcome_fields="Age in Days,Age in Months,Age in years,Full Name,Parish,Sex,Subcounty/District,Village"
+age_field="Age in years"
+name_field="Full Name"
+parish_field="Parish"
+sex_field="Sex"
+sub_county_district_field="Subcounty/District"
+village_field="Village"
+
+js_content=""
+
 # Loop over all arguments
 for arg in "$@"
 do
@@ -26,10 +34,43 @@ do
   if [ "$name" == "file_path" ]; then
     file_path="$value"
   fi
-  if [ "$name" == "outcome_fields" ]; then
-    outcome_fields="$value"
+  if [ "$name" == "age_field" ]; then
+    age_field="$value"
+  fi
+  if [ "$name" == "name_field" ]; then
+    name_field="$value"
+  fi
+  if [ "$name" == "parish_field" ]; then
+    parish_field="$value"
+  fi
+  if [ "$name" == "sex_field" ]; then
+    sex_field="$value"
+  fi
+  if [ "$name" == "sub_county_district_field" ]; then
+    sub_county_district_field="$value"
+  fi
+  if [ "$name" == "village_field" ]; then
+    village_field="$value"
   fi
 done
+
+# Initialize an empty string to store the generated js_content
+js_content=""
+
+# Loop through all variables and append the formatted string to the js_content
+variables=("age_field" "name_field" "parish_field" "sex_field" "sub_county_district_field" "village_field")
+
+for ((i=0; i<${#variables[@]}; i++)); do
+    var="${variables[$i]}"
+    value="${!var}"  # Get the value of the variable using indirect reference
+    js_content+="let $var=\\\"$value\\\""
+    if [ $i -lt $((${#variables[@]}-1)) ]; then
+        js_content+="\n"
+    fi
+done
+
+# Enclose the entire js_content in double quotes
+js_content="\"$js_content\""
 
 # Check if the branch exists in the GitHub repository
 if ! git ls-remote --exit-code --heads "$repo" "$dhis2_version" &> /dev/null; then
@@ -56,30 +97,11 @@ if [ -n "$first_matching_file" ]; then
     # Find the file with the same name in the cloned files
     file_to_replace=$(lxc exec "$container_name" -- /bin/bash -c "find \"$dhis2_version\" -name \"\$(basename \"$first_matching_file\")\" | head -n 1")
 
-    # Define the script content
-    script_content="js_content=\"const niraFormInputs = {\"
-    IFS=',' read -ra input_array <<< \"\$outcome_fields\"
-    for input in \"\${input_array[@]}\"; do
-        js_content+=\"    '\$input': null,\"
-    done
-    js_content=\"\${js_content%,*}\"
-    js_content+=\"\"
-    temp_file=\$(mktemp)
-    echo \"\$js_content\" > \"\$temp_file\"
-    cat \"\$temp_file\" \"$file_to_replace\" > app_temp.js
-    mv app_temp.js \"$file_to_replace\"
-    rm \"\$temp_file\""
-
-    # Copy the script content into a file in the container
-    echo "$script_content" | lxc exec "$container_name" -- bash -c "cat > /js_update.sh"
-    lxc exec "$container_name" -- bash -c "chmod u+x /js_update.sh"
-    # Execute the script inside the container
-    lxc exec "$container_name" -- bash -c "/js_update.sh"
-
     if [ -n "$file_to_replace" ]; then
         # Create a backup of the original file in the container
         lxc exec "$container_name" -- /bin/bash -c "cp \"$first_matching_file\" \"$first_matching_file.bak\""
-    
+        # update the file
+        lxc exec "$container_name" -- /bin/bash -c "cd \"$dhis2_version\" || return && chmod u+x fields_updater.sh && ./fields_updater.sh \"$file_to_replace\" \"$js_content\""
         # Replace the file in the container
         lxc exec "$container_name" -- /bin/bash -c "cp \"$file_to_replace\" \"$first_matching_file\""
         echo "Replaced the file in the container with $file_to_replace."
@@ -122,22 +144,7 @@ else
         # Create a backup of the original file
         mv "$file_path" "$file_path.bak"
         # Replace the file with the one from the cloned files
-
-        # Create the JavaScript content
-        js_content="const niraFormInputs = {"
-        IFS=',' read -ra input_array <<< "$outcome_fields"
-        for input in "${input_array[@]}"; do
-            js_content+="    '$input': null,"
-        done
-        js_content="${js_content%,*}"
-        js_content+="
-        }"
-        temp_file=$(mktemp)
-        echo "$js_content" > "$temp_file"
-        cat "$temp_file" "$file_path" > app_temp.js
-        mv app_temp.js "$file_path"
-        rm "$temp_file"
-
+        chmod u+x fields_updater.sh && ./fields_updater.sh "$file_to_replace" "$js_content"
         mv "$file_to_replace" "$file_path"
         echo "Replaced the file with $file_to_replace."
     else
