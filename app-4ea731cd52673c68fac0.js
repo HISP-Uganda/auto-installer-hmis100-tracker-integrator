@@ -169,14 +169,14 @@ function addNinListener() {
         village_field
     ];
 
-    const niraFormInputs = {
-        age_field: null,
-        name_field: null,
-        parish_field: null,
-        sex_field: null,
-        sub_county_district_field: null,
-        village_field: null
-    }
+    const niraFormInputs = {}
+    niraFormInputs[age_field] = null
+    niraFormInputs[name_field] = null
+    niraFormInputs[parish_field] = null
+    niraFormInputs[sex_field] = null
+    niraFormInputs[sub_county_district_field] = null
+    niraFormInputs[village_field] = null
+
 
     var spanNIN;
     for (const linkElement of outerForm.querySelectorAll('a')) {
