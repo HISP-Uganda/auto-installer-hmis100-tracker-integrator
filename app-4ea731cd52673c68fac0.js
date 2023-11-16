@@ -301,31 +301,27 @@ function addNinListener() {
 
                                             var apiData = [
                                                 {
-                                                    "attribute": "GnL13HAVFOm",
+                                                    "attribute": mappedData[sex_field_id],
                                                     "value": sex
                                                 },
                                                 {
-                                                    "attribute": "T2rOCRsQF2U",
+                                                    "attribute": mappedData[parish_field_id],
                                                     "value": mappedData[parish_field]
                                                 },
                                                 {
-                                                    "attribute": "jWjSY7cktaQ",
+                                                    "attribute": mappedData[name_field_id],
                                                     "value": mappedData[name_field]
                                                 },
                                                 {
-                                                    "attribute": "hCtbEhpDikH",
+                                                    "attribute": mappedData[age_field_id],
                                                     "value": mappedData[age_field]
                                                 },
                                                 {
-                                                    "attribute": "Gy1jHsTp9P6",
-                                                    "value": mappedData[age_field]
-                                                },
-                                                {
-                                                    "attribute": "ow1lbD3DwyM",
+                                                    "attribute": mappedData[sub_county_district_field_id],
                                                     "value": mappedData[sub_county_district_field]
                                                 },
                                                 {
-                                                    "attribute": "zxHZoA07Sfn",
+                                                    "attribute": mappedData[village_field_id],
                                                     "value": mappedData[village_field]
                                                 }
                                             ]

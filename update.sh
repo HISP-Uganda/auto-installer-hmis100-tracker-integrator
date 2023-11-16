@@ -19,6 +19,13 @@ sex_field="Sex"
 sub_county_district_field="Subcounty/District"
 village_field="Village"
 
+age_field_id=""
+name_field_id=""
+parish_field_id=""
+sex_field_id=""
+sub_county_district_field_id=""
+village_field_id=""
+
 js_content=""
 
 # Loop over all arguments
@@ -27,6 +34,7 @@ do
   # Split the argument into a name and value
   name=$(echo $arg | cut -f1 -d=)
   value=$(echo $arg | cut -f2 -d=)
+  delimiter=":"
 
   if [ "$name" == "dhis2_version" ]; then
     dhis2_version="$value"
@@ -35,22 +43,28 @@ do
     file_path="$value"
   fi
   if [ "$name" == "age_field" ]; then
-    age_field="$value"
+    age_field=$(echo $value | cut -d$delimiter -f1)
+    age_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
   if [ "$name" == "name_field" ]; then
-    name_field="$value"
+    name_field=$(echo $value | cut -d$delimiter -f1)
+    name_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
   if [ "$name" == "parish_field" ]; then
-    parish_field="$value"
+    parish_field=$(echo $value | cut -d$delimiter -f1)
+    parish_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
   if [ "$name" == "sex_field" ]; then
-    sex_field="$value"
+    sex_field=$(echo $value | cut -d$delimiter -f1)
+    sex_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
   if [ "$name" == "sub_county_district_field" ]; then
-    sub_county_district_field="$value"
+    sub_county_district_field=$(echo $value | cut -d$delimiter -f1)
+    sub_county_district_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
   if [ "$name" == "village_field" ]; then
-    village_field="$value"
+    village_field=$(echo $value | cut -d$delimiter -f1)
+    village_field_id=$(echo $value | cut -d$delimiter -f2)
   fi
 done
 
@@ -58,7 +72,8 @@ done
 js_content=""
 
 # Loop through all variables and append the formatted string to the js_content
-variables=("age_field" "name_field" "parish_field" "sex_field" "sub_county_district_field" "village_field")
+variables=("age_field" "name_field" "parish_field" "sex_field" "sub_county_district_field" "village_field"
+"age_field_id" "name_field_id" "parish_field_id" "sex_field_id" "sub_county_district_field_id" "village_field_id")
 
 for ((i=0; i<${#variables[@]}; i++)); do
     var="${variables[$i]}"
