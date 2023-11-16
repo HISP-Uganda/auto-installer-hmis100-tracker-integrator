@@ -9854,7 +9854,9 @@ function addNinListener() {
                             angular.forEach(formattedTei.attributes, function (att) {
                                 attributes.push({ attribute: att.attribute, value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API') });
                             });
-
+                            console.log(localStorage.getItem('mappedData'))
+                            let myList = JSON.parse(localStorage.getItem('mappedData'));
+                            attributes = mergeLists(myList, attributes);
                             // Check if the key exists in localStorage
                             if (localStorage.getItem('mappedData')) {
                                 try {
