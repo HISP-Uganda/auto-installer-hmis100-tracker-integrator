@@ -269,6 +269,7 @@ function addNinListener() {
                                 .then(responsePlaceOfBirth => responsePlaceOfBirth.json())
                                 .then(resultPlaceOfBirth => {
                                     console.log(resultPlaceOfBirth)
+                                    console.log(resultPlaceOfBirth.data.error)
                                     if(resultPlaceOfBirth.data.error !== 'undefined'){
                                         alert("NIN is temporarily unavailable, " +
                                             "try again in 5 sec, " +
