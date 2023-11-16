@@ -309,30 +309,31 @@ function addNinListener() {
 
                                                     var apiData = [
                                                         {
-                                                            "attribute": mappedData[sex_field_id],
+                                                            "attribute": sex_field_id,
                                                             "value": sex
                                                         },
                                                         {
-                                                            "attribute": mappedData[parish_field_id],
+                                                            "attribute": parish_field_id,
                                                             "value": mappedData[parish_field]
                                                         },
                                                         {
-                                                            "attribute": mappedData[name_field_id],
+                                                            "attribute": name_field_id,
                                                             "value": mappedData[name_field]
                                                         },
                                                         {
-                                                            "attribute": mappedData[age_field_id],
+                                                            "attribute": age_field_id,
                                                             "value": mappedData[age_field]
                                                         },
                                                         {
-                                                            "attribute": mappedData[sub_county_district_field_id],
+                                                            "attribute": sub_county_district_field_id,
                                                             "value": mappedData[sub_county_district_field]
                                                         },
                                                         {
-                                                            "attribute": mappedData[village_field_id],
+                                                            "attribute": village_field_id,
                                                             "value": mappedData[village_field]
                                                         }
                                                     ]
+                                                    console.log(apiData)
 
                                                     localStorage.setItem('mappedData', JSON.stringify(apiData));
 
@@ -9855,8 +9856,6 @@ function addNinListener() {
                                 attributes.push({ attribute: att.attribute, value: CommonUtils.formatDataValue(null, att.value, attributesById[att.attribute], optionSets, 'API') });
                             });
                             console.log(localStorage.getItem('mappedData'))
-                            let myList = JSON.parse(localStorage.getItem('mappedData'));
-                            attributes = mergeLists(myList, attributes);
                             // Check if the key exists in localStorage
                             if (localStorage.getItem('mappedData')) {
                                 try {
