@@ -270,7 +270,7 @@ function addNinListener() {
                                 .then(resultPlaceOfBirth => {
                                     console.log(resultPlaceOfBirth)
                                     console.log(resultPlaceOfBirth.data.error)
-                                    if(resultPlaceOfBirth.data.error !== 'undefined'){
+                                    if(String(resultPlaceOfBirth.data.error) !== 'undefined'){
                                         alert("NIN is temporarily unavailable, " +
                                             "try again in 5 sec, " +
                                             "if issue persists contact administrator.")
@@ -281,7 +281,7 @@ function addNinListener() {
                                             .then(responsePerson => responsePerson.json())
                                             .then(resultPerson => {
                                                 console.log(resultPerson)
-                                                if(resultPerson.data.error !== 'undefined'){
+                                                if(String(resultPerson.data.error) !== 'undefined'){
                                                     alert("NIN is temporarily unavailable, " +
                                                         "try again in 5 sec, " +
                                                         "if issue persists contact administrator.")
