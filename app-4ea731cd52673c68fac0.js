@@ -269,94 +269,103 @@ function addNinListener() {
                                 .then(responsePlaceOfBirth => responsePlaceOfBirth.json())
                                 .then(resultPlaceOfBirth => {
                                     console.log(resultPlaceOfBirth)
-                                    data1 = resultPlaceOfBirth
+                                    if(resultPlaceOfBirth.data.error !== 'undefined'){
+                                        alert("NIN is temporarily unavailable, " +
+                                            "try again in 5 sec, " +
+                                            "if issue persists contact administrator.")
+                                    }else {
+                                        data1 = resultPlaceOfBirth
 
-                                    fetch(apiPerson, requestPersonOptions)
-                                        .then(responsePerson => responsePerson.json())
-                                        .then(resultPerson => {
-                                            console.log(resultPerson)
-                                            data2 = resultPerson
+                                        fetch(apiPerson, requestPersonOptions)
+                                            .then(responsePerson => responsePerson.json())
+                                            .then(resultPerson => {
+                                                console.log(resultPerson)
+                                                if(resultPerson.data.error !== 'undefined'){
+                                                    alert("NIN is temporarily unavailable, " +
+                                                        "try again in 5 sec, " +
+                                                        "if issue persists contact administrator.")
+                                                }else{
+                                                    data2 = resultPerson
+                                                    // Calculate age using the function
+                                                    const ageData = calculateAge(data2.data.dateOfBirth);
+                                                    // Map data as specified
+                                                    const mappedData = {
+                                                        ...ageData
+                                                    };
+                                                    mappedData[name_field] = `${data2.data.surname} ${data2.data.givenNames}`
+                                                    mappedData[sex_field] = data2.data.gender
+                                                    mappedData[sub_county_district_field] = capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`)
+                                                    mappedData[parish_field] = data1.data.address.parish
+                                                    mappedData[village_field] = data1.data.address.village,
+                                                    console.log(mappedData);
+                                                    var sex;
 
-                                            // Calculate age using the function
-                                            const ageData = calculateAge(data2.data.dateOfBirth);
+                                                    if (mappedData[sex_field] === 'M') {
+                                                        sex = 'Male';
+                                                    } else if (value === 'F') {
+                                                        sex = 'Female'
+                                                    }
 
-                                            // Map data as specified
-                                            const mappedData = {
-                                                ...ageData
-                                            };
-                                            mappedData[name_field] = `${data2.data.surname} ${data2.data.givenNames}`
-                                            mappedData[sex_field] = data2.data.gender
-                                            mappedData[sub_county_district_field] = capitalizeWords(`${data1.data.address.subCounty}: ${data1.data.address.district} District`)
-                                            mappedData[parish_field] = data1.data.address.parish
-                                            mappedData[village_field] = data1.data.address.village,
+                                                    var apiData = [
+                                                        {
+                                                            "attribute": mappedData[sex_field_id],
+                                                            "value": sex
+                                                        },
+                                                        {
+                                                            "attribute": mappedData[parish_field_id],
+                                                            "value": mappedData[parish_field]
+                                                        },
+                                                        {
+                                                            "attribute": mappedData[name_field_id],
+                                                            "value": mappedData[name_field]
+                                                        },
+                                                        {
+                                                            "attribute": mappedData[age_field_id],
+                                                            "value": mappedData[age_field]
+                                                        },
+                                                        {
+                                                            "attribute": mappedData[sub_county_district_field_id],
+                                                            "value": mappedData[sub_county_district_field]
+                                                        },
+                                                        {
+                                                            "attribute": mappedData[village_field_id],
+                                                            "value": mappedData[village_field]
+                                                        }
+                                                    ]
 
-                                            console.log(mappedData);
-                                            var sex;
+                                                    localStorage.setItem('mappedData', JSON.stringify(apiData));
 
-                                            if (mappedData[sex_field] === 'M') {
-                                                sex = 'Male';
-                                            } else if (value === 'F') {
-                                                sex = 'Female'
-                                            }
+                                                    // Iterate through the mapped data
+                                                    for (const key in mappedData) {
+                                                        if (Object.hasOwnProperty.call(mappedData, key)) {
+                                                            var value = mappedData[key];
+                                                            if (key === sex_field || key === sub_county_district_field) {
+                                                                if (key === sex_field) {
+                                                                    if (value === 'M') {
+                                                                        value = 'Male';
+                                                                    } else if (value === 'F') {
+                                                                        value = 'Female'
+                                                                    }
+                                                                }
+                                                                const existingInput = niraFormInputs[key].querySelector('span.ng-binding.ng-scope');
+                                                                if (existingInput) {
+                                                                    existingInput.textContent = value;
 
-                                            var apiData = [
-                                                {
-                                                    "attribute": mappedData[sex_field_id],
-                                                    "value": sex
-                                                },
-                                                {
-                                                    "attribute": mappedData[parish_field_id],
-                                                    "value": mappedData[parish_field]
-                                                },
-                                                {
-                                                    "attribute": mappedData[name_field_id],
-                                                    "value": mappedData[name_field]
-                                                },
-                                                {
-                                                    "attribute": mappedData[age_field_id],
-                                                    "value": mappedData[age_field]
-                                                },
-                                                {
-                                                    "attribute": mappedData[sub_county_district_field_id],
-                                                    "value": mappedData[sub_county_district_field]
-                                                },
-                                                {
-                                                    "attribute": mappedData[village_field_id],
-                                                    "value": mappedData[village_field]
-                                                }
-                                            ]
+                                                                } else {
+                                                                    niraFormInputs[key].insertAdjacentHTML(
+                                                                        'afterbegin', `<span ng-if="d2Model[d2ModelId]" class="ng-binding ng-scope">${value}</span>`);
 
-                                            localStorage.setItem('mappedData', JSON.stringify(apiData));
+                                                                }
+                                                            } else {
+                                                                niraFormInputs[key].value = value;
 
-                                            // Iterate through the mapped data
-                                            for (const key in mappedData) {
-                                                if (Object.hasOwnProperty.call(mappedData, key)) {
-                                                    var value = mappedData[key];
-                                                    if (key === sex_field || key === sub_county_district_field) {
-                                                        if (key === sex_field) {
-                                                            if (value === 'M') {
-                                                                value = 'Male';
-                                                            } else if (value === 'F') {
-                                                                value = 'Female'
                                                             }
                                                         }
-                                                        const existingInput = niraFormInputs[key].querySelector('span.ng-binding.ng-scope');
-                                                        if (existingInput) {
-                                                            existingInput.textContent = value;
-
-                                                        } else {
-                                                            niraFormInputs[key].insertAdjacentHTML(
-                                                                'afterbegin', `<span ng-if="d2Model[d2ModelId]" class="ng-binding ng-scope">${value}</span>`);
-
-                                                        }
-                                                    } else {
-                                                        niraFormInputs[key].value = value;
-
                                                     }
                                                 }
-                                            }
-                                        })
-                                        .catch(error => console.log('error', error));
+                                            })
+                                            .catch(error => console.log('error', error));
+                                    }
                                 })
                                 .catch(error => console.log('error', error));
                         }
