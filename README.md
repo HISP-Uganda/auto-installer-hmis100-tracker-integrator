@@ -1,3 +1,10 @@
+#### Prerequisites
+> DHIS2 Version 2.40.1,
+> Build Version 19eb664,
+> Linux LTS 18 or greater,
+> Admin access to server 
+
+
 #### How To
 > Run command below
 ```sh
