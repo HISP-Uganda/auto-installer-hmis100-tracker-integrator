@@ -24,7 +24,7 @@ function objectToQueryString(obj) {
 }
 
 var ifrm;
-var useIframe = false;
+var useIframe = true;
 
 // Function to open the popup window
 function openIcdPopup(olsdata) {
@@ -18023,6 +18023,7 @@ function addNinListener() {
                                                 }
                                             }
                                         });
+                                        formData["ZKBE8Xm9DJG"] = $scope.currentEvent.event
                                         openIcdPopup(formData);
                                     } else {
                                         console.error("JSON data is not an array of attributes.");
